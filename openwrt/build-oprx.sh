@@ -465,25 +465,6 @@ EOF
 	#rename -v "s/openwrt-*-efi/OprX-openwrt-x86_64-R$OP_VERSION-UEFI-oR-Fsquashfs-$sha5/" bin/targets/x86/64*/*.gz || true   #能成功
 	rename -v "s/openwrt-x86-64-generic-squashfs-combined-efi/OprX-openwrt-x86_64-oR-R$OP_VERSION-Fsquashfs-uefi-$sha5_efi/" bin/targets/x86/64*/*.gz || true  #能成功
 	#rename -v "s/openwrt-x86-64-generic-squashfs-combined/OprX-openwrt-x86_64-oR-R$OP_VERSION-Fsquashfs-bios-$sha5/" bin/targets/x86/64*/*.gz || true  #能成功，但一定要在efi后面。
-    
-	   
-	 #采用ota升级
-	 OTA_URL="https://github.com/ilxp/oprx-builder/releases/download"
-	 VERSION=$(sed 's/v//g' version.txt)
-     SHA256=$(sha256sum bin/targets/x86/64*/*-generic-squashfs-combined-efi.img.gz | awk '{print $1}')
-     cat > ota/fw-oR.json <<EOF
-{
-  "x86_64": [
-    {
-      "build_date": "$CURRENT_DATE",
-      "sha256sum": "$SHA256",
-      "url": "$OTA_URL/firmware/oprx-oR-x86-64-generic-squashfs-combined-efi.img.gz"
-    }
-  ]
-}
-EOF
-	#进行ota目录压缩，并重命名，#位置是openwrt下
-	tar zcf oprx-ota.tar.gz ota
 	   
     # Backup download cache
     if [ "$isCN" = "CN" ] && [ "$1" = "rc2" ]; then
