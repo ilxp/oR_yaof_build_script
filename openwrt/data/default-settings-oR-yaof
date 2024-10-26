@@ -39,10 +39,10 @@ uci set system.@system[0].zonename=Asia/Shanghai
 uci set system.@system[0].description=Welcome.To.Use.OprX!
 uci -q del system.ntp.server
 uci -q add_list system.ntp.server='ntp.aliyun.com'
-uci -q add_list system.ntp.server='cn.ntp.org.cn'
-uci -q add_list system.ntp.server='ntp.ntsc.ac.cn'
-uci -q add_list system.ntp.server='time.ustc.edu.cn'
 uci -q add_list system.ntp.server='ntp.tencent.com'
+uci -q add_list system.ntp.server='ntp.ntsc.ac.cn'
+uci -q add_list system.ntp.server='time.apple.com'
+
 uci commit system
 
 #Dropbear 取消，否则默认22端口登陆不了
