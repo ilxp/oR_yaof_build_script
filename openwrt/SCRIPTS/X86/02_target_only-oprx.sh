@@ -154,7 +154,7 @@ sed -i 's/hwmon, +PACKAGE_kmod-thermal:kmod-thermal/hwmon/g' package/kernel/linu
 #date=`TZ=UTC-8 date +%m.%d.%Y`  #升级用，统一这样
 #R$(TZ=UTC-8 date +'%y.%-m.%-d')
 #ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
-ReV_Date=23.05.5
+ReV_Date="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][3-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')"
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
 sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='OprX oR%C Built By ilxp'/g" package/base-files/files/etc/openwrt_release
 
@@ -934,7 +934,11 @@ sed -i "s/TARGET_FLAG=Full/TARGET_FLAG=oR/g" package/diy/openwrt-autoupdate/auto
 #Short_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
 Short_Date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
 Compile_Date=$(TZ=UTC-8 date +'%Y%m%d')
-OP_VERSION="R${Short_Date}-${Compile_Date}"
+#OP_VERSION="R${Short_Date}-${Compile_Date}"
+
+#调用上面的渠道的23.05.5
+OP_VERSION="R${ReV_Date}-${Compile_Date}"
+
 sed -i "s/OP_VERSION=R24.1.1-20240101/OP_VERSION=$OP_VERSION/g" package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default  #使用双引号
 #3）源码作者
 #sed -i 's/OP_AUTHOR=openwrt/OP_AUTHOR=coolsnowwolf/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
