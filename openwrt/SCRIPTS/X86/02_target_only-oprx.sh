@@ -802,8 +802,8 @@ popd
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
-#8、# Docker 容器
-rm -rf feeds/luci/applications/luci-app-dockerman
+#8、# Docker 容器 QiuSimons大 02前面已经有了
+#rm -rf feeds/luci/applications/luci-app-dockerman
 #git clone -b master --single-branch https://github.com/lisaac/luci-app-dockerman.git   package/dockerman
 #cd package/dockerman
 #git sparse-checkout init --cone 
@@ -815,8 +815,7 @@ rm -rf feeds/luci/applications/luci-app-dockerman
 #rm -rf .gitattributes
 #rm -rf LICENSE
 #cd ../..
-
-rm -rf ./feeds/luci/collections/luci-lib-docker
+#rm -rf ./feeds/luci/collections/luci-lib-docker
 #git clone -b master --single-branch https://github.com/lisaac/luci-lib-docker.git   package/dockerlib
 #cd package/dockerlib
 #git sparse-checkout init --cone 
@@ -831,16 +830,16 @@ rm -rf ./feeds/luci/collections/luci-lib-docker
 
 #sed -i '/auto_start/d' package/dockerman/applications/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman
 
-merge_package master https://github.com/lisaac/luci-app-dockerman.git package/docker applications/luci-app-dockerman
+#merge_package master https://github.com/lisaac/luci-app-dockerman.git package/docker applications/luci-app-dockerman
 #sed -i '/auto_start/d' package/new/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman  #死活启动不了
-mkdir -p feeds/packages
-pushd feeds/packages
-wget -qO- https://github.com/openwrt/packages/commit/e2e5ee69.patch | patch -p1
-wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
-popd
-sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
+#mkdir -p feeds/packages
+#pushd feeds/packages
+#wget -qO- https://github.com/openwrt/packages/commit/e2e5ee69.patch | patch -p1
+#wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
+#popd
+#sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
 
-merge_package master https://github.com/lisaac/luci-lib-docker.git package/docker collections/luci-lib-docker
+#merge_package master https://github.com/lisaac/luci-lib-docker.git package/docker collections/luci-lib-docker
 
 # Docker  sbwml大
 #rm -rf feeds/luci/applications/luci-app-dockerman
