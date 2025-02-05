@@ -831,7 +831,7 @@ rm -rf ./feeds/luci/collections/luci-lib-docker
 
 #sed -i '/auto_start/d' package/dockerman/applications/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman
 
-merge_package master https://github.com/lisaac/luci-app-dockerman.git package/new applications/luci-app-dockerman
+merge_package master https://github.com/lisaac/luci-app-dockerman.git package/docker applications/luci-app-dockerman
 #sed -i '/auto_start/d' package/new/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman  #死活启动不了
 mkdir -p feeds/packages
 pushd feeds/packages
@@ -840,7 +840,7 @@ wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
 popd
 sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
 
-merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
+merge_package master https://github.com/lisaac/luci-lib-docker.git package/docker collections/luci-lib-docker
 
 
 #9、全能推送（商店自己安装）
