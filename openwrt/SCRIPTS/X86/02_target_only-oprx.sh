@@ -892,9 +892,10 @@ git clone -b main https://github.com/sbwml/luci-app-alist package/alist
 
 merge_package master https://github.com/lisaac/luci-app-diskman.git package/new applications/luci-app-diskman
 
-#13、lan口设置  不能在workflow上打。（yaof24.10上能打成功patch，24.10和sbwml上不成功）
-#rm -rf target/linux/x86/base-files/etc/board.d/02_network  #清除系统自带的02，需要lede的才能patche成功。
+#13、lan口设置  不能在workflow上打。（yaof24.10上不能打成功patch，24.10和sbwml上不成功）
+rm -rf target/linux/x86/base-files/etc/board.d/02_network  #清除系统自带的02，需要lede的才能patche成功。
 #wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
+wget -N https://raw.githubusercontent.com/https://github.com/immortalwrt/immortalwrt/openwrt-24.10/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 patch -p1 <./diydata/data/patches/def_set_interfaces_lan_wan.patch
 
 #14、chatgpt
