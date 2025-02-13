@@ -459,7 +459,7 @@ wget -qO- $GEOSITE_URL > package/base-files/files/etc/openclash/GeoSite.dat
 chmod +x package/base-files/files/etc/openclash/core/clash*
 
 # 4、mihomo（只支持firewall4.lede无望）
-#git clone --depth=1 https://github.com/morytyann/OpenWrt-mihomo package/diy/luci-app-mihomo
+#git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/diy/luci-app-nikki
 
 # 5、homeproxy
 #git clone --depth=1 https://github.com/muink/luci-app-homeproxy.git package/diy/luci-app-homeproxy
