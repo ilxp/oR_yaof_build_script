@@ -34,7 +34,7 @@ export gitea=git.cooluc.com
 
 # github mirror
 if [ "$isCN" = "CN" ]; then
-    export github="ghp.ci/github.com"
+    export github="gh-proxy.com/github.com"
 else
     export github="github.com"
 fi
@@ -78,19 +78,14 @@ fi
 
 # Source branch
 if [ "$1" = "dev" ]; then
-    export branch=openwrt-23.05
-    export version=snapshots-23.05
-    export openwrt_version=openwrt-23.05
+    export branch=openwrt-24.10
+    export version=dev
 elif [ "$1" = "rc2" ]; then
-    #latest_release="v$(curl -s https://$mirror/tags/v23)"
-    latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][3-9]/p' | sed -n 1p | sed 's/.tar.gz//g')"
+    #latest_release="v$(curl -s $mirror/tags/v24)"
+	latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][3-9]/p' | sed -n 1p | sed 's/.tar.gz//g')"  
     export branch=$latest_release
     export version=rc2
-    export openwrt_version=openwrt-24.10
 fi
-
-# lan
-#[ -n "$LAN" ] && export LAN=$LAN || export LAN=10.0.0.1
 
 # platform
 [ "$2" = "armv8" ] && export platform="armv8" toolchain_arch="aarch64_generic"
@@ -175,7 +170,7 @@ echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
 [ "$KERNEL_CLANG_LTO" = "y" ] && echo -e "${GREEN_COLOR}KERNEL_CLANG_LTO: true${RES}\r\n" || echo -e "${GREEN_COLOR}KERNEL_CLANG_LTO:${RES} ${YELLOW_COLOR}false${RES}\r\n"
 
 # clean old files
-#rm -rf openwrt
+rm -rf openwrt
 # openwrt - releases
 #git clone --depth=1 https://$github/openwrt/openwrt -b $branch
 
@@ -186,12 +181,11 @@ echo -e "\n${GREEN_COLOR}Prepare Mixedwrt ...${RES}\n"
 # SCRIPTS 注意先后顺序
 #杂交代码与克隆其他资源。在get_ready.sh
 curl -sO https://$mirror/openwrt/SCRIPTS/01_get_ready-oprx.sh
-chmod 0755 *sh
+chmod 0755 01_get_ready-oprx.sh
 bash 01_get_ready-oprx.sh
 
 if [ -d openwrt ]; then
     cd openwrt
-    #[ "$1" = "rc2" ] && echo "$CURRENT_DATE2" > version.date
     #curl -Os https://$mirror/openwrt/patch/key.tar.gz && tar zxf key.tar.gz && rm -f key.tar.gz
     curl -Os https://$mirror/openwrt/data/patches/key.tar.gz && tar zxf key.tar.gz && rm -f key.tar.gz
 else
@@ -436,9 +430,9 @@ if [ "$platform" = "x86_64" ]; then
         cp -a bin/packages/x86_64/base/*firmware*.ipk $kmodpkg_name/
         cp -a bin/packages/x86_64/base/*natflow*.ipk $kmodpkg_name/
         #需要配合188行的key.tar.gz  #oR系列不需要这个操作
-	    #bash kmod-sign $kmodpkg_name
-        #tar zcf x86_64-$kmodpkg_name.tar.gz $kmodpkg_name
-        #rm -rf $kmodpkg_name
+	    bash kmod-sign $kmodpkg_name
+        tar zcf x86_64-$kmodpkg_name.tar.gz $kmodpkg_name
+        rm -rf $kmodpkg_name
     fi
     # OTA json
         mkdir -p ota   #位置是openwrt下。即ota/vermd5

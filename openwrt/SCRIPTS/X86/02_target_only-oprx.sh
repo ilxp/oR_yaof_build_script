@@ -25,12 +25,12 @@ exit 0
 '> ./package/base-files/files/etc/rc.local
 
 #Vermagic
-latest_version="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][4-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')"
-#latest_version="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')"
-wget https://downloads.openwrt.org/releases/${latest_version}/targets/x86/64/profiles.json
-#zgrep -m 1 "Depends: kernel (=.*)$" Packages.gz | sed -e 's/.*-\(.*\))/\1/' >.vermagic
-jq -r '.linux_kernel.vermagic' profiles.json >.vermagic
-sed -i -e 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
+#latest_version="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][4-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')"
+##latest_version="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')"
+#wget https://downloads.openwrt.org/releases/${latest_version}/targets/x86/64/profiles.json
+##zgrep -m 1 "Depends: kernel (=.*)$" Packages.gz | sed -e 's/.*-\(.*\))/\1/' >.vermagic
+#jq -r '.linux_kernel.vermagic' profiles.json >.vermagic
+#sed -i -e 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
 
 # 预配置一些插件
 cp -rf ./diydata/PATCH/files ./files
@@ -139,9 +139,9 @@ git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 
 #四、系统优化########
 # 1、kenrel Vermagic
-#sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
-##grep HASH include/kernel-5.15 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
-#grep HASH include/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
+sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
+#grep HASH include/kernel-5.15 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
+grep HASH include/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
 
 # 2、Optimization level -Ofast
 #sed -i 's/Os/O2/g' include/target.mk
@@ -802,7 +802,7 @@ popd
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
-#8、# Docker 容器 QiuSimons大 02前面已经有了
+#8、# Docker 容器QiuSimons大 02前面已经有了
 #rm -rf feeds/luci/applications/luci-app-dockerman
 #git clone -b master --single-branch https://github.com/lisaac/luci-app-dockerman.git   package/dockerman
 #cd package/dockerman
@@ -815,6 +815,7 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #rm -rf .gitattributes
 #rm -rf LICENSE
 #cd ../..
+
 #rm -rf ./feeds/luci/collections/luci-lib-docker
 #git clone -b master --single-branch https://github.com/lisaac/luci-lib-docker.git   package/dockerlib
 #cd package/dockerlib
@@ -830,7 +831,7 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 #sed -i '/auto_start/d' package/dockerman/applications/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman
 
-#merge_package master https://github.com/lisaac/luci-app-dockerman.git package/docker applications/luci-app-dockerman
+#merge_package master https://github.com/lisaac/luci-app-dockerman.git package/new applications/luci-app-dockerman
 #sed -i '/auto_start/d' package/new/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman  #死活启动不了
 #mkdir -p feeds/packages
 #pushd feeds/packages
@@ -839,22 +840,7 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #popd
 #sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
 
-#merge_package master https://github.com/lisaac/luci-lib-docker.git package/docker collections/luci-lib-docker
-
-# Docker  sbwml大
-#rm -rf feeds/luci/applications/luci-app-dockerman
-#git clone https://git.cooluc.com/sbwml/luci-app-dockerman -b openwrt-23.05 feeds/luci/applications/luci-app-dockerman
-#rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
-#git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
-#git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
-#git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
-#git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
-#sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
-#pushd feeds/packages
-#patch -p1 <../.././diydata/data/patches/docker/0001-dockerd-fix-bridge-network.patch
-#patch -p1 <../.././diydata/data/patches/docker/0002-docker-add-buildkit-experimental-support.patch
-#patch -p1 <../.././diydata/data/patches/docker/0003-dockerd-disable-ip6tables-for-bridge-network-by-defa.patch
-#popd
+#merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
 
 
 #9、全能推送（商店自己安装）

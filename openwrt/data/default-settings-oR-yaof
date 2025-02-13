@@ -68,7 +68,6 @@ uci commit shadowsocksr
 
 sed -i 's,downloads.openwrt.org,mirrors.xjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
 
-
 #注释掉软件包的
 #sed -i 's/src\/gz/\#src\/gz/g' /etc/opkg/distfeeds.conf
 
@@ -181,7 +180,6 @@ echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 #echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 #/etc/init.d/odhcpd restart
 
-
 #nanopi fix
 sed -i 's/eth1/eth1.*/g' /etc/hotplug.d/net/40-net-smp-affinity
 sed -i 's/eth0/eth0.*/g' /etc/hotplug.d/net/40-net-smp-affinity
@@ -291,7 +289,7 @@ rm -f /tmp/luci-indexcache
 
 #########以下是我自己的===
 #for x86-64
-sed -i '/openwrt_core/d' /etc/opkg/distfeeds.conf
+#sed -i '/openwrt_core/d' /etc/opkg/distfeeds.conf
 sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf
 #sed -i "\$a\src/gz openwrt_core https://ghp.ci/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 
@@ -300,8 +298,8 @@ sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf
 #sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.gitmirror.com/ilxp/oprx-kmod-x86_64/main/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 
 #sed -i "/openwrt_core/c\src/gz openwrt_core https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-rc_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+sed -i "/openwrt_core/c\src/gz openwrt_core https://gh-proxy.com/raw.githubusercontent.com/ilxp/oprx-rc_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 #sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-rc_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
-
 
 # extra packages
 echo "src/gz openwrt_extras https://opkg.cooluc.com/openwrt-24.10/$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)" >> /etc/opkg/distfeeds.conf
