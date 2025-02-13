@@ -297,9 +297,9 @@ sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf
 #sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.cooluc.com/ilxp/yao-kmod-x86_64/main/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 #sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.gitmirror.com/ilxp/oprx-kmod-x86_64/main/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 
-#sed -i "/openwrt_core/c\src/gz openwrt_core https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-rc_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
-sed -i "/openwrt_core/c\src/gz openwrt_core https://gh-proxy.com/raw.githubusercontent.com/ilxp/oprx-rc_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
-#sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-rc_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+#sed -i "/openwrt_core/c\src/gz openwrt_core https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+sed -i "/openwrt_core/c\src/gz openwrt_core https://gh-proxy.com/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+#sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 
 # extra packages
 echo "src/gz openwrt_extras https://opkg.cooluc.com/openwrt-24.10/$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)" >> /etc/opkg/distfeeds.conf
