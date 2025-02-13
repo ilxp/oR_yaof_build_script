@@ -460,6 +460,7 @@ chmod +x package/base-files/files/etc/openclash/core/clash*
 
 # 4、mihomo（只支持firewall4.lede无望）
 #git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/diy/OpenWrt-nikki
+#sed -i 's/services/vpn/g' package/diy/OpenWrt-nikki/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-mihomo.json
 
 # 5、homeproxy
 #git clone --depth=1 https://github.com/muink/luci-app-homeproxy.git package/diy/luci-app-homeproxy
