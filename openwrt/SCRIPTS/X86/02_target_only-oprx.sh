@@ -395,7 +395,7 @@ rm -rf feeds/luci/applications/luci-app-passwall
 #采用kenzok8的small库
 #git clone https://github.com/kenzok8/small.git package/diy/openwrt-passwall
 
-# sbwml的SSRP & Passwall
+# sbwml的SSRP & Passwall nikki
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
 git clone https://github.com/sbwml/openwrt_helloworld package/helloworld -b v5
 
@@ -431,6 +431,7 @@ ntp.ntsc.ac.cn
 #1）openclash
 rm -rf feeds/luci/applications/luci-app-openclash
 rm -rf package/new/OpenClash
+rm -rf package/helloworld/luci-app-openclash
 #sed -i '$a src-git openclash https://github.com/vernesong/OpenClash.git' feeds.conf.default
 #注意master对应core打分master的分支，dev对应core的dev，
 git clone -b master --single-branch https://github.com/vernesong/OpenClash.git  package/diy/openclash
@@ -459,8 +460,12 @@ wget -qO- $GEOSITE_URL > package/base-files/files/etc/openclash/GeoSite.dat
 chmod +x package/base-files/files/etc/openclash/core/clash*
 
 # 4、mihomo（只支持firewall4.lede无望）
-git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/diy/OpenWrt-nikki
-sed -i 's/services/vpn/g' package/diy/OpenWrt-nikki/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
+#rm -rf package/helloworld/luci-app-nikki
+#git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/diy/OpenWrt-nikki
+#sed -i 's/services/vpn/g' package/diy/OpenWrt-nikki/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
+
+#sbwml库里有
+sed -i 's/services/vpn/g' package/helloworld/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
 
 # 5、homeproxy
 #git clone --depth=1 https://github.com/muink/luci-app-homeproxy.git package/diy/luci-app-homeproxy
