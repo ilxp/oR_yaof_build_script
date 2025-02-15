@@ -460,12 +460,13 @@ wget -qO- $GEOSITE_URL > package/base-files/files/etc/openclash/GeoSite.dat
 chmod +x package/base-files/files/etc/openclash/core/clash*
 
 # 4、mihomo（只支持firewall4.lede无望）
-#rm -rf package/helloworld/luci-app-nikki
-#git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/diy/OpenWrt-nikki
-#sed -i 's/services/vpn/g' package/diy/OpenWrt-nikki/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
+rm -rf package/helloworld/luci-app-nikki
+rm -rf package/helloworld/nikki
+git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/diy/OpenWrt-nikki
+sed -i 's/services/vpn/g' package/diy/OpenWrt-nikki/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
 
 #sbwml库里有
-sed -i 's/services/vpn/g' package/helloworld/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
+#sed -i 's/services/vpn/g' package/helloworld/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
 
 # 5、homeproxy
 #git clone --depth=1 https://github.com/muink/luci-app-homeproxy.git package/diy/luci-app-homeproxy
