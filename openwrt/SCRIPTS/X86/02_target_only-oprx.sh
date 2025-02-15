@@ -673,17 +673,18 @@ git clone -b main --single-branch https://github.com/ilxp/luci-app-ikoolproxy.gi
 
 #七、管控相关
 #1） APP 过滤
-#git clone -b master --depth 1 https://github.com/destan19/OpenAppFilter.git package/diy/OpenAppFilter
-#sed -i 's/services/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
+git clone -b master --depth 1 https://github.com/destan19/OpenAppFilter.git package/diy/OpenAppFilter
+sed -i 's/services/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
 
-git clone -b master --depth 1 https://github.com/sbwml/OpenAppFilter.git  package/diy/OpenAppFilter
-sed -i 's/network/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
+#git clone -b master --depth 1 https://github.com/sbwml/OpenAppFilter.git  package/diy/OpenAppFilter
+#sed -i 's/network/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
 
 #更新特征库
 pushd package/diy/OpenAppFilter
 #wget -qO - https://github.com/QiuSimons/OpenAppFilter-destan19/commit/9088cc2.patch | patch -p1
 #wget https://www.openappfilter.com/assets/feature/feature2.0_cn_23.07.29.cfg -O ./open-app-filter/files/feature.cfg
-wget https://github.com/ilxp/oaf/raw/main/feature2.0_cn_24.6.26.cfg -O ./open-app-filter/files/feature.cfg
+#wget https://github.com/ilxp/oaf/raw/main/feature2.0_cn_24.6.26.cfg -O ./open-app-filter/files/feature.cfg
+wget https://github.com/ilxp/oaf/raw/main/feature3.0_cn_20250101.bin -O ./open-app-filter/files/feature.cfg
 popd
 #翻译应用过滤
 sed -i 's/App Filter/应用过滤/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
