@@ -746,10 +746,17 @@ sed -i 's/Control/管控/g' package/new/luci-app-timecontrol/luasrc/controller/t
 sed -i 's/Control/管控/g' package/new/luci-app-control-timewol/luasrc/controller/timewol.lua
 sed -i 's/File Browser/文件浏览器/g' package/new/luci-app-filebrowser/luasrc/controller/filebrowser.lua
 
-#采用lean的上网时间控制 在官方上无法运行
+#采用lean的上网时间控制（23.05luci一直显示收集信息）
+#rm -rf feeds/luci/applications/luci-app-accesscontrol
+#sed -i 's/services/control/g' feeds/luci/applications/luci-app-accesscontrol/luasrc/controller/mia.lua
 #merge_package openwrt-23.05 https://github.com/coolsnowwolf/luci.git  package/new applications/luci-app-accesscontrol
 #sed -i 's/services/control/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
 #sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
+
+#accesscontrol-plus
+merge_package main https://github.com/CrazyPegasus/luci-app-accesscontrol-plus.git  package/new luci-app-accesscontrol-plus
+sed -i 's/services/control/g' package/new/luci-app-accesscontrol-plus/luasrc/controller/miaplus.lua
+sed -i 's/Internet Access Schedule Control Plus/上网时间控制/g' package/new/luci-app-accesscontrol-plus/luasrc/controller/miaplus.lua
 
 #八、其他luci-app
 #1、turboacc去dns
