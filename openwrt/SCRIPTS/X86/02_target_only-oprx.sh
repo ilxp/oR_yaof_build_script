@@ -737,19 +737,19 @@ merge_package master https://github.com/zxlhhyccc/bf-package-master.git package/
 #sed -i 's/Control/管控/g' package/lienol/luci-app-control-timewol/luasrc/controller/timewol.lua
 #sed -i 's/File Browser/文件浏览器/g' package/lienol/luci-app-filebrowser/luasrc/controller/filebrowser.lua
 
-merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-control-webrestriction luci-app-control-weburl luci-app-control-timewol luci-app-filebrowser luci-app-openvpn-server
+merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-control-webrestriction luci-app-control-weburl luci-app-timecontrol luci-app-control-timewol luci-app-filebrowser luci-app-openvpn-server
 sed -i 's/Access Control/访问限制/g' package/new/luci-app-control-webrestriction/luasrc/controller/webrestriction.lua
 sed -i 's/Control/管控/g' package/new/luci-app-control-webrestriction/luasrc/controller/webrestriction.lua
 sed -i 's/Control/管控/g' package/new/luci-app-control-weburl/luasrc/controller/weburl.lua
-#sed -i 's/Internet Time Control/上网时间控制/g' package/new/luci-app-timecontrol/luasrc/controller/timecontrol.lua
-#sed -i 's/Control/管控/g' package/new/luci-app-timecontrol/luasrc/controller/timecontrol.lua
+sed -i 's/Internet Time Control/上网时间控制/g' package/new/luci-app-timecontrol/luasrc/controller/timecontrol.lua
+sed -i 's/Control/管控/g' package/new/luci-app-timecontrol/luasrc/controller/timecontrol.lua
 sed -i 's/Control/管控/g' package/new/luci-app-control-timewol/luasrc/controller/timewol.lua
 sed -i 's/File Browser/文件浏览器/g' package/new/luci-app-filebrowser/luasrc/controller/filebrowser.lua
 
-#采用lean的上网时间控制
-merge_package openwrt-23.05 https://github.com/coolsnowwolf/luci.git  package/new applications/luci-app-accesscontrol
-sed -i 's/services/control/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
-sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
+#采用lean的上网时间控制 在官方上无法运行
+#merge_package openwrt-23.05 https://github.com/coolsnowwolf/luci.git  package/new applications/luci-app-accesscontrol
+#sed -i 's/services/control/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
+#sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
 
 #八、其他luci-app
 #1、turboacc去dns
