@@ -330,7 +330,7 @@ CONFIG_PACKAGE_luci-app-control-webrestriction=y
 CONFIG_PACKAGE_luci-app-control-weburl=y
 CONFIG_PACKAGE_luci-app-timecontrol=n  #lean上可用,,官方无法运行
 CONFIG_PACKAGE_luci-app-accesscontrol=n  #显示收集信息
-CONFIG_PACKAGE_luci-app-accesscontrol-plus=y
+CONFIG_PACKAGE_luci-app-accesscontrol-plus=n  #编译出错
 CONFIG_PACKAGE_luci-app-control-timewol=n #无法运行,采用wolplus
 CONFIG_PACKAGE_luci-app-wolplus=y
 
