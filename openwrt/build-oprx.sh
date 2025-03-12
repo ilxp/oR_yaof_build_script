@@ -170,19 +170,19 @@ echo -e "${GREEN_COLOR}GCC VERSION: $gcc_version${RES}"
 [ "$KERNEL_CLANG_LTO" = "y" ] && echo -e "${GREEN_COLOR}KERNEL_CLANG_LTO: true${RES}\r\n" || echo -e "${GREEN_COLOR}KERNEL_CLANG_LTO:${RES} ${YELLOW_COLOR}false${RES}\r\n"
 
 # clean old files
-rm -rf openwrt
+rm -rf openwrt master
+
 # openwrt - releases
-#git clone --depth=1 https://$github/openwrt/openwrt -b $branch
+[ "$(whoami)" = "runner" ] && group "source code"
+git clone --depth=1 https://$github/openwrt/openwrt -b $branch
 
 ############################################### 也可不进行杂交，但是在刷完系统软件包更新，需要等待1个多小时，否则json报错
-
 echo -e "\n${GREEN_COLOR}Prepare Mixedwrt ...${RES}\n"
-
 # SCRIPTS 注意先后顺序
 #杂交代码与克隆其他资源。在get_ready.sh
-curl -sO https://$mirror/openwrt/SCRIPTS/01_get_ready-oprx.sh
-chmod 0755 01_get_ready-oprx.sh
-bash 01_get_ready-oprx.sh
+#curl -sO https://$mirror/openwrt/SCRIPTS/01_get_ready-oprx.sh
+#chmod 0755 01_get_ready-oprx.sh
+#bash 01_get_ready-oprx.sh
 
 if [ -d openwrt ]; then
     cd openwrt
