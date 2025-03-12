@@ -697,11 +697,11 @@ sed -i 's/services/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/cont
 #sed -i 's/network/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
 
 #更新特征库  新版bin格式需要手动winscp上传，进行转化成cfg后，下载。才能成功
-#pushd package/diy/OpenAppFilter
+pushd package/diy/OpenAppFilter
 #wget -qO - https://github.com/QiuSimons/OpenAppFilter-destan19/commit/9088cc2.patch | patch -p1
 #wget https://www.openappfilter.com/assets/feature/feature2.0_cn_23.07.29.cfg -O ./open-app-filter/files/feature.cfg
-#wget https://github.com/ilxp/oaf/raw/main/feature3.0_cn_20250101.cfg -O ./open-app-filter/files/feature.cfg
-#popd
+wget https://github.com/ilxp/oaf/raw/main/feature3.0_cn_20250101.cfg -O ./open-app-filter/files/feature.cfg
+popd
 #翻译应用过滤
 sed -i 's/App Filter/应用过滤/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
 
