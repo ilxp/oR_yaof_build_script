@@ -788,6 +788,8 @@ sed -i 's/Internet Access Schedule Control Plus/上网时间控制/g' package/ne
 
 #适配官方openwrt(22.03/23.05/24.10) firewall4的turboacc
 merge_package luci https://github.com/chenmozhijin/turboacc.git package/turboacc luci-app-turboacc
+#修改 bbr为bbr3
+sed -i 's/kmod-tcp-bbr/kmod-tcp-bbr3/g' package/turboacc/luci-app-turboacc/Makefile
 
 #相关依赖nft-fullcone、shortcut-fe和952、613、953补丁
 # Shortcut Forwarding Engine
@@ -917,9 +919,9 @@ git clone -b main https://github.com/sbwml/luci-app-alist package/alist
 merge_package master https://github.com/lisaac/luci-app-diskman.git package/new applications/luci-app-diskman
 
 #13、lan口设置  不能在workflow上打。（yaof24.10上不能打成功patch，24.10和sbwml上不成功）
-rm -rf target/linux/x86/base-files/etc/board.d/02_network  #清除系统自带的02，需要lede的才能patche成功。
-wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
-patch -p1 <./diydata/data/patches/def_set_interfaces_lan_wan.patch
+#rm -rf target/linux/x86/base-files/etc/board.d/02_network  #清除系统自带的02，需要lede的才能patche成功。
+#wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
+#patch -p1 <./diydata/data/patches/def_set_interfaces_lan_wan.patch
 
 #14、chatgpt
 #git clone --depth=1 https://github.com/sirpdboy/luci-app-chatgpt-web package/luci-app-chatgpt
