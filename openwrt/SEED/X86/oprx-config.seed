@@ -345,7 +345,7 @@ CONFIG_PACKAGE_libustream-openssl=n #选择导致编译不成功
 CONFIG_PACKAGE_luci-app-qos-gargoyle=n #firewaal4下不能使用
 
 ##turboacc
-CONFIG_PACKAGE_luci-app-turboacc=n  #无法启动
+CONFIG_PACKAGE_luci-app-turboacc=y 
 
 
 #在线升级

@@ -786,6 +786,13 @@ sed -i 's/Internet Access Schedule Control Plus/上网时间控制/g' package/ne
 
 #merge_package master https://github.com/xiangfeidexiaohuo/openwrt-packages.git package/new patch/luci-app-turboacc
 
+#适配官方openwrt(22.03/23.05/24.10) firewall4的turboacc
+merge_package luci https://github.com/chenmozhijin/turboacc.git package/turboacc luci-app-turboacc
+
+#相关依赖nft-fullcone、shortcut-fe和952、613、953补丁
+# Shortcut Forwarding Engine
+git clone https://git.cooluc.com/sbwml/shortcut-fe package/turboacc/shortcut-fe
+
 #2、京东签到 By Jerrykuku 作者已关闭了
 #git clone --depth 1 https://github.com/jerrykuku/node-request.git package/new/node-request
 #git clone --depth 1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/new/luci-app-jd-dailybonus
