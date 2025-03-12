@@ -138,6 +138,17 @@ git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 ###################
 
 #四、系统优化########
+
+#修改package/kernel/linux/modules
+rm -rf package/kernel/linux/modules/fs.mk
+rm -rf package/kernel/linux/modules/hwmon.mk
+rm -rf package/kernel/linux/modules/leds.mk
+rm -rf package/kernel/linux/modules/lib.mk
+rm -rf package/kernel/linux/modules/netdevices.mk
+rm -rf package/kernel/linux/modules/netsupport.mk
+rm -rf package/kernel/linux/modules/video.mk
+cp -rf ./diydata/data/modules-6.6/* ./package/kernel/linux/modules/
+
 # 1、kenrel Vermagic
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
 #grep HASH include/kernel-6.6 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
@@ -148,7 +159,7 @@ grep HASH include/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{pr
 sed -i 's/Os/O2 -march=x86-64-v2/g' include/target.mk
 
 # 3、Fix x86 - CONFIG_ALL_KMODS
-sed -i 's/hwmon, +PACKAGE_kmod-thermal:kmod-thermal/hwmon/g' package/kernel/linux/modules/hwmon.mk
+#sed -i 's/hwmon, +PACKAGE_kmod-thermal:kmod-thermal/hwmon/g' package/kernel/linux/modules/hwmon.mk
 
 
 # 4、固件版本号(21.3.2 %y : 年份的最后两位数字)

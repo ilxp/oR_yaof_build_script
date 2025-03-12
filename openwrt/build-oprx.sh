@@ -453,13 +453,18 @@ EOF
 	# 重命名固件 格式：OprX-openwrt-x86_64-oR-R24.9.18-2024091815-Fsquashfs-uefi-c347f.img.gz
 	#Build_DATE=$(date +%Y%m%d%H)  #日期+小时
 	Build_DATE=$(date +%Y%m%d)  #日期
-    #Short_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1 #有版本号如23.05.5
-	#OP_VERSION=$Short_Date-$Build_DATE
-	VERSION=$(sed 's/v//g' version.txt)
+	
+if [ "$1" = "dev" ]; then  #分支-Snapshots，采用短日期作为版本号
+    Short_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1 
+	OP_VERSION="R${Short_Date}-${Build_DATE}"   #这里带R
+	#OP_VERSION="R$Short_Date-$Build_DATE"
+elif [ "$1" = "rc2" ]; then  #最新发布版号
+    VERSION=$(sed 's/v//g' version.txt)
 	OP_VERSION="R${VERSION}-${Build_DATE}"
+fi
+
 	#SHA256=$(sha256sum bin/targets/x86/64*/*-generic-squashfs-combined.img.gz | awk '{print $1}')
 	#sha5=$(egrep -o '[a-z0-9]+' <<< ${SHA256} | cut -c1-5)  #获取前5位
-
 	SHA256_efi=$(sha256sum bin/targets/x86/64*/*-generic-squashfs-combined-efi.img.gz | awk '{print $1}')
 	sha5_efi=$(egrep -o '[a-z0-9]+' <<< ${SHA256_efi} | cut -c1-5)  #获取前5位
 	#SHA256_efi4=$(sha256sum bin/targets/x86/64*/*-generic-ext4-combined-efi.img.gz | awk '{print $1}')
