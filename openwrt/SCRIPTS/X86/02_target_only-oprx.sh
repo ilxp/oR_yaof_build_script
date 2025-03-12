@@ -182,7 +182,7 @@ sed -i 's/IMG_PREFIX:=$(VERSION_DIST_SANITIZED)-$(IMG_PREFIX_VERNUM)$(IMG_PREFIX
 #sed -i 's/IMG_PREFIX:=$(VERSION_DIST_SANITIZED)/IMG_PREFIX:=$(shell date +%m.%d.%Y)-oprx-oR/g' include/image.mk
 
 # 5、修改登陆ip以及主机名
-sed -i "s/192.168.1.1/192.168.8.1/" package/base-files/files/bin/config_generate
+#sed -i "s/192.168.1.1/192.168.8.1/" package/base-files/files/bin/config_generate
 sed -i "s/OpenWrt/OprX/g" package/base-files/files/bin/config_generate
 # 修改主机名openwrt为OprX （将系统所有包含openwrt改为oprx，慎用）
 #sed -i "s/OpenWrt/OprX/g" package/base-files/files/bin/config_generate package/base-files/image-config.in config/Config-images.in Config.in include/u-boot.mk include/version.mk package/network/config/wifi-scripts/files/lib/wifi/mac80211.sh || true
