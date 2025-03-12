@@ -203,14 +203,12 @@ rm -rf openwrt master
 [ "$(whoami)" = "runner" ] && group "source code"
 git clone --depth=1 https://$github/openwrt/openwrt -b $branch
 
-#git clone --depth=1  https://$github/mj22226/openwrt -b linux-6.12
-
 # immortalwrt master
 git clone https://$github/immortalwrt/packages master/immortalwrt_packages --depth=1
 [ "$(whoami)" = "runner" ] && endgroup
 
 ############################################### 也可不进行杂交，但是在刷完系统软件包更新，需要等待1个多小时，否则json报错
-echo -e "\n${GREEN_COLOR}Prepare Mixedwrt ...${RES}\n"
+#echo -e "\n${GREEN_COLOR}Prepare Mixedwrt ...${RES}\n"
 # SCRIPTS 注意先后顺序
 #杂交代码与克隆其他资源。在get_ready.sh
 #curl -sO $mirror/openwrt/SCRIPTS/01_get_ready-oprx.sh
@@ -341,7 +339,7 @@ fi
 
 # gcc15 patches
 [ "$(whoami)" = "runner" ] && group "patching toolchain"
-#curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
+curl -s $mirror/openwrt/patch/generic-24.10/202-toolchain-gcc-add-support-for-GCC-15.patch | patch -p1
 
 # gcc config
 echo -e "\n# gcc ${gcc_version}" >> .config

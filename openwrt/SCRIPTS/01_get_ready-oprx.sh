@@ -1,7 +1,7 @@
 #!/bin/bash
 latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][0-9]/p' | sed -n 1p | sed 's/.tar.gz//g')"
-#git clone --single-branch -b ${latest_release} https://github.com/openwrt/openwrt openwrt
-git clone --single-branch -b openwrt-24.10 https://github.com/openwrt/openwrt openwrt
+git clone --single-branch -b ${latest_release} https://github.com/openwrt/openwrt openwrt
+#git clone --single-branch -b openwrt-24.10 https://github.com/openwrt/openwrt openwrt
 
 
 #latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][0-9]/p' | sed -n 1p | sed 's/.tar.gz//g')"
