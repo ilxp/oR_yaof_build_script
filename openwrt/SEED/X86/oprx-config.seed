@@ -313,7 +313,7 @@ CONFIG_PACKAGE_luci-app-smartdns=n
 CONFIG_PACKAGE_luci-app-mosdns=y
 
 #sirpdboy大神重启计划等插件
-CONFIG_PACKAGE_luci-app-parentcontrol=n #家长控制  无法运行
+CONFIG_PACKAGE_luci-app-parentcontrol=y #家长控制  无法运行
 CONFIG_PACKAGE_luci-app-lucky=n   #反想代理
 CONFIG_PACKAGE_luci-app-ddns-go=y  #反向代理
 CONFIG_PACKAGE_luci-app-poweroffdevice=n #编译不成功，采用另一个
@@ -329,7 +329,7 @@ CONFIG_PACKAGE_luci-app-advanced=n  #高级设置
 CONFIG_PACKAGE_luci-app-control-webrestriction=y
 CONFIG_PACKAGE_luci-app-control-weburl=y
 CONFIG_PACKAGE_luci-app-timecontrol=n  #lean上可用,,官方无法运行
-CONFIG_PACKAGE_luci-app-accesscontrol=n  #显示收集信息
+CONFIG_PACKAGE_luci-app-accesscontrol=y  #显示收集信息，已经修复
 CONFIG_PACKAGE_luci-app-accesscontrol-plus=n  #编译出错
 CONFIG_PACKAGE_luci-app-control-timewol=n #无法运行,采用wolplus
 CONFIG_PACKAGE_luci-app-wolplus=y
@@ -489,9 +489,12 @@ CONFIG_PACKAGE_kmod-video-pwc=y
 CONFIG_PACKAGE_kmod-video-uvc=y
 CONFIG_PACKAGE_kmod-video-videobuf2=y
 
-### Utilities
-CONFIG_PACKAGE_qemu-ga=y
+### Utilities--pve平台
+#CONFIG_PACKAGE_qemu-ga=y  #已经由open-vm-tools提供
+CONFIG_PACKAGE_acpid=y
 
-### Virtualization
+### virtualization
+CONFIG_PACKAGE_kmod-kvm-amd=y
 CONFIG_PACKAGE_kmod-kvm-intel=y
 CONFIG_PACKAGE_kmod-kvm-x86=y
+CONFIG_PACKAGE_open-vm-tools=y 
