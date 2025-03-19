@@ -396,7 +396,8 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-n
 #sed -i 's/ +libopenssl-legacy//g' package/helloworld/shadowsocksr-libev/Makefile
 
 #2、passwall
-#克隆官方的
+#克隆官方的，以及删除sbwml的
+rm -rf package/new/helloworld
 rm -rf feeds/luci/applications/luci-app-passwall
 #git clone -b main https://github.com/xiaorouji/openwrt-passwall-packages.git package/diy/openwrt-passwall-packages
 #git clone -b main https://github.com/xiaorouji/openwrt-passwall.git  package/diy/openwrt-passwall
