@@ -494,10 +494,11 @@ sed -i 's/wan_interface 'eth1'/wan_interface 'eth0'/g' package/diy/luci-app-netw
 git clone https://github.com/sirpdboy/netspeedtest.git package/diy/netspeedtest
 sed -i 's/Net Speedtest/网络测速/g' package/diy/netspeedtest/luci-app-netspeedtest/luasrc/controller/netspeedtest.lua
 
-#定时设置
+#定时设置（会产生一个control管控栏目）
 rm -rf package/sirpdboy/luci-app-autotimeset
 git clone https://github.com/sirpdboy/luci-app-autotimeset package/diy/luci-app-autotimeset
 sed -i 's/Scheduled Setting/定时设置/g' package/diy/luci-app-autotimeset/luasrc/controller/autotimeset.lua
+sed -i 's/Control/管控/g' package/diy/luci-app-autotimeset/luasrc/controller/autotimeset.lua
 
 #关机  编译不成功采用esir的
 #git clone https://github.com/sirpdboy/luci-app-poweroffdevice package/diy/luci-app-poweroffdevice
@@ -505,31 +506,38 @@ sed -i 's/Scheduled Setting/定时设置/g' package/diy/luci-app-autotimeset/lua
 git clone https://github.com/esirplayground/luci-app-poweroff package/diy/luci-app-poweroff
 sed -i 's/PowerOff/关机/g' package/diy/luci-app-poweroff/luasrc/controller/poweroff.lua
 
-#家长控制
+#家长控制（会生成Control管控栏目） #无法运行
 #git clone https://github.com/sirpdboy/luci-app-parentcontrol package/diy/luci-app-parentcontrol
 git clone https://github.com/ilxp/luci-app-parentcontrol package/diy/luci-app-parentcontrol
 sed -i 's/Parent Control/家长控制/g' package/diy/luci-app-parentcontrol/luasrc/controller/parentcontrol.lua
 sed -i 's/Control/管控/g' package/diy/luci-app-parentcontrol/luasrc/controller/parentcontrol.lua
 
+
 #自动扩容分区
 git clone https://github.com/sirpdboy/luci-app-partexp package/diy/luci-app-partexp
 sed -i 's/Partition Expansion/分区扩容/g' package/diy/luci-app-partexp/luasrc/controller/partexp.lua
-rm -rf package/diy/luci-app-partexp/po/zh_Hans
+#rm -rf package/diy/luci-app-partexp/po/zh_Hans  #sbwml上不能删除
 sed -i 's, - !, -o !,g' package/diy/luci-app-partexp/root/etc/init.d/partexp
 sed -i 's,expquit 1 ,#expquit 1 ,g' package/diy/luci-app-partexp/root/etc/init.d/partexp
 
 #ddns-go
+rm -rf feeds/packages/net/ddns-go
+rm -rf feeds/luci/applications/luci-app-ddns-go
 git clone https://github.com/sirpdboy/luci-app-ddns-go package/diy/luci-app-ddns-go
+
+#luck
+git clone https://github.com/gdy666/luci-app-lucky package/diy/luck
 
 #高级设置
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app-advanced
+#rm -rf package/diy/luci-app-advanced/htdocs #不能删除
 
 ##五）QOS相关
 #石像鬼qos采用我自己的，会有一个QOS栏目生成
-git clone -b openwrt-2305 https://github.com/ilxp/gargoyle-qos-openwrt.git  package/diy/gargoyle-qos-openwrt
-sed -i 's/Gargoyle QoS/石像鬼 QoS/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
-sed -i 's/Download Settings/下载设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
-sed -i 's/Upload Settings/上传设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
+#git clone -b openwrt-2305 https://github.com/ilxp/gargoyle-qos-openwrt.git  package/diy/gargoyle-qos-openwrt
+#sed -i 's/Gargoyle QoS/石像鬼 QoS/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
+#sed -i 's/Download Settings/下载设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
+#sed -i 's/Upload Settings/上传设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
 #wget -qO - https://raw.gitmirror.com/ilxp/gargoyle-qos-openwrt/openwrt-2203/010-revert_to_iptables.patch | patch -p1  #去除firwall4，用3
 
 #2）eqos，采用luci自带的即可。把eqos放在管控下。不在列入Qos目录下
@@ -556,29 +564,29 @@ mkdir -p feeds/packages/net/sqm-scripts/patches
 #curl -s https://init2.cooluc.com/openwrt/patch/sqm/001-help-translation.patch > feeds/packages/net/sqm-scripts/patches/001-help-translation.patch
 cp -f ./diydata/data/sqm/001-help-translation.patch  feeds/packages/net/sqm-scripts/patches/001-help-translation.patch
 
-#六）、DNS相关（23.05带mosdns）
-#1）smartdns（18.06是lede的branch，master分支安装不上）
+#六）、DNS相关（openwrt带mosdns）
+#1）smartdns（lede是lede的luci18-branch，master分支是js，lede的luci-23.05分支是js）
 #rm -rf feeds/packages/net/smartdns
 #rm -rf feeds/luci/applications/luci-app-smartdns
-#git clone -b master https://github.com/pymumu/luci-app-smartdns.git package/diy/luci-app-smartdns
+#git clone -b master https://github.com/pymumu/luci-app-smartdns.git package/diy/luci-app-smartdns  #官方的smartdns安装不上，只用luci库里的
 #git clone https://github.com/pymumu/openwrt-smartdns.git package/diy/smartdns
 
-#mkdir -p package/base-files/files/etc/smartdns
+mkdir -p package/base-files/files/etc/smartdns
 #中国域名列表
 #下载三个最新列表合并到cn.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"  >> package/base-files/files/etc/smartdns/cn.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-datt@release/apple-cn.txt"    >> package/base-files/files/etc/smartdns/cn.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/google-cn.txt"   >> package/base-files/files/etc/smartdns/cn.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"  >> package/base-files/files/etc/smartdns/cn.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-datt@release/apple-cn.txt"    >> package/base-files/files/etc/smartdns/cn.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/google-cn.txt"   >> package/base-files/files/etc/smartdns/cn.conf
 #去除full regexp并指定china组解析
-#sed "s/^full://g;s/^regexp:.*$//g;s/^/nameserver \//g;s/$/\/cn/g" -i package/base-files/files/etc/smartdns/cn.conf
-#chmod +x package/base-files/files/etc/smartdns/cn.conf
+sed "s/^full://g;s/^regexp:.*$//g;s/^/nameserver \//g;s/$/\/cn/g" -i package/base-files/files/etc/smartdns/cn.conf
+chmod +x package/base-files/files/etc/smartdns/cn.conf
 
 #广告域名列表
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/reject-list.txt"  >> package/base-files/files/etc/smartdns/block.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-spy.txt"  >> package/base-files/files/etc/smartdns/block.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-extra.txt"  >> package/base-files/files/etc/smartdns/block.conf
-#sed "s/^full://g;s/^regexp:.*$//g;s/^/address \//g;s/$/\/#/g" -i package/base-files/files/etc/smartdns/block.conf
-#chmod +x package/base-files/files/etc/smartdns/block.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/reject-list.txt"  >> package/base-files/files/etc/smartdns/block.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-spy.txt"  >> package/base-files/files/etc/smartdns/block.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-extra.txt"  >> package/base-files/files/etc/smartdns/block.conf
+sed "s/^full://g;s/^regexp:.*$//g;s/^/address \//g;s/$/\/#/g" -i package/base-files/files/etc/smartdns/block.conf
+chmod +x package/base-files/files/etc/smartdns/block.conf
 
 #2）mosdns
 rm -rf feeds/packages/net/mosdns
@@ -592,36 +600,11 @@ git clone -b master --single-branch https://github.com/QiuSimons/openwrt-mos  pa
 rm -rf feeds/packages/net/adguardhome
 rm -rf feeds/luci/applications/luci-app-adguardhome
 rm -rf package/new/luci-app-adguardhome
-
-#git clone -b master --single-branch https://github.com/Hyy2001X/AutoBuild-Packages.git   package/adguardhome
-#cd package/adguardhome
-#git sparse-checkout init --cone 
-#git sparse-checkout set luci-app-adguardhome
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-
+#可以选择版本的luci-app-adguardhome
 merge_package master https://github.com/Hyy2001X/AutoBuild-Packages.git package/new luci-app-adguardhome
-
-#git clone -b main --single-branch https://github.com/kiddin9/kwrt-packages.git   package/kiddin
-#cd package/kiddin
-#git sparse-checkout init --cone 
-#git sparse-checkout set adguardhome r8101 luci-app-openvpn-server
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-#sed -i 's/services/vpn/g' package/kiddin/luci-app-openvpn-server/luasrc/controller/openvpn-server.lua
-
+#kiddin9的luci-app-adguardhome
 #merge_package main https://github.com/kiddin9/kwrt-packages.gitt package/new adguardhome r8101 luci-app-openvpn-server
-
+#sed -i 's/services/vpn/g' package/kiddin/luci-app-openvpn-server/luasrc/controller/openvpn-server.lua
 #git clone -b master --single-branch https://github.com/kiddin9/openwrt-adguardhome package/diy/openwrt-adguardhome #编译不成功
 
 # 添加内核
@@ -643,17 +626,6 @@ rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGua
 #w版本
 #git clone -b main --single-branch https://github.com/ilxp/opensslw.git  package/libs/openssl
 
-#ikoolproxy文件
-#git clone -b main --single-branch https://github.com/ilxp/luci-app-ikoolproxy.git package/diy/luci-app-ikoolproxy
-#cd package/diy/luci-app-ikoolproxy
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../../..
-
 #merge_package main https://github.com/ilxp/luci-app-ikoolproxy.git package/new luci-app-ikoolproxy
 git clone -b main --single-branch https://github.com/ilxp/luci-app-ikoolproxy.git package/diy/luci-app-ikoolproxy
 
@@ -668,9 +640,12 @@ sed -i 's/services/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/cont
 #git clone -b master --depth 1 https://github.com/sbwml/OpenAppFilter.git  package/diy/OpenAppFilter
 #sed -i 's/network/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
 
-#更新特征库  新版bin格式需要手动winscp上传，进行转化成cfg后，下载。才能成功
+#git clone -b master --depth 1 https://github.com/QiuSimons/OpenAppFilter-destan19  package/diy/OpenAppFilter
+#sed -i 's/services/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
+
+#更新特征库
 pushd package/diy/OpenAppFilter
-#wget -qO - https://github.com/QiuSimons/OpenAppFilter-destan19/commit/9088cc2.patch | patch -p1
+#wget -qO - https://github.com/QiuSimons/OpenAppFilter-destan19/commit/9088cc2.patch | patch -p1 #失败
 #wget https://www.openappfilter.com/assets/feature/feature2.0_cn_23.07.29.cfg -O ./open-app-filter/files/feature.cfg
 wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O ./open-app-filter/files/feature.cfg
 popd
@@ -681,43 +656,24 @@ sed -i 's/App Filter/应用过滤/g' package/diy/OpenAppFilter/luci-app-oaf/luas
 rm -rf feeds/luci/applications/luci-app-control-webrestriction
 rm -rf feeds/luci/applications/luci-app-accesscontrol
 rm -rf feeds/luci/applications/luci-app-control-timewol
+rm -rf feeds/luci/applications//luci-app-wol
 rm -rf feeds/luci/applications/luci-app-control-weburl
 rm -rf feeds/luci/applications/luci-app-timecontrol
 rm -rf feeds/luci/applications/luci-app-filebrowser
+rm -rf package/new/custom/luci-app-wolplus
+
 rm -rf feeds/luci/applications/luci-app-openvpn-server  #采用lienol的，会生成一个vpn的栏目
+merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-openvpn-server
+
+#采用我自己的control
+git clone -b main --depth 1 https://github.com/ilxp/openwrt-control  package/diy/openwrt-control
 
 #zxlhhyccc大佬的 修复无法运行问题。
-#网络唤醒plus
-#git clone -b master --single-branch https://github.com/zxlhhyccc/bf-package-master.git   package/wolplus
-#cd package/wolplus
-#git sparse-checkout init --cone 
-#git sparse-checkout set zxlhhyccc/luci-app-wolplus
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-
 #时间控制accesscontrol,timecontrol网络唤醒wolplus，访问限制webrestriction， 过滤控制weburl
-merge_package master https://github.com/zxlhhyccc/bf-package-master.git package/new zxlhhyccc/luci-app-wolplus lean/luci-app-accesscontrol zxlhhyccc/luci-app-control-webrestriction
-sed -i 's/services/control/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
-sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
+#merge_package master https://github.com/zxlhhyccc/bf-package-master.git package/new zxlhhyccc/luci-app-wolplus lean/luci-app-accesscontrol zxlhhyccc/luci-app-control-webrestriction
+#sed -i 's/services/control/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
+#sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
 
-
-#lienol大神的管控\文件浏览器
-#git clone -b main --single-branch https://github.com/Lienol/openwrt-package.git   package/lienol
-#cd package/lienol
-#git sparse-checkout init --cone 
-#git sparse-checkout set luci-app-control-webrestriction luci-app-control-weburl luci-app-timecontrol luci-app-control-timewol luci-app-filebrowser luci-app-openvpn-server
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
 #sed -i 's/Control/管控/g' package/lienol/luci-app-control-webrestriction/luasrc/controller/webrestriction.lua
 #sed -i 's/Control/管控/g' package/lienol/luci-app-control-weburl/luasrc/controller/weburl.lua
 #sed -i 's/Internet Time Control/上网时间控制/g' package/lienol/luci-app-timecontrol/luasrc/controller/timecontrol.lua
@@ -725,7 +681,8 @@ sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luc
 #sed -i 's/Control/管控/g' package/lienol/luci-app-control-timewol/luasrc/controller/timewol.lua
 #sed -i 's/File Browser/文件浏览器/g' package/lienol/luci-app-filebrowser/luasrc/controller/filebrowser.lua
 
-#merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-control-webrestriction luci-app-control-weburl luci-app-timecontrol luci-app-control-timewol luci-app-filebrowser luci-app-openvpn-server
+#Lienol大佬的，无法运行
+#merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-control-webrestriction luci-app-control-weburl luci-app-timecontrol luci-app-control-timewol luci-app-filebrowser
 #sed -i 's/Access Control/访问限制/g' package/new/luci-app-control-webrestriction/luasrc/controller/webrestriction.lua
 #sed -i 's/Control/管控/g' package/new/luci-app-control-webrestriction/luasrc/controller/webrestriction.lua
 #sed -i 's/Control/管控/g' package/new/luci-app-control-weburl/luasrc/controller/weburl.lua
@@ -741,61 +698,51 @@ sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luc
 #sed -i 's/services/control/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
 #sed -i 's/Internet Access Schedule Control/上网时间控制/g' package/new/luci-app-accesscontrol/luasrc/controller/mia.lua
 
-
-
 #八、其他luci-app
 #1、turboacc去dns
-#rm -rf feeds/luci/applications/luci-app-turboacc
-#git clone -b master --single-branch https://github.com/xiangfeidexiaohuo/openwrt-packages.git   package/turboacc
-#cd package/turboacc
-#git sparse-checkout init --cone 
-#git sparse-checkout set luci-app-turboacc
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-
+rm -rf feeds/luci/applications/luci-app-turboacc
 #merge_package master https://github.com/xiangfeidexiaohuo/openwrt-packages.git package/new patch/luci-app-turboacc
 
-#适配官方openwrt(22.03/23.05/24.10) firewall4的turboacc
+#适配官方openwrt(22.03/23.05/24.10) firewall4的turboacc 【lede不能使用】
 merge_package luci https://github.com/chenmozhijin/turboacc.git package/turboacc luci-app-turboacc
 #修改 bbr为bbr3
 sed -i 's/kmod-tcp-bbr/kmod-tcp-bbr3/g' package/turboacc/luci-app-turboacc/Makefile
-
-#相关依赖nft-fullcone、shortcut-fe和952、613、953补丁
-# Shortcut Forwarding Engine
-git clone https://git.cooluc.com/sbwml/shortcut-fe package/turboacc/shortcut-fe
 
 #2、京东签到 By Jerrykuku 作者已关闭了
 #git clone --depth 1 https://github.com/jerrykuku/node-request.git package/new/node-request
 #git clone --depth 1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/new/luci-app-jd-dailybonus
 
-#3、网易云音乐解锁
-git clone -b js --depth 1 https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git package/diy/luci-app-unblockneteasemusic
-sed -i 's/解除网易云音乐播放限制/网易云音乐解锁/g' package/diy/luci-app-unblockneteasemusic/root/usr/share/luci/menu.d/luci-app-unblockneteasemusic.json
-#for lede
-#git clone --branch master https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git package/diy/luci-app-unblockneteasemusic
-#sed -i 's/解除网易云音乐播放限制/网易云音乐解锁/g' package/diy/luci-app-unblockneteasemusic/luasrc/controller/unblockneteasemusic.lua
-sed -i 's, +node,,g' package/diy/luci-app-unblockneteasemusic/Makefile
-pushd package/diy/luci-app-unblockneteasemusic
+#3、网易云音乐解锁 js
+rm -rf feeds/applications/luci-app-unblockmusic
+rm -rf package/new/luci-app-unblockneteasemusic
+git clone -b js https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic package/new/luci-app-unblockneteasemusic
+sed -i 's/解除网易云音乐播放限制/网易云音乐解锁/g' package/new/luci-app-unblockneteasemusic/root/usr/share/luci/menu.d/luci-app-unblockneteasemusic.json
+sed -i 's, +node,,g' package/new/luci-app-unblockneteasemusic/Makefile
+pushd package/new/luci-app-unblockneteasemusic
     wget -qO - https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/commit/a880428.patch | patch -p1
 popd
+
+#4、filebrowser文件浏览器
+#rm -rf feeds/luci/applications/luci-app-filebrowser
+# filebrowser 文件浏览器
+#merge_package main https://github.com/Lienol/openwrt-package package/custom luci-app-filebrowser
+#sed -i 's/File Browser/文件浏览器/g' package/diy/luci-app-filebrowser/luasrc/controller/filebrowser.lua
 
 #5、流量监视
 git clone -b master --depth 1 https://github.com/brvphoenix/wrtbwmon.git package/new/wrtbwmon
 git clone -b master --depth 1 https://github.com/brvphoenix/luci-app-wrtbwmon.git package/new/luci-app-wrtbwmon
 
-#6、zerotier
+#6、zerotier #lede自带的已经是在vpn栏目
 rm -Rf feeds/luci/applications/luci-app-zerotier
 rm -Rf feeds/packages/net/zerotier  #lede的版本新
-merge_package master https://github.com/coolsnowwolf/packages.git package/new net/zerotier
+merge_package master https://github.com/coolsnowwolf/packages.git feeds/packages/net net/zerotier
 rm -Rf package/new/custom/luci-app-zerotier
+rm -Rf package/new/luci-app-zerotier
 merge_package main https://github.com/sbwml/openwrt_pkgs.git package/new luci-app-zerotier
 #移动搭配vpn栏目
 sed -i 's/services/vpn/g' package/new/luci-app-zerotier/root/usr/share/luci/menu.d/luci-app-zerotier.json
+
+#sed -i 's/services/vpn/g' package/new/custom/luci-app-zerotier/root/usr/share/luci/menu.d/luci-app-zerotier.json
 
 #7、终端ZSH工具
 # DHDAXCW骷髅头的preset-terminal-tools.sh
@@ -811,88 +758,64 @@ git clone https://github.com/zsh-users/zsh-completions ./.oh-my-zsh/custom/plugi
 # Get .zshrc dotfile
 cp ../.././diydata/data/zsh/.zshrc .
 popd
-
 # Change default shell to zsh将系统/bin/ash/改为/usr/bin/zsh
-sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
+sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd 
 sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
-#8、# Docker 容器QiuSimons大 02前面已经有了
+#sbwml大神已经改成bash了。所以将bash改为zsh
+sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
+
+#8、Docker 容器
+## QiuSimons大神
 #rm -rf feeds/luci/applications/luci-app-dockerman
-#git clone -b master --single-branch https://github.com/lisaac/luci-app-dockerman.git   package/dockerman
-#cd package/dockerman
-#git sparse-checkout init --cone 
-#git sparse-checkout set applications/luci-app-dockerman
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-
-#rm -rf ./feeds/luci/collections/luci-lib-docker
-#git clone -b master --single-branch https://github.com/lisaac/luci-lib-docker.git   package/dockerlib
-#cd package/dockerlib
-#git sparse-checkout init --cone 
-#git sparse-checkout set collections/luci-lib-docker
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-
-#sed -i '/auto_start/d' package/dockerman/applications/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman
-
-#merge_package master https://github.com/lisaac/luci-app-dockerman.git package/new applications/luci-app-dockerman
-#sed -i '/auto_start/d' package/new/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman  #死活启动不了
-#mkdir -p feeds/packages
+#rm -rf feeds/luci/collections/luci-lib-docker
+#merge_package master https://github.com/lisaac/luci-app-dockerman.git feeds/luci/applications applications/luci-app-dockerman
+#sed -i '/auto_start/d' feeds/luci/applications/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman
 #pushd feeds/packages
 #wget -qO- https://github.com/openwrt/packages/commit/e2e5ee69.patch | patch -p1
 #wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
 #popd
 #sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
-
+#rm -rf ./feeds/luci/collections/luci-lib-docker
 #merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
 
+# sbwml大神 【00-prepare_base-6.6已经有了】
+#rm -rf feeds/luci/applications/luci-app-dockerman
+#git clone https://git.cooluc.com/sbwml/luci-app-dockerman -b openwrt-23.05 feeds/luci/applications/luci-app-dockerman
+#rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
+#git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
+#git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
+#git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
+#git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
+#sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
+#pushd feeds/packages
+#patch -p1 <../.././diydata/data/patches/docker/0001-dockerd-fix-bridge-network.patch
+#patch -p1 <../.././diydata/data/patches/docker/0002-docker-add-buildkit-experimental-support.patch
+#patch -p1 <../.././diydata/data/patches/docker/0003-dockerd-disable-ip6tables-for-bridge-network-by-defa.patch
+#popd
 
 #9、全能推送（商店自己安装）
 #rm -rf feeds/luci/applications/luci-app-pushbot
 #git clone https://github.com/zzsj0928/luci-app-pushbot.git package/diy/luci-app-pushbot
 
-#10、相关驱动
-# NIC driver - R8168 & R8125 & R8152 & R8101
+#10、NIC driver - R8168 & R8125 & R8152 & R8101
 git clone https://github.com/sbwml/package_kernel_r8168 package/kernel/r8168
 git clone https://github.com/sbwml/package_kernel_r8152 package/kernel/r8152
 git clone https://github.com/sbwml/package_kernel_r8101 package/kernel/r8101
 git clone https://github.com/sbwml/package_kernel_r8125 package/kernel/r8125
 
-#11、alist
+#11、golang以及alist
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 24.x feeds/packages/lang/golang
+
 rm -rf feeds/luci/applications/luci-app-alist
 rm -rf feeds/packages/net/alist
-git clone -b main https://github.com/sbwml/luci-app-alist package/alist
-# merge_package master https://github.com/sbwml/luci-app-alist package/custom alist
+git clone https://github.com/sbwml/luci-app-alist package/alist
 
 #12、diskman
-#rm -Rf package/new/luci-app-diskman
-#git clone -b master --single-branch https://github.com/lisaac/luci-app-diskman.git   package/diskm
-#cd package/diskm
-#git sparse-checkout init --cone 
-#git sparse-checkout set applications/luci-app-diskman
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-
 merge_package master https://github.com/lisaac/luci-app-diskman.git package/new applications/luci-app-diskman
 
-#13、lan口设置  不能在workflow上打。（yaof24.10上不能打成功patch，24.10和sbwml上不成功）
+#13、lan口设置  不能在workflow上打。（只能打成功lede的patch）（新版采用default-setting配置）
 #rm -rf target/linux/x86/base-files/etc/board.d/02_network  #清除系统自带的02，需要lede的才能patche成功。
 #wget -N https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/x86/base-files/etc/board.d/02_network -P target/linux/x86/base-files/etc/board.d/
 #patch -p1 <./diydata/data/patches/def_set_interfaces_lan_wan.patch
@@ -928,7 +851,7 @@ git clone -b main --single-branch https://github.com/ilxp/openwrt-autoupdate.git
 #OP_VERSION=${OP_VERSION}
 #OP_AUTHOR=openwrt  
 #OP_REPO=openwrt
-#OP_BRANCH=openwrt-23.05
+#OP_BRANCH=openwrt-24.10
 
 #EOF
 
@@ -940,24 +863,14 @@ sed -i "s/TARGET_FLAG=Full/TARGET_FLAG=oR/g" package/diy/openwrt-autoupdate/auto
 #Short_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
 Short_Date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
 Compile_Date=$(TZ=UTC-8 date +'%Y%m%d')
-#OP_VERSION="R${Short_Date}-${Compile_Date}"
-
-#调用上面的取到的23.05.5
-OP_VERSION="R${ReV_Date}-${Compile_Date}"
-
+OP_VERSION="R${Short_Date}-${Compile_Date}"
 sed -i "s/OP_VERSION=R24.1.1-20240101/OP_VERSION=$OP_VERSION/g" package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default  #使用双引号
 #3）源码作者
-#sed -i 's/OP_AUTHOR=openwrt/OP_AUTHOR=coolsnowwolf/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
+#sed -i 's/OP_AUTHOR=openwrt/OP_AUTHOR=openwrt/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
 #4）项目
-#sed -i 's/OP_REPO=openwrt/OP_REPO=lede/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
+#sed -i 's/OP_REPO=openwrt/OP_REPO=openwrt/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
 #5）分支
-sed -i 's/OP_BRANCH=main/OP_BRANCH=openwrt-23.05/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
-
-# 16、移动栏目
-sed -i 's/services/nas/g' feeds/luci/applications/luci-app-hd-idle/root/usr/share/luci/menu.d/luci-app-hd-idle.json
-sed -i 's/services/nas/g' feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json
-#for lede
-#sed -i 's/services/nas/g' feeds/luci/applications/luci-app-samba4/luasrc/controller/samba4.lua
+sed -i 's/OP_BRANCH=main/OP_BRANCH=openwrt-24.10/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
 
 #17、更换 Nodejs 版本
 rm -rf feeds/packages/lang/node
@@ -975,10 +888,8 @@ git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone
 git clone https://github.com/sbwml/packages_new_nat6 package/new/nat6
 # natflow
 git clone https://github.com/sbwml/package_new_natflow package/new/natflow
-# iptables-mod-fullconenat for firewall3
-git clone https://github.com/sbwml/fullconenat package/new/nft-fullcone
 
-#19、sbwml大神的优化for23.05
+#19、sbwml大神的优化
 # x86 - disable intel_pstate & mitigations
 sed -i 's/noinitrd/noinitrd intel_pstate=disable mitigations=off/g' target/linux/x86/image/grub-efi.cfg
 # openssl -Ofast
@@ -988,35 +899,48 @@ sed -i 's/enable-skill/enable-skill --disable-modern-top/g' feeds/packages/utils
 # opkg  无法使用
 #mkdir -p package/system/opkg/patches
 #cp -rf ./diydata/data/patches/900-opkg-download-disable-hsts.patch ./package/system/opkg/patches/
+
 # TTYD
 sed -i 's/services/system/g' feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
 sed -i '3 a\\t\t"order": 50,' feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
 sed -i 's/procd_set_param stdout 1/procd_set_param stdout 0/g' feeds/packages/utils/ttyd/files/ttyd.init
 sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/g' feeds/packages/utils/ttyd/files/ttyd.init
 
-#20、autocore(sbwml的)
-git clone -b openwrt-23.05 --depth 1 https://github.com/sbwml/autocore-arm  package/system/autocore
+#20、autocore
+rm -rf package/system/autocore  #sbwml的cpu使用率有问题。
+git clone -b openwrt-24.10 --depth 1 https://github.com/sbwml/autocore-arm  package/system/autocore
 sed -i '/init/d' package/system/autocore/Makefile
 sed -i '/autocore.json/a\\	$(INSTALL_BIN) ./files/x86/autocore $(1)/etc/init.d/' package/system/autocore/Makefile
 sed -i '/autocore.json/a\\	$(INSTALL_DIR) $(1)/etc/init.d' package/system/autocore/Makefile
-cp -rf ./diydata/data/autocore  package/system/autocore/files/x86/
+cp -rf ./diydata/data/autocore  package/system/autocore/files/x86/  ##sbwml的cpu使用率有问题。采用yaof的
 
-# AutoCore(immortalwrt)
-#cp -rf ../immortalwrt_23/package/emortal/autocore ./package/new/autocore
+#采用immortalwrt的
+# AutoCore
+#merge_package openwrt-23.05 https://github.com/immortalwrt/immortalwrt.git package/new package/emortal/autocore
 #sed -i 's/"getTempInfo" /"getTempInfo", "getCPUBench", "getCPUUsage" /g' package/new/autocore/files/luci-mod-status-autocore.json
 #rm -rf ./package/new/autocore/files/autocore
-#wget https://raw.githubusercontent.com/QiuSimons/OpenWrt-Add/master/autocore/files/x86/autocore -O package/new/autocore/files/autocore
+#wget https://raw.githubusercontent.com/QiuSimons/OpenWrt-Add/master/autocore -O package/new/autocore/files/autocore
 #sed -i '/i386 i686 x86_64/{n;n;n;d;}' package/new/autocore/Makefile
 #sed -i '/i386 i686 x86_64/d' package/new/autocore/Makefile
 #rm -rf ./feeds/luci/modules/luci-base
-#cp -rf ../immortalwrt_luci_23/modules/luci-base ./feeds/luci/modules/luci-base
+#merge_package openwrt-23.05 https://github.com/immortalwrt/luci.git feeds/luci/modules modules/luci-base
 #sed -i "s,(br-lan),,g" feeds/luci/modules/luci-base/root/usr/share/rpcd/ucode/luci
 #rm -rf ./feeds/luci/modules/luci-mod-status
-#cp -rf ../immortalwrt_luci_23/modules/luci-mod-status ./feeds/luci/modules/luci-mod-status
+#merge_package openwrt-23.05 https://github.com/immortalwrt/luci.git feeds/luci/modules modules/luci-mod-status
 #rm -rf ./feeds/packages/utils/coremark
-#cp -rf ../immortalwrt_pkg/utils/coremark ./feeds/packages/utils/coremark
+#merge_package master https://github.com/immortalwrt/packages.git feeds/packages/utils utils/coremark
 #sed -i "s,-O3,-Ofast -funroll-loops -fpeel-loops -fgcse-sm -fgcse-las,g" feeds/packages/utils/coremark/Makefile
-#cp -rf ../immortalwrt_23/package/utils/mhz ./package/utils/mhz
+#merge_package openwrt-23.05 https://github.com/immortalwrt/immortalwrt.git package/utils package/utils/mhz
+
+#17、samba4-luci
+rm -rf feeds/luci/applications/luci-app-samba4
+merge_package master https://github.com/openwrt/luci.git feeds/luci/applications applications/luci-app-samba4
+
+# 17、移动栏目
+sed -i 's/services/nas/g' feeds/luci/applications/luci-app-hd-idle/root/usr/share/luci/menu.d/luci-app-hd-idle.json
+sed -i 's/services/nas/g' feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json
+#for ledede luci18.06
+#sed -i 's/services/nas/g' feeds/luci/applications/luci-app-samba4/luasrc/controller/samba4.lua
 
 #21、 samba4 - bump version
 rm -rf feeds/packages/net/samba4
@@ -1037,11 +961,6 @@ sed -i 's/#directory mask/directory mask/g' feeds/packages/net/samba4/files/smb.
 sed -i 's/0666/0644/g;s/0744/0755/g;s/0777/0755/g' feeds/luci/applications/luci-app-samba4/htdocs/luci-static/resources/view/samba4.js
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/samba.config
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/smb.conf.template
-
-# samba工作组冲突
-WORKGROUP_NAME="WORKGROUP$(date +%s | tail -c 4)"
-sed -i "s/WORKGROUP/${WORKGROUP_NAME}/g" feeds/packages/net/samba4/files/samba.config
-sed -i "s/workgroup \"WORKGROUP\"/workgroup \"${WORKGROUP_NAME}\"/g" feeds/packages/net/samba4/files/samba.init
 
 #22、USB 打印机与KMS 激活助手  #USB 打印机 会产生一个nas项目
 merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new openwrt_pkgs/luci-app-usb-printer
@@ -1073,28 +992,23 @@ umask 022
 git checkout
 popd
 
-# 22、UPX 可执行软件压缩
-sed -i '/patchelf pkgconf/i\tools-y += ucl upx' ./tools/Makefile
-sed -i '\/autoconf\/compile :=/i\$(curdir)/upx/compile := $(curdir)/ucl/compile' ./tools/Makefile
+# 22、UPX 可执行软件压缩  sbwml已经在mainline
+#sed -i '/patchelf pkgconf/i\tools-y += ucl upx' ./tools/Makefile
+#sed -i '\/autoconf\/compile :=/i\$(curdir)/upx/compile := $(curdir)/ucl/compile' ./tools/Makefile
 ##merge_package main https://github.com/Lienol/openwrt.git  ./tools tools/ucl tools/upx  #表示在根目录生成一个tools文件夹。本来就会有，所以报错。
-#merge_package main https://github.com/Lienol/openwrt.git tools tools/ucl tools/upx  #表示在移动到根目录已经存在的tools文件夹。lienol版本有点旧3.95。
-merge_package main https://github.com/Lienol/openwrt.git tools tools/ucl
-merge_package main https://github.com/ilxp/upx-openwrt.git tools upx   #最新版4.2.4
+##merge_package main https://github.com/Lienol/openwrt.git tools tools/ucl tools/upx  #表示在移动到根目录已经存在的tools文件夹。lienol版本有点旧3.95。
+#merge_package main https://github.com/Lienol/openwrt.git tools tools/ucl
+#merge_package main https://github.com/ilxp/upx-openwrt.git tools upx   #最新版4.2.4
 
-# v2raya
+#23 v2raya
 git clone --depth 1 https://github.com/zxlhhyccc/luci-app-v2raya.git package/new/luci-app-v2raya
 rm -rf ./feeds/packages/net/v2raya
 merge_package master https://github.com/openwrt/packages.git package/new net/v2raya
 
-##23、turboacc firewall4
-#merge_package luci https://github.com/chenmozhijin/turboacc.git  package/new luci-app-turboacc
-
-##oprx系统工具
-mkdir -p files/bin
-#curl -L -o files/bin/oprx https://git.kejizero.online/zhao/files/raw/branch/main/bin/ZeroWrt
-cp -rf ./diydata/data/oprx ./files/bin/
-chmod +x files/bin/oprx
-
+#sbwml的Upnp 移动以及翻译
+sed -i "s/network/services/g" feeds/luci/applications/luci-app-upnp/root/usr/share/luci/menu.d/luci-app-upnp.json
+# 精简 UPnP 菜单名称
+#sed -i 's#\"title\": \"UPnP IGD \& PCP/NAT-PMP\"#\"title\": \"UPnP\"#g' feeds/luci/applications/luci-app-upnp/root/usr/share/luci/menu.d/luci-app-upnp.json
 
 ##########################################################################
 
@@ -1103,3 +1017,4 @@ find ./ -name *.orig | xargs rm -f
 find ./ -name *.rej | xargs rm -f
 
 exit 0
+
