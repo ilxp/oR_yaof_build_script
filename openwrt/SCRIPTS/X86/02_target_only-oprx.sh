@@ -82,23 +82,6 @@ function merge_package() {
 }
 
 #二、导入自己data目录数据配置 （注意结果是./diydata/openwrt/data）
-#git clone -b main --single-branch https://github.com/ilxp/oR_yaof_build_script.git ./diydata
-#cd  ./diydata
-#git sparse-checkout init --cone 
-#git sparse-checkout set openwrt/data
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ..
-#相关配置文件	
-#cp -rf ./diydata/openwrt/data/files ./package/base-files/
-#cp -rf ./diydata/openwrt/data/files  files
-#自定义app
-#cp -rf ./diydata/openwrt/data/app/*  ./
-#初始化文件
 
 merge_package main https://github.com/ilxp/oR_yaof_build_script ./diydata openwrt/data   #注意结果是./diydata/data）
 
@@ -110,19 +93,6 @@ cp -rf ./diydata/data/app/*  ./
 #初始化文件
 
 #克隆default-settings
-#git clone -b master --single-branch https://github.com/QiuSimons/OpenWrt-Add.git package/add
-#cd  package/add
-#git sparse-checkout init --cone 
-#git sparse-checkout set addition-trans-zh
-#rm -rf .git
-#rm -rf .github
-#rm -rf .gitignore
-#rm -rf *.md
-#rm -rf .gitattributes
-#rm -rf LICENSE
-#cd ../..
-#复制default-settings文件
-#cp -f ./diydata/openwrt/data/default-settings-oR package/add/addition-trans-zh/files/zzz-default-settings
 
 merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new addition-trans-zh
 #复制default-settings文件
@@ -135,7 +105,7 @@ cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/file
 # lrzsz - 0.12.20
 rm -rf feeds/packages/utils/lrzsz
 git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
-###################
+
 
 #四、系统优化########
 
