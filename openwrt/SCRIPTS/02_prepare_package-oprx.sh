@@ -155,7 +155,6 @@ cp -rf ./diydata/PATCH/kernel/sfe/* ./target/linux/generic/hack-6.6/
 #cp -rf ../lede/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch ./target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch
 wget -P target/linux/generic/pending-6.6/ https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/pending-6.6/613-netfilter_optional_tcp_window_check.patch
 
-
 # Patch LuCI 以增添 Shortcut-FE 开关
 pushd feeds/luci
 patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0002-luci-app-firewall-add-shortcut-fe-option.patch
