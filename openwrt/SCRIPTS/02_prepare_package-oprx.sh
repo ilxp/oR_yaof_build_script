@@ -143,7 +143,10 @@ mkdir -p package/libs/libnftnl/patches
 cp -f ./diydata/PATCH/pkgs/firewall/libnftnl/*.patch ./package/libs/libnftnl/patches/
 sed -i '/PKG_INSTALL:=/iPKG_FIXUP:=autoreconf' package/libs/libnftnl/Makefile
 mkdir -p package/network/utils/nftables/patches
-cp -f ./diydata/PATCH/pkgs/firewall/nftables/*.patch ./package/network/utils/nftables/patches/
+#cp -f ./diydata/PATCH/pkgs/firewall/nftables/*.patch ./package/network/utils/nftables/patches/  #采用sbwml的
+
+cp -f ./diydata/data/patches/nftables/*.patch ./package/network/utils/nftables/patches/
+
 # Patch LuCI 以增添 FullCone 开关
 pushd feeds/luci
 patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0001-luci-app-firewall-add-nft-fullcone-and-bcm-fullcone-.patch
