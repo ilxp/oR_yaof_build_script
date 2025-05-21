@@ -438,7 +438,7 @@ if [ "$platform" = "x86_64" ]; then
         cp -a bin/targets/x86/*/packages $kmodpkg_name
         rm -f $kmodpkg_name/Packages*
         cp -a bin/packages/x86_64/base/rtl88*a-firmware*.ipk $kmodpkg_name/
-        cp -a bin/packages/x86_64/base/natflow*.ipk $kmodpkg_name/
+        #cp -a bin/packages/x86_64/base/natflow*.ipk $kmodpkg_name/
         [ "$OPENWRT_CORE" = "y" ] && {
             cp -a bin/packages/x86_64/base/*3ginfo*.ipk $kmodpkg_name/
             cp -a bin/packages/x86_64/base/*modemband*.ipk $kmodpkg_name/
