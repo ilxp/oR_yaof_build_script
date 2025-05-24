@@ -66,7 +66,7 @@ uci commit shadowsocksr
 #sed -i 's,downloads.openwrt.org,mirrors.sjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
 #sed -i 's,mirror.sjtu.edu.cn/openwrt,mirrors.pku.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
 
-sed -i 's,downloads.openwrt.org,mirrors.xjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
+sed -i 's,downloads.openwrt.org,mirrors.pku.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
 
 #注释掉软件包的
 #sed -i 's/src\/gz/\#src\/gz/g' /etc/opkg/distfeeds.conf
