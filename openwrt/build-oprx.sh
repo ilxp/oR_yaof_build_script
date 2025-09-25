@@ -108,7 +108,7 @@ if [ "$1" = "dev" ]; then
     export version=dev
 elif [ "$1" = "rc2" ]; then
     #latest_release="v$(curl -s $mirror/tags/v24)"
-	latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][3-9]/p' | sed -n 1p | sed 's/.tar.gz//g')"  
+	latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][4-9]/p' | sed -n 1p | sed 's/.tar.gz//g')" 
     export branch=$latest_release
     export version=rc2
 fi
@@ -201,8 +201,7 @@ rm -rf openwrt master
 
 # openwrt - releases
 [ "$(whoami)" = "runner" ] && group "source code"
-#git clone --depth=1 https://$github/openwrt/openwrt -b $branch
-git clone --depth=1 https://$github/openwrt/openwrt/tree/$branch
+git clone --depth=1 https://$github/openwrt/openwrt -b $branch
 
 # immortalwrt master
 git clone https://$github/immortalwrt/packages master/immortalwrt_packages --depth=1
