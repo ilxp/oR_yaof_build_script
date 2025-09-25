@@ -108,7 +108,8 @@ if [ "$1" = "dev" ]; then
     export version=dev
 elif [ "$1" = "rc2" ]; then
     #latest_release="v$(curl -s $mirror/tags/v24)"
-	latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][4-9]/p' | sed -n 1p | sed 's/.tar.gz//g')" 
+	#latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][4-9]/p' | sed -n 1p | sed 's/.tar.gz//g')" 
+	latest_release="v$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')"
     export branch=$latest_release
     export version=rc2
 fi
