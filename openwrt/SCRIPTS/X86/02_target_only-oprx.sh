@@ -369,8 +369,8 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-n
 #克隆官方的，以及删除sbwml的
 rm -rf package/new/helloworld
 rm -rf feeds/luci/applications/luci-app-passwall
-#git clone -b main https://github.com/xiaorouji/openwrt-passwall-packages.git package/diy/openwrt-passwall-packages
-#git clone -b main https://github.com/xiaorouji/openwrt-passwall.git  package/diy/openwrt-passwall
+git clone -b main https://github.com/xiaorouji/openwrt-passwall-packages.git package/helloworld
+git clone -b main https://github.com/xiaorouji/openwrt-passwall.git  package/helloworld
 # passwall
 #merge_package main https://github.com/xiaorouji/openwrt-passwall package/new luci-app-passwall
 
@@ -378,8 +378,8 @@ rm -rf feeds/luci/applications/luci-app-passwall
 #git clone https://github.com/kenzok8/small.git package/diy/openwrt-passwall
 
 # sbwml的SSRP & Passwall nikki
-rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-git clone https://github.com/sbwml/openwrt_helloworld package/helloworld -b v5
+#rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
+#git clone https://github.com/sbwml/openwrt_helloworld package/helloworld -b v5
 
 ##FQ全部调到VPN菜单
 sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/controller/*.lua
