@@ -369,7 +369,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-n
 #克隆官方的，以及删除sbwml的
 rm -rf package/new/helloworld
 rm -rf feeds/luci/applications/luci-app-passwall
-git clone -b main https://github.com/xiaorouji/openwrt-passwall-packages.git package/helloworld
+git clone -b main https://github.com/xiaorouji/openwrt-passwall-packages.git package/openwrt-passwall-packages
 git clone -b main https://github.com/xiaorouji/openwrt-passwall.git  package/helloworld
 # passwall
 #merge_package main https://github.com/xiaorouji/openwrt-passwall package/new luci-app-passwall
