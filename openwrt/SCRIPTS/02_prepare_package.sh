@@ -66,6 +66,12 @@ cp -rf ../PATCH/kernel/wg/* ./target/linux/generic/hack-6.6/
 echo "net.netfilter.nf_conntrack_tcp_max_retrans=5" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
 # OTHERS
 cp -rf ../PATCH/kernel/others/* ./target/linux/generic/pending-6.6/
+# 6.17_ppp_performance
+wget https://github.com/torvalds/linux/commit/95d0d094.patch -O target/linux/generic/pending-6.6/999-1-95d0d09.patch
+wget https://github.com/torvalds/linux/commit/1a3e9b7a.patch -O target/linux/generic/pending-6.6/999-2-1a3e9b7.patch
+wget https://github.com/torvalds/linux/commit/7eebd219.patch -O target/linux/generic/pending-6.6/999-3-7eebd21.patch
+# ppp_fix
+wget -qO - https://github.com/immortalwrt/immortalwrt/commit/9d852a0.patch | patch -p1
 
 ### Fullcone-NAT 部分 ###
 # bcmfullcone
@@ -75,7 +81,7 @@ wget -qO - https://github.com/openwrt/openwrt/commit/bbf39d07.patch | patch -p1
 echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
 # FW4
 mkdir -p package/network/config/firewall4/patches
-cp -f ../PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
+#cp -f ../PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
 mkdir -p package/libs/libnftnl/patches
 cp -f ../PATCH/pkgs/firewall/libnftnl/*.patch ./package/libs/libnftnl/patches/
 sed -i '/PKG_INSTALL:=/iPKG_FIXUP:=autoreconf' package/libs/libnftnl/Makefile
@@ -98,6 +104,7 @@ popd
 ### NAT6 部分 ###
 # custom nft command
 patch -p1 < ../PATCH/pkgs/firewall/100-openwrt-firewall4-add-custom-nft-command-support.patch
+cp -f ../PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
 # Patch LuCI 以增添 NAT6 开关
 pushd feeds/luci
 patch -p1 <../../../PATCH/pkgs/firewall/luci/0003-luci-app-firewall-add-ipv6-nat-option.patch
@@ -154,7 +161,9 @@ rm -rf ./package/new/feeds_packages_lang_node-prebuilt
 cp -rf ../OpenWrt-Add/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
 # 更换 golang 版本
 rm -rf ./feeds/packages/lang/golang
-cp -rf ../openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
+cp -rf ../lede_pkg_ma/lang/golang ./feeds/packages/lang/golang
+# rust
+wget https://github.com/rust-lang/rust/commit/e8d97f0.patch -O feeds/packages/lang/rust/patches/e8d97f0.patch
 # mount cgroupv2
 pushd feeds/packages
 patch -p1 <../../../PATCH/pkgs/cgroupfs-mount/0001-fix-cgroupfs-mount.patch
@@ -205,7 +214,7 @@ cp -rf ../docker_lib/collections/luci-lib-docker ./feeds/luci/collections/luci-l
 patch -p1 <../PATCH/pkgs/odhcp6c/1002-odhcp6c-support-dhcpv6-hotplug.patch
 # ODHCPD
 mkdir -p package/network/services/odhcpd/patches
-cp -f ../PATCH/pkgs/odhcpd/0001-odhcpd-improve-RFC-9096-compliance.patch ./package/network/services/odhcpd/patches/0001-odhcpd-improve-RFC-9096-compliance.patch
+cp -f ../PATCH/pkgs/odhcpd/001-odhcpd-improve-RFC-9096-compliance.patch ./package/network/services/odhcpd/patches/001-odhcpd-improve-RFC-9096-compliance.patch
 #wget https://github.com/openwrt/odhcpd/pull/211.patch -O package/network/services/odhcpd/patches/211.patch
 wget https://github.com/openwrt/odhcpd/pull/219.patch -O package/network/services/odhcpd/patches/219.patch
 wget https://github.com/openwrt/odhcpd/pull/242.patch -O package/network/services/odhcpd/patches/242.patch
