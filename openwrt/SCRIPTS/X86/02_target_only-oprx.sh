@@ -106,6 +106,9 @@ cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/file
 rm -rf feeds/packages/utils/lrzsz
 git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 
+#清除自带的
+rm -rf feeds/packages/net/xray-core
+
 
 #四、系统优化########
 
