@@ -1,0 +1,421 @@
+#!/bin/sh
+#来源 https://github.com/QiuSimons/OpenWrt-Add/blob/master/addition-trans-zh/files/zzz-default-settings
+
+#自动语言
+uci set luci.main.lang=auto
+uci commit luci
+
+#自动挂载
+uci set fstab.@global[0].anon_mount=1
+uci commit fstab
+
+#Argon 主题
+ln -sf "/www/luci-static/argon/favicon.ico" "/www/favicon.ico"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-152x152-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-152x152.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-144x144-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-144x144.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-120x120-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-120x120.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-114x114-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-144x144.png" "/www/apple-touch-icon-114x114.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-72x72.png" "/www/apple-touch-icon-72x72-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-72x72.png" "/www/apple-touch-icon-72x72.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-60x60.png" "/www/apple-touch-icon-60x60-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-60x60.png" "/www/apple-touch-icon-60x60.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-60x60.png" "/www/apple-touch-icon-57x57-precomposed.png"
+ln -sf "/www/luci-static/argon/icon/apple-icon-60x60.png" "/www/apple-touch-icon-57x57.png"
+uci set luci.main.mediaurlbase='/luci-static/argon'
+uci commit luci
+uci set argon.@global[0].bing_background='1'
+uci commit argon
+
+#时区设置
+uci set system.@system[0].hostname=OprX
+uci set system.@system[0].timezone=CST-8
+uci set system.@system[0].zonename=Asia/Shanghai
+uci set system.@system[0].description=Welcome.To.Use.OprX!
+uci -q del system.ntp.server
+uci -q add_list system.ntp.server='ntp.aliyun.com'
+uci -q add_list system.ntp.server='ntp.tencent.com'
+uci -q add_list system.ntp.server='ntp.ntsc.ac.cn'
+uci -q add_list system.ntp.server='time.apple.com'
+
+uci commit system
+
+#Dropbear 取消，否则默认22端口登陆不了
+#uci set dropbear.@dropbear[0].Interface='lan'
+#uci commit dropbear
+
+#PASSWALL
+[ -f '/usr/share/v2ray/geoip.dat' ] && uci set passwall.@global_rules[0].v2ray_location_asset='/usr/share/v2ray/'
+uci set passwall.@global_subscribe[0].ss_aead_type='shadowsocks-rust'
+uci set passwall.@global_delay[0].start_delay='5'
+uci set passwall.@global_forwarding[0].tcp_redir_ports='1:65535'
+uci commit passwall
+
+#SSRP IPV6 HACK
+sed -i '/127.255.255.255/d' /etc/config/shadowsocksr
+uci add_list shadowsocksr.@access_control[0].wan_bp_ips='127.255.255.255'
+uci commit shadowsocksr
+
+#Feeds 更换镜像源  在下面处理
+#sed -i 's,21.02,21.02-SNAPSHOT,g' /etc/opkg/distfeeds.conf
+#sed -i 's,downloads.openwrt.org,mirrors.sjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
+#sed -i 's,mirror.sjtu.edu.cn/openwrt,mirrors.pku.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
+
+#sed -i 's,downloads.openwrt.org,mirrors.pku.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf  #snaptshots选择这个
+#sed -i 's,downloads.openwrt.org,mirrors.xjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf   #release选择这个
+
+# opkg mirror
+if [ $(grep -c SNAPSHOT /etc/opkg/distfeeds.conf) -eq '0' ]; then
+    sed -i 's,downloads.openwrt.org,mirrors.aliyun.com/openwrt,g' /etc/opkg/distfeeds.conf
+	#sed -i 's,downloads.openwrt.org,mirrors.xjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
+else
+    sed -i 's,downloads.openwrt.org,mirrors.pku.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
+fi
+
+#注释掉软件包的
+#sed -i 's/src\/gz/\#src\/gz/g' /etc/opkg/distfeeds.conf
+
+#uhttpd 设置
+uci set uhttpd.main.rfc1918_filter=0
+uci set uhttpd.main.redirect_https=0
+uci set uhttpd.main.http_keepalive=0
+#uci set uhttpd.main.tcp_keepalive=0
+#uci set uhttpd.main.script_timeout=65535
+#uci set uhttpd.main.script_network_timeout=65535
+uci commit uhttpd
+/etc/init.d/uhttpd restart
+
+#nginx 设置
+sed -i 's,deny all,allow all,g' /etc/nginx/restrict_locally
+uci delete nginx._redirect2ssl.return
+uci delete nginx._redirect2ssl.include
+uci add_list nginx._redirect2ssl.include='restrict_locally'
+uci add_list nginx._redirect2ssl.include='conf.d/*.locations'
+uci commit nginx
+/etc/init.d/nginx restart
+
+#在防火墙默认开启全锥形 NAT 以及关闭 Flow Offloading 并开启 SFE
+uci set firewall.@defaults[0].fullcone='1'
+uci set firewall.@defaults[0].brcmfullcone='1'
+uci set firewall.@zone[1].fullcone4='1'
+uci set firewall.@zone[1].fullcone6='1'
+uci set firewall.@defaults[0].natflow='0'
+uci set firewall.@defaults[0].shortcut_fe='0'
+uci set firewall.@defaults[0].flow_offloading='1'
+uci set firewall.@defaults[0].input='ACCEPT'
+uci commit firewall
+/etc/init.d/autocore restart
+
+#SFE
+sed -i '/shortcutfe/d' /usr/share/rpcd/ucode/luci
+sed -i '/offloading/ a\                shortcutfe: access('\''/etc/init.d/shortcut-fe'\'') == true,' /usr/share/rpcd/ucode/luci
+
+#默认开启 Packet Steering
+uci set network.globals.packet_steering='1'
+uci commit network
+
+#通用即插即用
+uci set upnpd.config.enabled='1'
+uci set upnpd.config.force_forwarding='1'  #qiu大佬已经打patch了。
+#uci del upnpd.config.use_stun
+#uci del upnpd.config.stun_host
+uci set upnpd.config.external_iface="wan"
+#uci set upnpd.config.presentation_url='http://192.168.8.1'  #qiu大佬已经打patch了。
+uci commit upnpd
+
+#网易云音乐
+#echo "59.111.239.62 httpdns.n.netease.com" >> /etc/hosts && cat /etc/hosts | sort | uniq > /tmp/tmp_hosts && cat /tmp/tmp_hosts > /etc/hosts
+echo "10 2 * * * cd /usr/share/unblockneteasemusic/core/ && openssl req -new -x509 -key server.key -out server.crt -days 3650  -subj "/CN=*.music.163.com" && cd" >> /etc/crontabs/root && cat /etc/crontabs/root | sort -u > /tmp/tmp_cron_root && cat /tmp/tmp_cron_root > /etc/crontabs/root
+
+#定时清理
+(crontab -l | sed '/find \/tmp/d'; echo "0 0 1 * * find /tmp -type f \( -name \"*.log\" -o -name \"*.txt\" \) -exec sh -c 'rm {} && touch {}' \;") | sed '/^$/d' | crontab -
+
+#rpcd
+[ $(uci -q get rpcd.@rpcd[0].timeout) -lt 60 ] && uci set rpcd.@rpcd[0].timeout=60 && uci commit rpcd
+
+#OpenClash 设置
+echo "/etc/openclash/" >> /etc/sysupgrade.conf && cat /etc/sysupgrade.conf | sort | uniq > /tmp/tmp_sysupgrade_conf && cat /tmp/tmp_sysupgrade_conf > /etc/sysupgrade.conf
+echo "/etc/zerotier/" >> /etc/sysupgrade.conf && cat /etc/sysupgrade.conf | sort | uniq > /tmp/tmp_sysupgrade_conf && cat /tmp/tmp_sysupgrade_conf > /etc/sysupgrade.conf
+[ -f /usr/share/v2ray/geosite.dat ] && [ -d /etc/openclash ] && ln -sf /usr/share/v2ray/geosite.dat /etc/openclash/GeoSite.dat
+
+#Dockerman 设置
+#sed -i 's,/opt,/overlay,g' /etc/config/dockerman
+
+#qBittorrent 设置
+#echo "nobody:x:65534:" >> /etc/group
+
+#dnsmasq 设置以及开启 IPv6
+uci set dhcp.lan.ra='server'
+uci set dhcp.lan.dhcpv6='server'
+uci set dhcp.lan.ra_management='1'
+uci set dhcp.lan.ra_default='1'
+uci set dnsmasq.filter_aaaa='0' #开启解析ipv6
+#uci -q add_list dnsmasq.server='127.0.0.1#6053'
+#uci set dnsmasq.cachesize='0'
+#uci set dnsmasq.noresolv='1'
+#uci set dhcp.@dnsmasq[0].nohosts=1  #新增加一个选项
+uci commit dhcp
+sed -i '/log-facility/d' /etc/dnsmasq.conf
+echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
+/etc/init.d/odhcpd restart
+
+#dnsmasq 设置以及开启 IPv6
+#uci del dhcp.lan.ra
+#uci del dhcp.lan.dhcpv6
+#uci del dhcp.lan.ndp
+#uci del dhcp.lan.ra_useleasetime
+#uci del dhcp.lan.preferred_lifetime
+#uci set dhcp.lan.leasetime='12h'
+#uci set dhcp.lan.ra='server'
+#uci del dhcp.lan.ra_flags
+#uci add_list dhcp.lan.ra_flags='none'
+#uci del dhcp.lan.min_preferred_lifetime
+#uci set dhcp.lan.max_preferred_lifetime='2700s'
+#uci del dhcp.lan.min_valid_lifetime
+#uci set dhcp.lan.max_valid_lifetime='5400s'
+#uci set dhcp.lan.dns_service='0'
+#uci set dhcp.@dnsmasq[0].rebind_protection='0'
+#uci commit dhcp
+#uci set network.lan.ip6assign='64'
+#uci set network.lan.ip6ifaceid='eui64'
+#uci delete network.globals.ula_prefix
+#uci commit network
+#sed -i '/log-facility/d' /etc/dnsmasq.conf
+#echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
+#/etc/init.d/odhcpd restart
+
+#nanopi fix
+sed -i 's/eth1/eth1.*/g' /etc/hotplug.d/net/40-net-smp-affinity
+sed -i 's/eth0/eth0.*/g' /etc/hotplug.d/net/40-net-smp-affinity
+
+#SIP fix
+sed -i '/sip/d' /etc/modules.d/nf-nathelper-extra
+
+#计划任务
+uci set system.@system[0].cronloglevel="9"
+uci commit system
+/etc/init.d/cron restart
+
+# docker mirror
+if [ -f /etc/config/dockerd ] && [ $(grep -c mirror.aliyuncs.com /etc/config/dockerd) -eq '1' ] && [ "$VERSION_TYPE" != "minimal" ]; then
+    uci del dockerd.globals.registry_mirrors
+    uci commit dockerd
+fi
+
+if [ -f /etc/config/dockerd ] && [ $(grep -c dockerpull.com /etc/config/dockerd) -eq '0' ] && [ "$VERSION_TYPE" != "minimal" ]; then
+    uci add_list dockerd.globals.registry_mirrors="https://dockerpull.com"
+    uci commit dockerd
+fi
+
+if [ -f /etc/config/dockerd ] && [ $(grep -c dockerproxy.net /etc/config/dockerd) -eq '0' ] && [ "$VERSION_TYPE" != "minimal" ]; then
+    uci add_list dockerd.globals.registry_mirrors="https://dockerproxy.net"
+    uci commit dockerd
+fi
+
+if [ -f /etc/config/dockerd ] && [ $(grep -c docker.m.daocloud.io /etc/config/dockerd) -eq '0' ] && [ "$VERSION_TYPE" != "minimal" ]; then
+    uci add_list dockerd.globals.registry_mirrors='https://docker.m.daocloud.io'
+    uci commit dockerd
+fi
+
+#软链接
+[ ! -f '/usr/bin/ip' ] && [ -f '/sbin/ip' ] && ln -sf /sbin/ip /usr/bin/ip
+[ ! -f '/usr/bin/wget-ssl' ] && [ -f '/usr/bin/wget' ] && ln -sf /usr/bin/wget /usr/bin/wget-ssl
+#[ ! -f '/usr/bin/ss-local' ] && [ -f '/usr/bin/sslocal' ] && ln -sf /usr/bin/sslocal /usr/bin/ss-local
+[ ! -f '/usr/sbin/trojan' ] && [ -f '/usr/bin/trojan-go' ] && ln -sf /usr/bin/trojan-go /usr/bin/trojan
+#[ ! -f '/usr/bin/v2ray' ] && [ -f '/usr/bin/xray' ] && ln -sf /usr/bin/xray /usr/bin/v2ray
+#[ ! -f '/usr/bin/trojan-go' ] && [ -f '/usr/sbin/trojan-plus' ] && ln -sf /usr/sbin/trojan-plus /usr/bin/trojan-go
+
+#Flag packages
+opkg flag hold luci-app-firewall
+opkg flag hold firewall
+opkg flag hold dnsmasq-full
+
+#清理内存缓存
+#sync; echo 3 > /proc/sys/vm/drop_caches
+
+#自用
+#[ -f '/rom/etc/rpcd_10_system.js' ] && rm -f /etc/rpcd_10_system.js
+#[ -f '/rom/etc/rpcd_10_system.js' ] && rm -f /www/luci-static/resources/view/status/include/10_system.js
+#[ -f '/rom/etc/rpcd_10_system.js' ] && cp -f /rom/etc/rpcd_10_system.js /www/luci-static/resources/view/status/include/10_system.js
+#[ -f '/etc/fucked' ] && sed -i '/Source Code/d' /www/luci-static/resources/view/status/include/10_system.js
+#[ -f '/rom/etc/rpcd_10_system.js' ] && touch /etc/fucked
+
+#禁用Docker自动启动
+#uci set dockerd.globals.auto_start='0'
+#uci commit dockerd
+
+#禁用wrtbwmon自动启动
+uci del wrtbwmon.general.enabled
+uci commit wrtbwmon
+
+#禁用某些可能会自启动且用不上的依赖包服务
+/etc/init.d/php7-fastcgi disable 2>/dev/null
+/etc/init.d/php7-fastcgi stop
+/etc/init.d/php7-fpm disable 2>/dev/null
+/etc/init.d/php7-fpm stop
+/etc/init.d/php8-fastcgi disable 2>/dev/null
+/etc/init.d/php8-fastcgi stop
+/etc/init.d/php8-fpm disable 2>/dev/null
+/etc/init.d/php8-fpm stop
+/etc/init.d/softethervpnbridge disable 2>/dev/null
+/etc/init.d/softethervpnbridge stop
+/etc/init.d/softethervpnserver disable 2>/dev/null
+/etc/init.d/softethervpnserver stop
+/etc/init.d/softethervpnclient disable 2>/dev/null
+/etc/init.d/softethervpnclient stop
+/etc/init.d/haproxy disable 2>/dev/null
+/etc/init.d/haproxy stop
+/etc/init.d/kcptun disable 2>/dev/null
+/etc/init.d/kcptun stop
+/etc/init.d/socat disable 2>/dev/null
+/etc/init.d/socat stop
+/etc/init.d/fa-rk3399-pwmfan disable 2>/dev/null
+/etc/init.d/fa-rk3399-pwmfan stop
+/etc/init.d/fa-rk3328-pwmfan disable 2>/dev/null
+/etc/init.d/fa-rk3328-pwmfan stop
+#/etc/init.d/ttyd disable 2>/dev/null
+#/etc/init.d/ttyd stop
+/etc/init.d/shortcut-fe enable 2>/dev/null
+/etc/init.d/shortcut-fe start
+/etc/init.d/qemu-ga disable 2>/dev/null
+/etc/init.d/qemu-ga stop
+#/etc/init.d/dnsproxy disable 2>/dev/null
+#/etc/init.d/dnsproxy stop
+#/etc/init.d/dockerd disable 2>/dev/null
+#/etc/init.d/dockerd stop
+
+#########以下是我自己的===
+#for x86-64
+#sed -i '/openwrt_core/d' /etc/opkg/distfeeds.conf
+sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf
+#sed -i "\$a\src/gz openwrt_core https://ghp.ci/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+
+#获取/usr/lib/opkg/info/kernel.control中的第二行“Version: 6.1.76-1-6845aa9a30f20a242bd9b8aa42d8e480”中的6.1.76-1-6845aa9a30f20a242bd9b8aa42d8e480
+#sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.cooluc.com/ilxp/yao-kmod-x86_64/main/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+#sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.gitmirror.com/ilxp/oprx-kmod-x86_64/main/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+
+#sed -i "/openwrt_core/c\src/gz openwrt_core https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+sed -i "/openwrt_core/c\src/gz openwrt_core https://gh-proxy.com/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+#sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+
+# extra packages
+echo "src/gz openwrt_extras https://opkg.cooluc.com/openwrt-24.10/$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)" >> /etc/opkg/distfeeds.conf
+
+# disable coremark
+sed -i '/coremark/d' /etc/crontabs/root
+crontab /etc/crontabs/root
+
+
+#修改ash为bash 修改登陆密码为password
+#[ -f '/bin/bash' ] && sed -i 's|root:x:0:0:root:/root:/bin/ash|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
+#配置密码为password
+sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+
+
+# 禁用ipv6前缀
+sed -i 's/^[^#].*option ula/#&/' /etc/config/network 
+
+#删除首页多余展示页面
+rm -f /www/luci-static/resources/view/status/include/25_storage.js
+rm -f /www/luci-static/resources/view/status/include/29_ports.js
+rm -f /www/luci-static/resources/view/status/include/29_ethinfo.js
+rm -f /www/luci-static/resources/view/status/include/50_dsl.js
+rm -f /www/luci-static/resources/view/status/include/70_ddns.js
+rm -f /www/luci-static/resources/view/status/include/80_minidlna.js
+rm -f /www/luci-static/resources/view/status/include/80_upnp.js
+
+#sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+#echo "DISTRIB_REVISION='R21.12.1'" >> /etc/openwrt_release
+#sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+#echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i 's/OpenWrt/OprX/g' /etc/openwrt_release
+
+#--------以下设置是能考来源https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/files/etc/uci-defaults/99-custom.sh
+
+# 设置默认防火墙规则，方便虚拟机首次访问 WebUI
+uci set firewall.@zone[1].input='ACCEPT'
+
+# 设置主机名映射，解决安卓原生 TV 无法联网的问题
+uci add dhcp domain
+uci set "dhcp.@domain[-1].name=time.android.com"
+uci set "dhcp.@domain[-1].ip=203.107.6.88"
+
+# 计算网卡数量
+count=0
+ifnames=""
+for iface in /sys/class/net/*; do
+  iface_name=$(basename "$iface")
+  # 检查是否为物理网卡（排除回环设备和无线设备）
+  if [ -e "$iface/device" ] && echo "$iface_name" | grep -Eq '^eth|^en'; then
+    count=$((count + 1))
+    ifnames="$ifnames $iface_name"
+  fi
+done
+# 删除多余空格
+ifnames=$(echo "$ifnames" | awk '{$1=$1};1')
+
+# 网络设置
+if [ "$count" -eq 1 ]; then
+   # 单网口设备 类似于NAS模式 动态获取ip模式 具体ip地址取决于上一级路由器给它分配的ip 也方便后续你使用web页面设置旁路由
+   # 单网口设备 不支持修改ip 不要在此处修改ip 
+   uci set network.lan.proto='dhcp'
+elif [ "$count" -gt 1 ]; then
+   # 提取第一个接口作为WAN
+   wan_ifname=$(echo "$ifnames" | awk '{print $1}')
+   # 剩余接口保留给LAN
+   lan_ifnames=$(echo "$ifnames" | cut -d ' ' -f2-)
+   # 设置WAN接口基础配置
+   uci set network.wan=interface
+   # 提取第一个接口作为WAN
+   uci set network.wan.device="$wan_ifname"
+   # WAN接口默认DHCP
+   uci set network.wan.proto='dhcp'
+   # 设置WAN6绑定网口eth0
+   uci set network.wan6=interface
+   uci set network.wan6.device="$wan_ifname"
+   # 更新LAN接口成员
+   # 查找对应设备的section名称
+   section=$(uci show network | awk -F '[.=]' '/\.@?device\[\d+\]\.name=.br-lan.$/ {print $2; exit}')
+   if [ -z "$section" ]; then
+      echo "error：cannot find device 'br-lan'." >> $LOGFILE
+   else
+      # 删除原来的ports列表
+      uci -q delete "network.$section.ports"
+      # 添加新的ports列表
+      for port in $lan_ifnames; do
+         uci add_list "network.$section.ports"="$port"
+      done
+      echo "ports of device 'br-lan' are update." >> $LOGFILE
+   fi
+   # LAN口设置静态IP
+   uci set network.lan.proto='static'
+   # 多网口设备 支持修改为别的ip地址
+   uci set network.lan.ipaddr='192.168.8.1'
+   uci set network.lan.netmask='255.255.255.0'
+   echo "set 192.168.8.1 at $(date)" >> $LOGFILE
+fi
+
+
+# 设置所有网口可访问网页终端
+#uci delete ttyd.@ttyd[0].interface
+
+# 设置所有网口可连接 SSH  #会导致登陆密码失效，无法登陆
+#uci set dropbear.@dropbear[0].Interface=''
+
+uci commit
+#----------结束-----
+
+
+chmod 0755 /etc/init.d/*
+
+#清除 LuCI 残留缓存
+rm -rf /tmp/luci-modulecache
+rm -f /tmp/luci-indexcache
+
+exit 0
