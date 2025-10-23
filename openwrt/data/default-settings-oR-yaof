@@ -232,7 +232,7 @@ sed -i '/offloading/ a\                shortcutfe: access('\''/etc/init.d/shortc
 
 #通用即插即用
 uci set upnpd.config.enabled='1'
-uci set upnpd.config.force_forwarding='1'
+#uci set upnpd.config.force_forwarding='1'   #qiu大佬已经打patch了。
 #uci del upnpd.config.use_stun
 #uci del upnpd.config.stun_host
 uci set upnpd.config.external_iface="wan"
