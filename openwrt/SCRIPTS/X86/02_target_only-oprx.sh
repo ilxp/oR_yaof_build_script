@@ -97,9 +97,6 @@ merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new ad
 cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/files/zzz-default-settings
 
 #三、编译出错的########
-#rm -rf package/kernel/mac80211
-#merge_package master https://github.com/coolsnowwolf/lede package/kernel package/kernel/mac80211
-
 # lrzsz - 0.12.20
 rm -rf feeds/packages/utils/lrzsz
 git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
@@ -241,90 +238,6 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/..\/..\/luci
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/..\/..\/lang\/golang\/golang-package.mk/$(TOPDIR)\/feeds\/packages\/lang\/golang\/golang-package.mk/g' {}
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_URL:=@GHREPO/PKG_SOURCE_URL:=https:\/\/github.com/g' {}
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_URL:=@GHCODELOAD/PKG_SOURCE_URL:=https:\/\/codeload.github.com/g' {}
-
-#11、ecrasy大神diy for offical openwrt===
-# Add model.sh to remove annoying board name for Intel J4125
-cp -f ./diydata/data/model.sh package/base-files/files/etc/
-chmod 0755 package/base-files/files/etc/model.sh
-echo "Add model.sh"
-
-# Add 92-ula-prefix, try to set up IPv6 ula prefix after wlan up
-# and call model.sh
-mkdir -p package/base-files/files/etc/hotplug.d/iface
-cp -f ./diydata/data/92-ula-prefix package/base-files/files/etc/hotplug.d/iface/
-chmod 0755 package/base-files/files/etc/hotplug.d/iface/92-ula-prefix
-echo "Add 92-ula-prefix"
-
-# Custom DDns zh_Hans translation
-ddns_PATH="feeds/luci/applications/luci-app-ddns/po/zh_Hans"
-sed -i 's/动态DNS 服务项/DDNS服务/g' ${ddns_PATH}/ddns.po
-sed -i 's/动态 DNS 版本/DDNS版本/g' ${ddns_PATH}/ddns.po
-sed -i 's/动态 DNS(DDNS)/DDNS/g' ${ddns_PATH}/ddns.po
-sed -i 's/动态DNS/DDNS/g' ${ddns_PATH}/ddns.po
-sed -i 's/动态 DNS/DDNS/g' ${ddns_PATH}/ddns.po
-echo "Custom DDNS zh_Hans translation"
-
-# Custom Shairplay zh_Hans translation
-sp_PATH="feeds/luci/applications/luci-app-shairplay/po/zh_Hans"
-sed -i 's/Shairplay(多媒体程序)/Shairplay/g' ${sp_PATH}/shairplay.po
-echo "Custom Shairplay zh_Hans translation"
-
-# Custom Samba4 zh_Hans translation
-SB_PATH="feeds/luci/applications/luci-app-samba4/po/zh_Hans"
-sed -i 's/网络共享/Samba4/g' ${SB_PATH}/samba4.po
-echo "Custom Samba4 zh_Hans translation"
-
-# Custom CloudShark zh_Hans translation
-CShark_PATH="feeds/luci/applications/luci-app-cshark/po/zh_Hans"
-sed -i 's/云鲨/CloudShark/g' ${CShark_PATH}/cshark.po
-echo "Custom CloudShark zh_Hans translation"
-
-# Add Port status zh_Hans translation
-LB_PATH="feeds/luci/modules/luci-base/po/zh_Hans"
-TLINE=$(grep -m1 -n '"Port status"' ${LB_PATH}/base.po |awk '{ print $1 }' |cut -d':' -f1)
-if [ -n "$TLINE" ]; then
-    DLINE=$((TLINE+1))
-    sed -i "${DLINE}d" ${LB_PATH}/base.po
-    sed -i "${TLINE}a msgstr \"网口状态\"" ${LB_PATH}/base.po
-    echo "Add Port status zh_Hans translation"
-fi
-
-# fix error from https://github.com/openwrt/luci/issues/5373
-# luci-app-statistics: misconfiguration shipped pointing to non-existent directory
-str="^[^#]*option Include '/etc/collectd/conf.d'"
-cmd="s@$str@#&@"
-sed -ri "$cmd" feeds/luci/applications/luci-app-statistics/root/etc/config/luci_statistics
-echo "Fix luci-app-statistics ref wrong path error"
-
-# fix stupid coremark benchmark error
-touch package/base-files/files/etc/bench.log
-chmod 0666 package/base-files/files/etc/bench.log
-echo "Touch coremark log file to fix uhttpd error!!!"
-
-# make minidlna depends on libffmpeg-full instead of libffmpeg
-# little bro ffmpeg mini custom be gone
-sed -i "s/libffmpeg /libffmpeg-full /g" feeds/packages/multimedia/minidlna/Makefile
-echo "Set minidlna depends on libffmpeg-full instead of libffmpeg"
-
-# make cshark depends on libustream-openssl instead of libustream-mbedtls
-# i fucking hate stupid mbedtls so much, be gone
-sed -i "s/libustream-mbedtls/libustream-openssl/g" feeds/packages/net/cshark/Makefile
-echo "Set cshark depends on libustream-openssl instead of libustream-mbedtls"
-
-# remove hnetd depends on odhcpd*
-sed -i "s/+odhcpd//g" feeds/routing/hnetd/Makefile
-echo "Remove hnetd depends on odhcpd*"
-
-# make shairplay depends on mdnsd instead of libavahi-compat-libdnssd
-sed -i "s/+libavahi-compat-libdnssd/+mdnsd/g" feeds/packages/sound/shairplay/Makefile
-echo "Set shairplay depends on mdnsd instead of libavahi-compat-libdnssd"
-
-# set v2raya depends on v2ray-core
-sed -i "s/xray-core/v2ray-core/g" feeds/packages/net/v2raya/Makefile
-echo "set v2raya depends on v2ray-core"
-##=====以上来源ecrasy大神========================================================
-
-#12、骷髅头大神的lean.sh==== 
 
 ###############二、相关luci应用#############################
 #一）、主题
