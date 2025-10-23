@@ -64,13 +64,13 @@ if [ -f /etc/config/dockerd ] && [ $(grep -c daocloud.io /etc/config/dockerd) -e
     uci commit dockerd
 fi
 
-# firewall
-[ $(grep -c shortcut_fe /etc/config/firewall) -eq '0' ] && uci set firewall.@defaults[0].flow_offloading='1'
-if [ $(ifconfig -a | grep -o '^eth[^ ]*' | wc -l) -le 1 ] || [ "$OPENWRT_BOARD" = "armsr/armv8" ]; then
-    uci set firewall.@zone[1].input='ACCEPT'
-fi
-uci set firewall.@defaults[0].input='ACCEPT'
-uci commit firewall
+# firewall  下面yaof设置
+#[ $(grep -c shortcut_fe /etc/config/firewall) -eq '0' ] && uci set firewall.@defaults[0].flow_offloading='1'
+#if [ $(ifconfig -a | grep -o '^eth[^ ]*' | wc -l) -le 1 ] || [ "$OPENWRT_BOARD" = "armsr/armv8" ]; then
+    #uci set firewall.@zone[1].input='ACCEPT'
+#fi
+#uci set firewall.@defaults[0].input='ACCEPT'
+#uci commit firewall
 
 # diagnostics
 if [ $(uci -q get luci.diag.ping) = "openwrt.org" ]; then
@@ -95,7 +95,7 @@ crontab /etc/crontabs/root
 # init
 devices_setup
 
-#==============以下来源yaof以及自己==========
+#==============以下来源yaof==========
 #自动语言
 uci set luci.main.lang=auto
 uci commit luci
@@ -167,10 +167,10 @@ uci set firewall.@defaults[0].brcmfullcone='1'
 uci set firewall.@zone[1].fullcone4='1'
 uci set firewall.@zone[1].fullcone6='1'
 uci set firewall.@defaults[0].natflow='0'
-#uci set firewall.@defaults[0].shortcut_fe='0'  #上面的sbwml的设置了
-#uci set firewall.@defaults[0].flow_offloading='1' #上面的sbwml的设置了
+uci set firewall.@defaults[0].shortcut_fe='0'  
+uci set firewall.@defaults[0].flow_offloading='1' 
 uci set firewall.@defaults[0].input='ACCEPT'
-uci set firewall.@defaults[0].synflood_protect='0'
+uci set firewall.@defaults[0].synflood_protect=''
 for key in $(uci show firewall | grep fullcone6 | cut -d '=' -f 1); do
     uci set "${key}"=0
 done
@@ -178,44 +178,44 @@ uci commit firewall
 /etc/init.d/autocore restart
 
 # einat 启动并确认
-(
-if [ -f /etc/init.d/einat ]; then
-    uci set firewall.@defaults[0].fullcone="0"
-    uci set firewall.@defaults[0].brcmfullcone="0"
-    uci commit firewall
+#(
+#if [ -f /etc/init.d/einat ]; then
+    #uci set firewall.@defaults[0].fullcone="0"
+    #uci set firewall.@defaults[0].brcmfullcone="0"
+    #uci commit firewall
 
-    uci set einat.config.enabled="0"
-    uci commit einat
+    #uci set einat.config.enabled="0"
+    #uci commit einat
 
-    retry=0
-    wanif=""
-    while [ "$retry" -lt 30 ] && [ -z "$wanif" ]; do
-        wanif=$(ip route show default 2>/dev/null | awk '{print $5; exit}')
-        if [ -z "$wanif" ]; then
-            retry=`expr $retry + 1`
-            sleep 1
-        fi
-    done
+    #retry=0
+    #wanif=""
+    #while [ "$retry" -lt 30 ] && [ -z "$wanif" ]; do
+        #wanif=$(ip route show default 2>/dev/null | awk '{print $5; exit}')
+        #if [ -z "$wanif" ]; then
+            #retry=`expr $retry + 1`
+            #sleep 1
+        #fi
+    #done
 
-    if [ -n "$wanif" ]; then
-        uci set einat.config.ifname="$wanif"
-        uci set einat.config.enabled="1"
-        uci commit einat
+    #if [ -n "$wanif" ]; then
+        #uci set einat.config.ifname="$wanif"
+        #uci set einat.config.enabled="1"
+        #uci commit einat
 
-        max_retry=10
-        count=0
-        until ps | grep "[e]inat" >/dev/null 2>&1
-        do
-            /etc/init.d/einat start
-            count=`expr $count + 1`
-            if [ "$count" -ge "$max_retry" ]; then
-                break
-            fi
-            sleep 1
-        done
-    fi
-fi
-) >/dev/null 2>&1 &
+        #max_retry=10
+        #count=0
+        #until ps | grep "[e]inat" >/dev/null 2>&1
+        #do
+            #/etc/init.d/einat start
+            #count=`expr $count + 1`
+            #if [ "$count" -ge "$max_retry" ]; then
+                #break
+            #fi
+            #sleep 1
+        #done
+    #fi
+#fi
+#) >/dev/null 2>&1 &
 
 #SFE
 sed -i '/shortcutfe/d' /usr/share/rpcd/ucode/luci
@@ -343,8 +343,8 @@ opkg flag hold dnsmasq-full
 #[ -f '/rom/etc/rpcd_10_system.js' ] && touch /etc/fucked
 
 #禁用Docker自动启动
-uci set dockerd.globals.auto_start='0'
-uci commit dockerd
+#uci set dockerd.globals.auto_start='0'
+#uci commit dockerd
 
 #禁用wrtbwmon自动启动
 uci del wrtbwmon.general.enabled
