@@ -362,7 +362,8 @@ sed -i 's/services/vpn/g' package/diy/OpenWrt-nikki/luci-app-nikki/root/usr/shar
 rm -rf package/helloworld/luci-app-homeproxy
 git clone --depth=1 https://github.com/immortalwrt/homeproxy.git package/diy/luci-app-homeproxy
 rm -rf ./feeds/packages/net/sing-box
-merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new chinadns-ng sing-box
+merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new chinadns-ng
+merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new sing-box
 #移动到VPN栏目
 sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json
 
