@@ -44,19 +44,19 @@ fi
 echo "src/gz openwrt_extras https://opkg.cooluc.com/openwrt-24.10/$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)" >> /etc/opkg/distfeeds.conf
 
 # nginx
-uci set nginx.global.uci_enable='true'
-uci del nginx._lan
-uci del nginx._redirect2ssl
-uci add nginx server
-uci rename nginx.@server[0]='_lan'
-uci set nginx._lan.server_name='_lan'
-uci add_list nginx._lan.listen='80 default_server'
-uci add_list nginx._lan.listen='[::]:80 default_server'
-#uci add_list nginx._lan.include='restrict_locally'
-uci add_list nginx._lan.include='conf.d/*.locations'
-uci set nginx._lan.access_log='off; # logd openwrt'
-uci commit nginx
-service nginx restart
+#uci set nginx.global.uci_enable='true'
+#uci del nginx._lan
+#uci del nginx._redirect2ssl
+#uci add nginx server
+#uci rename nginx.@server[0]='_lan'
+#uci set nginx._lan.server_name='_lan'
+#uci add_list nginx._lan.listen='80 default_server'
+#uci add_list nginx._lan.listen='[::]:80 default_server'
+##uci add_list nginx._lan.include='restrict_locally'
+#uci add_list nginx._lan.include='conf.d/*.locations'
+#uci set nginx._lan.access_log='off; # logd openwrt'
+#uci commit nginx
+#service nginx restart
 
 # docker mirror
 if [ -f /etc/config/dockerd ] && [ $(grep -c daocloud.io /etc/config/dockerd) -eq '0' ]; then
@@ -153,13 +153,13 @@ uci commit uhttpd
 /etc/init.d/uhttpd restart
 
 #nginx 设置
-sed -i 's,deny all,allow all,g' /etc/nginx/restrict_locally
-uci delete nginx._redirect2ssl.return
-uci delete nginx._redirect2ssl.include
-uci add_list nginx._redirect2ssl.include='restrict_locally'
-uci add_list nginx._redirect2ssl.include='conf.d/*.locations'
-uci commit nginx
-/etc/init.d/nginx restart
+#sed -i 's,deny all,allow all,g' /etc/nginx/restrict_locally
+#uci delete nginx._redirect2ssl.return
+#uci delete nginx._redirect2ssl.include
+#uci add_list nginx._redirect2ssl.include='restrict_locally'
+#uci add_list nginx._redirect2ssl.include='conf.d/*.locations'
+#uci commit nginx
+#/etc/init.d/nginx restart
 
 #在防火墙默认开启全锥形 NAT 以及关闭SFE  并开启 Flow Offloading
 uci set firewall.@defaults[0].fullcone='1'
