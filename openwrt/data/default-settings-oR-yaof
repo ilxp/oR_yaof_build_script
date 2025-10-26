@@ -92,8 +92,6 @@ uci -q get network.globals.packet_steering > /dev/null || {
 sed -i '/coremark/d' /etc/crontabs/root
 crontab /etc/crontabs/root
 
-# init
-devices_setup
 
 #==============以下来源yaof==========
 #自动语言
@@ -105,11 +103,11 @@ uci set fstab.@global[0].anon_mount=1
 uci commit fstab fstab
 
 #时区设置
-uci set system.@system[0].zram_comp_algo='lz4'
+#uci set system.@system[0].zram_comp_algo='lz4' #上面已设置
 uci set system.@system[0].hostname=OprX
 uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
-uci set system.@system[0].description=Welcome.To.Use.OprX!
+uci set system.@system[0].description=Welcome.To.Use.OprX-oR.Series!
 uci -q del system.ntp.server
 uci -q add_list system.ntp.server='ntp.aliyun.com'
 uci -q add_list system.ntp.server='ntp.tencent.com'
@@ -135,7 +133,7 @@ sed -i '/127.255.255.255/d' /etc/config/shadowsocksr
 uci add_list shadowsocksr.@access_control[0].wan_bp_ips='127.255.255.255'
 uci commit shadowsocksr
 
-#Feeds 更换镜像源
+#Feeds 更换镜像源 #上面已配置
 ##sed -i 's,21.02,21.02-SNAPSHOT,g' /etc/opkg/distfeeds.conf
 #sed -i 's,downloads.openwrt.org,mirror.sjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
 #sed -i 's,mirrors.pku.edu.cn/openwrt,mirror.sjtu.edu.cn/openwrt,g' /etc/opkg/distfeeds.conf
@@ -343,7 +341,7 @@ opkg flag hold dnsmasq-full
 #[ -f '/etc/fucked' ] && sed -i '/Source Code/d' /www/luci-static/resources/view/status/include/10_system.js
 #[ -f '/rom/etc/rpcd_10_system.js' ] && touch /etc/fucked
 
-#禁用Docker自动启动
+#禁用Docker自动启动  #不要用，否则手动启动不起来
 #uci set dockerd.globals.auto_start='0'
 #uci commit dockerd
 
@@ -409,7 +407,7 @@ chmod 0755 /etc/init.d/*
 sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
 sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
 
-# 禁用ipv6前缀  已在前面配置
+# 禁用ipv6前缀  已在前面dnsmasq配置
 #sed -i 's/^[^#].*option ula/#&/' /etc/config/network
 
 #删除首页多余展示页面
@@ -428,15 +426,12 @@ rm -f /www/luci-static/resources/view/status/include/80_upnp.js
 sed -i 's/OpenWrt/OprX/g' /etc/openwrt_release
 
 #--------以下设置是能考来源https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/files/etc/uci-defaults/99-custom.sh
-
 # 设置默认防火墙规则，方便虚拟机首次访问 WebUI
 uci set firewall.@zone[1].input='ACCEPT'
-
 # 设置主机名映射，解决安卓原生 TV 无法联网的问题
 uci add dhcp domain
 uci set "dhcp.@domain[-1].name=time.android.com"
 uci set "dhcp.@domain[-1].ip=203.107.6.88"
-
 # 计算网卡数量
 count=0
 ifnames=""
@@ -450,7 +445,6 @@ for iface in /sys/class/net/*; do
 done
 # 删除多余空格
 ifnames=$(echo "$ifnames" | awk '{$1=$1};1')
-
 # 网络设置
 if [ "$count" -eq 1 ]; then
    # 单网口设备 类似于NAS模式 动态获取ip模式 具体ip地址取决于上一级路由器给它分配的ip 也方便后续你使用web页面设置旁路由
@@ -492,10 +486,8 @@ elif [ "$count" -gt 1 ]; then
    echo "set 192.168.8.1 at $(date)" >> $LOGFILE
 fi
 
-
 # 设置所有网口可访问网页终端
 #uci delete ttyd.@ttyd[0].interface
-
 # 设置所有网口可连接 SSH  #会导致登陆密码失效，无法登陆
 #uci set dropbear.@dropbear[0].Interface=''
 
