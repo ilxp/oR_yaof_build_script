@@ -137,13 +137,6 @@ wget https://github.com/torvalds/linux/commit/7eebd219.patch -O target/linux/gen
 # ppp_fix
 wget -qO - https://github.com/immortalwrt/immortalwrt/commit/9d852a0.patch | patch -p1
 
-#### fullconenat-nft
-#fullconenat-nft
-rm -rf package/new/nft-fullcone
-merge_package master https://github.com/immortalwrt/immortalwrt.git package/network/utils package/network/utils/fullconenat-nft
-merge_package master https://github.com/immortalwrt/immortalwrt.git package/network/utils package/network/utils/fullconenat
-
-
 ### Fullcone-NAT 部分 ###
 # bcmfullcone
 cp -rf ./diydata/PATCH/kernel/bcmfullcone/* ./target/linux/generic/hack-6.6/

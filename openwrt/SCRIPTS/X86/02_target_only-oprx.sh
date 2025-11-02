@@ -915,6 +915,12 @@ git clone https://github.com/timsaya/openwrt-bandix  package/new/bandix
 #ddns
 merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new openwrt_pkgs/ddns-scripts-aliyun
 
+#### fullconenat-nft
+#fullconenat-nft
+rm -rf package/new/nft-fullcone
+merge_package master https://github.com/immortalwrt/immortalwrt.git package/network/utils package/network/utils/fullconenat-nft
+merge_package master https://github.com/immortalwrt/immortalwrt.git package/network/utils package/network/utils/fullconenat
+
 ##########################################################################
 
 chmod -R 755 ./

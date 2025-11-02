@@ -256,6 +256,9 @@ CONFIG_PACKAGE_kmod-crypto-xxhash=y
 
 
 ##以下属于自己的
+
+CONFIG_PACKAGE_fullconenat-nft=y
+
 #动态ddns
 CONFIG_PACKAGE_luci-app-ddns=y
 CONFIG_PACKAGE_ddns-scripts=y
