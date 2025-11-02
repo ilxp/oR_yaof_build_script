@@ -141,7 +141,7 @@ wget -qO - https://github.com/immortalwrt/immortalwrt/commit/9d852a0.patch | pat
 #fullconenat-nft
 rm -rf package/new/nft-fullcone
 merge_package master https://github.com/immortalwrt/immortalwrt.git package/network/utils package/network/utils/fullconenat-nft
-#merge_package master https://github.com/immortalwrt/immortalwrt.git package/network/utils package/network/utils/fullconenat
+merge_package master https://github.com/immortalwrt/immortalwrt.git package/network/utils package/network/utils/fullconenat
 
 
 ### Fullcone-NAT 部分 ###
