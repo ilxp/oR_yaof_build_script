@@ -922,6 +922,7 @@ merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new le
 #fanchmwrt的
 git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
 merge_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
+sed -i "s/+luci-i18n-base-zh-cn/ /g" package/fcm/luci-theme-fanchmwrt/Makefile
 rm -rf target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
 wget -P target/linux/generic/hack-6.6/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
 
