@@ -273,14 +273,15 @@ wget https://github.com/miniupnp/miniupnp/commit/3f3582b.patch -O feeds/packages
 sed -i 's,/miniupnpd/,/,g' ./feeds/packages/net/miniupnpd/patches/3f3582b.patch
 wget https://github.com/miniupnp/miniupnp/commit/6aefa9a.patch -O feeds/packages/net/miniupnpd/patches/6aefa9a.patch
 sed -i 's,/miniupnpd/,/,g' ./feeds/packages/net/miniupnpd/patches/6aefa9a.patch
-cp -rf ./diydata/PATCH/pkgs/miniupnpd/301-options-force_forwarding-support.patch ./feeds/packages/net/miniupnpd/patches/
+#cp -rf ./diydata/data/patches/miniupnpd/301-options-force_forwarding-support.patch ./feeds/packages/net/miniupnpd/patches/
 pushd feeds/packages
-patch -p1 <../.././diydata/PATCH/pkgs/miniupnpd/01-set-presentation_url.patch
-patch -p1 <../.././diydata/PATCH/pkgs/miniupnpd/02-force_forwarding.patch
+patch -p1 <../.././diydata/data/patches/miniupnpd/01-set-presentation_url.patch
+patch -p1 <../.././diydata/data/patches/miniupnpd/02-force_forwarding.patch
 popd
 pushd feeds/luci
-patch -p1 <../.././diydata/PATCH/pkgs/miniupnpd/luci-upnp-support-force_forwarding-flag.patch
+patch -p1 <../.././diydata/data/patches/miniupnpd/luci-upnp-support-force_forwarding-flag.patch
 popd
+
 # 动态DNS
 sed -i '/boot()/,+2d' feeds/packages/net/ddns-scripts/files/etc/init.d/ddns
 # Docker 容器
