@@ -920,7 +920,7 @@ rm -rf package/new/nft-fullcone
 merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new lede_pkg/fullconenat-nft
 
 #fanchmwrt的
-git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/new2
+git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
 merge_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
 rm -rf target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
 wget -P target/linux/generic/hack-6.6/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
