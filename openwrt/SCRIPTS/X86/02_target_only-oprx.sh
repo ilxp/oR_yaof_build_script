@@ -816,14 +816,15 @@ sed -i 's/procd_set_param stdout 1/procd_set_param stdout 0/g' feeds/packages/ut
 sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/g' feeds/packages/utils/ttyd/files/ttyd.init
 
 #20、autocore
-rm -rf package/system/autocore  #sbwml的cpu使用率有问题。
-#git clone -b openwrt-24.10 --depth 1 https://github.com/sbwml/autocore-arm  package/system/autocore
-#sed -i '/init/d' package/system/autocore/Makefile
-#sed -i '/autocore.json/a\\	$(INSTALL_BIN) ./files/x86/autocore $(1)/etc/init.d/' package/system/autocore/Makefile
-#sed -i '/autocore.json/a\\	$(INSTALL_DIR) $(1)/etc/init.d' package/system/autocore/Makefile
+rm -rf package/system/autocore 
+git clone -b openwrt-24.10 --depth 1 https://github.com/sbwml/autocore-arm  package/system/autocore
+sed -i '/init/d' package/system/autocore/Makefile
+sed -i '/autocore.json/a\\	$(INSTALL_BIN) ./files/x86/autocore $(1)/etc/init.d/' package/system/autocore/Makefile
+sed -i '/autocore.json/a\\	$(INSTALL_DIR) $(1)/etc/init.d' package/system/autocore/Makefile
+
 #cp -rf ./diydata/data/autocore  package/system/autocore/files/x86/  ##sbwml的cpu使用率有问题。采用yaof的
 
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git  package/system/autocore autocore-arm
+#merge_package master https://github.com/QiuSimons/OpenWrt-Add.git  package/system/autocore autocore-arm
 
 #采用immortalwrt的
 # AutoCore
