@@ -925,7 +925,7 @@ git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packag
 merge_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
 #fcmwrt的oaf更新特征库
 pushd package/fcm
-wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O > ./fwxd/files/feature.cfg
+wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O ./fwxd/files/feature.cfg
 popd
 #删除主题依赖
 sed -i "s/+luci-i18n-base-zh-cn/ /g" package/fcm/luci-theme-fanchmwrt/Makefile
