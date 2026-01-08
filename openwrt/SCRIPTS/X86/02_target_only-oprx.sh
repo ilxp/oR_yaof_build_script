@@ -426,6 +426,7 @@ sed -i 's/enabled '1'/enabled '0'/g' package/diy/op-lucky/lucky/files/luckyuci
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app-advanced
 #rm -rf package/diy/luci-app-advanced/htdocs #不能删除
 
+
 ##五）QOS相关
 #石像鬼qos采用我自己的，会有一个QOS栏目生成
 #git clone -b openwrt-2305 https://github.com/ilxp/gargoyle-qos-openwrt.git  package/diy/gargoyle-qos-openwrt
