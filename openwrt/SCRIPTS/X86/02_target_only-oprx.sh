@@ -380,11 +380,11 @@ git clone https://github.com/sirpdboy/luci-app-netdata.git package/diy/luci-app-
 
 #网络设置向导
 git clone https://github.com/sirpdboy/luci-app-netwizard.git package/diy/netwizard
-sed -i 's/Netwizard/设置向导/g' package/diy/netwizard/luci-app-netwizard/luasrc/controller/netwizard.lua
+sed -i 's/Netwizard/设置向导/g' package/diy/netwizard/luci-app-netwizard/root/usr/share/luci/menu.d/luci-app-netwizard.json
 sed -i 's/eth1/eth0/g' package/diy/netwizard/luci-app-netwizard/root/etc/init.d/netwizard
 
 #网络速度测试
-git clone -b js https://github.com/sirpdboy/netspeedtest.git package/diy/netspeedtest
+git clone https://github.com/sirpdboy/netspeedtest.git package/diy/netspeedtest
 sed -i 's/NetSpeedtest/网络测速/g' package/diy/netspeedtest/luci-app-netspeedtest/root/usr/share/luci/menu.d/luci-app-netspeedtest.json
 
 #任务设置（会产生一个control管控栏目）
@@ -407,10 +407,7 @@ sed -i 's/Control/管控/g' package/diy/luci-app-parentcontrol/luasrc/controller
 
 #自动扩容分区
 git clone https://github.com/sirpdboy/luci-app-partexp package/diy/partexp
-sed -i 's/Partition Expansion/分区扩容/g' package/diy/partexp/luci-app-partexp/luasrc/controller/partexp.lua
-#rm -rf package/diy/luci-app-partexp/po/zh_Hans  #sbwml上不能删除
-sed -i 's, - !, -o !,g' package/diy/partexp/luci-app-partexp/root/etc/init.d/partexp
-sed -i 's,expquit 1 ,#expquit 1 ,g' package/diy/partexp/luci-app-partexp/root/etc/init.d/partexp
+sed -i 's/Partition Expansion/分区扩容/g' package/diy/partexp/luci-app-partexp/root/usr/share/luci/menu.d/luci-app-partexp.json
 
 #ddns-go
 rm -rf feeds/packages/net/ddns-go
