@@ -922,7 +922,7 @@ merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new le
 
 #fanchmwrt
 git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
-mege_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
+merge_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
 #fcmwrt的oaf更新特征库
 pushd package/fcm
 wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O > ./fwxd/files/feature.cfg
