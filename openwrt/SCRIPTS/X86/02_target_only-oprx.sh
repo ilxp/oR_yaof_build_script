@@ -924,8 +924,9 @@ merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new le
 git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
 mege_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
 #fcmwrt的oaf更新特征库
-rm -rf package/fcm/fwd/files/feature.cfg
-wget -qO- https://github.com/ilxp/oaf/raw/main/feature.cfg > package/fcm/fwxd/files/feature.cfg
+pushd package/fcm
+wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O > ./fwxd/files/feature.cfg
+popd
 #删除主题依赖
 sed -i "s/+luci-i18n-base-zh-cn/ /g" package/fcm/luci-theme-fanchmwrt/Makefile
 #nf补丁
