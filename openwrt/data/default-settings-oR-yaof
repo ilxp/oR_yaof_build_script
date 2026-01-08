@@ -445,11 +445,6 @@ cd /etc/rc.d
 rm -f S98udptools || true
 rm -f S99nft-qos || true
 
-#fcmwrt的oaf更新特征库
-wget -qO- https://github.com/ilxp/oaf/raw/main/feature.cfg > package/base-files/files/etc/fwxd/feature.cfg
-chmod +x package/base-files/files/etc/fwxd/feature.cfg
-
-
 #--------以下设置是能考来源https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/files/etc/uci-defaults/99-custom.sh
 # 设置默认防火墙规则，方便虚拟机首次访问 WebUI
 # 因为本项目中 单网口模式是dhcp模式 直接就能上网并且访问web界面
