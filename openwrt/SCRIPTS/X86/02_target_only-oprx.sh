@@ -25,11 +25,11 @@ exit 0
 '> ./package/base-files/files/etc/rc.local
 
 #Vermagic
-#latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
-##latest_version="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')"
-#wget https://downloads.openwrt.org/releases/${latest_version}/targets/x86/64/profiles.json
-#jq -r '.linux_kernel.vermagic' profiles.json >.vermagic
-#sed -i -e 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
+latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
+#latest_version="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')"
+wget https://downloads.openwrt.org/releases/${latest_version}/targets/x86/64/profiles.json
+jq -r '.linux_kernel.vermagic' profiles.json >.vermagic
+sed -i -e 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
 
 # 预配置一些插件
 cp -rf ./diydata/PATCH/files ./files
@@ -108,10 +108,10 @@ rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
 #cp -rf ./diydata/data/modules-6.6/hwmon.mk  ./package/kernel/linux/modules/
 cp -rf ./diydata/data/modules-6.6/netsupport.mk ./package/kernel/linux/modules/
 
-# 1、kenrel Vermagic
-sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
-#grep HASH include/kernel-6.6 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
-grep HASH include/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
+# 1、kenrel Vermagic  杂交用上面yaof的
+#sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
+##grep HASH include/kernel-6.6 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
+#grep HASH include/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
 
 # 2、Optimization level -Ofast
 #sed -i 's/Os/O2/g' include/target.mk

@@ -1,12 +1,12 @@
 #!/bin/sh
 
-#修改kmod的链接
-#sed -i '/openwrt_core/d' /etc/opkg/distfeeds.conf
-sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf  #oR系列为kmods
+#修改kmod的链接  杂交不需要
+##sed -i '/openwrt_core/d' /etc/opkg/distfeeds.conf
+#sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf  #oR系列为kmods
 #获取/usr/lib/opkg/info/kernel.control中的第二行“Version: 6.1.76-1-6845aa9a30f20a242bd9b8aa42d8e480”中的6.1.76-1-6845aa9a30f20a242bd9b8aa42d8e480
-#sed -i "/openwrt_core/c\src/gz openwrt_core https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
-sed -i "/openwrt_core/c\src/gz openwrt_core https://gh-proxy.com/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
-#sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+##sed -i "/openwrt_core/c\src/gz openwrt_core https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+#sed -i "/openwrt_core/c\src/gz openwrt_core https://gh-proxy.com/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+##sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 
 # theme
 #if [ -d "/www/luci-static/argon" ] && [ -z "$(uci -q get luci.main.pollinterval)" ]; then

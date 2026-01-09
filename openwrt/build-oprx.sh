@@ -209,9 +209,9 @@ rm -rf openwrt master
 echo -e "\n${GREEN_COLOR}Prepare Mixedwrt ...${RES}\n"
 # SCRIPTS 注意先后顺序
 #杂交代码与克隆其他资源。在get_ready.sh
-curl -sO $mirror/openwrt/SCRIPTS/01_get_ready-oprx.sh
-chmod 0755 01_get_ready-oprx.sh
-bash 01_get_ready-oprx.sh
+curl -sO $mirror/openwrt/SCRIPTS/01_get_ready.sh
+chmod 0755 01_get_ready.sh
+bash 01_get_ready.sh
 ###############################################
 
 # immortalwrt master
