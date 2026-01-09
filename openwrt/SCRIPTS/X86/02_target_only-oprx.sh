@@ -25,7 +25,7 @@ exit 0
 '> ./package/base-files/files/etc/rc.local
 
 #Vermagic
-latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
+latest_version="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')"
 #latest_version="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')"
 wget https://downloads.openwrt.org/releases/${latest_version}/targets/x86/64/profiles.json
 jq -r '.linux_kernel.vermagic' profiles.json >.vermagic
