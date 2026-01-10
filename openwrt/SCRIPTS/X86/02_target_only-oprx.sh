@@ -462,9 +462,7 @@ cp -f ./diydata/data/sqm/001-help-translation.patch  feeds/packages/net/sqm-scri
 #qosmate
 git clone https://github.com/hudra0/luci-app-qosmate package/diy/luci-app-qosmate
 git clone https://github.com/hudra0/qosmate package/diy/qosmate
-#汉化
-mkdir -p package/base-files/files/usr/lib/lua/luci/i18n
-cp -f ./diydata/data/qosmate/qosmate.zh-cn.lmo package/base-files/files/usr/lib/lua/luci/i18n/
+
 #修改wan口eth0
 sed -i 's/eth1/eth0/g' package/diy/qosmate/etc/config/qosmate
 
@@ -922,17 +920,17 @@ rm -rf package/new/nft-fullcone
 merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new lede_pkg/fullconenat-nft
 
 #fanchmwrt
-git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
-merge_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
+#git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
+#merge_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
 #fcmwrt的oaf更新特征库
-pushd package/fcm
-wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O ./fwxd/files/feature.cfg
-popd
+#pushd package/fcm
+#wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O ./fwxd/files/feature.cfg
+#popd
 #删除主题依赖
-sed -i "s/+luci-i18n-base-zh-cn/ /g" package/fcm/luci-theme-fanchmwrt/Makefile
+#sed -i "s/+luci-i18n-base-zh-cn/ /g" package/fcm/luci-theme-fanchmwrt/Makefile
 #nf补丁
-rm -rf target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
-wget -P target/linux/generic/hack-6.6/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
+#rm -rf target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
+#wget -P target/linux/generic/hack-6.6/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
 
 ##########################################################################
 

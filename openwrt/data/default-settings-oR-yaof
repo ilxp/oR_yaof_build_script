@@ -9,15 +9,15 @@
 ##sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
 
 # theme
-#if [ -d "/www/luci-static/argon" ] && [ -z "$(uci -q get luci.main.pollinterval)" ]; then
-    #uci set luci.main.mediaurlbase='/luci-static/argon'
-    #uci set luci.main.pollinterval='3'
-    #uci commit luci
-#fi
+if [ -d "/www/luci-static/argon" ] && [ -z "$(uci -q get luci.main.pollinterval)" ]; then
+    uci set luci.main.mediaurlbase='/luci-static/argon'
+    uci set luci.main.pollinterval='3'
+    uci commit luci
+fi
 
 #fanchmwrt主题
-uci set luci.main.mediaurlbase='/luci-static/fanchmwrt'
-uci commit system
+#uci set luci.main.mediaurlbase='/luci-static/fanchmwrt'
+#uci commit system
 
 # timezone
 uci set system.@system[0].timezone=CST-8
