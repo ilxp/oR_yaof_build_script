@@ -462,6 +462,9 @@ cp -f ./diydata/data/sqm/001-help-translation.patch  feeds/packages/net/sqm-scri
 #qosmate
 git clone https://github.com/hudra0/luci-app-qosmate package/diy/luci-app-qosmate
 git clone https://github.com/hudra0/qosmate package/diy/qosmate
+#汉化
+mkdir -p package/base-files/files/usr/lib/lua/luci/i18n
+cp -f ./diydata/data/qosmate/qosmate.zh-cn.lmo package/base-files/files/usr/lib/lua/luci/i18n/
 #修改wan口eth0
 sed -i 's/eth1/eth0/g' package/diy/qosmate/etc/config/qosmate
 
