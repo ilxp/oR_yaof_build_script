@@ -164,7 +164,7 @@ uci commit nginx
 /etc/init.d/nginx restart
 
 #在防火墙默认开启全锥形 NAT 以及关闭SFE  并开启 Flow Offloading
-uci set firewall.@defaults[0].fullcone='1'
+uci set firewall.@defaults[0].fullcone='0' #默认关闭分流
 uci set firewall.@defaults[0].brcmfullcone='0' #关闭博通使用nftables
 uci set firewall.@zone[1].fullcone4='1'
 uci set firewall.@zone[1].fullcone6='1'
