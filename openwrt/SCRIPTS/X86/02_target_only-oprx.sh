@@ -462,9 +462,11 @@ cp -f ./diydata/data/sqm/001-help-translation.patch  feeds/packages/net/sqm-scri
 #qosmate
 git clone https://github.com/hudra0/luci-app-qosmate package/diy/luci-app-qosmate
 git clone https://github.com/hudra0/qosmate package/diy/qosmate
-
 #修改wan口eth0
 sed -i 's/eth1/eth0/g' package/diy/qosmate/etc/config/qosmate
+#载入规则
+mkdir -p package/base-files/files/etc/qosmate.d
+cp -f ./diydata/data/qosmate.d/inline_dscptag.nft package/base-files/files/etc/qosmate.d/inline_dscptag.nft
 
 #六）、DNS相关（openwrt带mosdns）
 #1）smartdns（lede是lede的luci18-branch，master分支是js，lede的luci-23.05分支是js）
