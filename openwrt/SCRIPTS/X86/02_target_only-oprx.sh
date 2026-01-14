@@ -778,8 +778,6 @@ sed -i "s/TARGET_FLAG=Full/TARGET_FLAG=oR/g" package/diy/openwrt-autoupdate/auto
 Short_Date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
 Compile_Date=$(TZ=UTC-8 date +'%Y%m%d')
 #OP_VERSION="R${Short_Date}-${Compile_Date}"
-#latest_version=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')
-#OP_VERSION="R${latest_version}-${Compile_Date}"
 OP_VERSION="R${Tag}-${Compile_Date}"
 sed -i "s/OP_VERSION=R24.1.1-20240101/OP_VERSION=$OP_VERSION/g" package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default  #使用双引号
 #3）源码作者
