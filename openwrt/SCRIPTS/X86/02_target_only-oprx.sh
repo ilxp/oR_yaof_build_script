@@ -124,15 +124,14 @@ sed -i 's/Os/O2 -march=x86-64-v2/g' include/target.mk
 #date=`TZ=UTC-8 date +%m.%d.%Y`  #升级用，统一这样
 #R$(TZ=UTC-8 date +'%y.%-m.%-d')
 ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
-#Tag="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')"
-Tag=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')
-#Tag="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
+latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g') #不要引号
+#latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
 #Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
-sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$Tag built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
+sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
 
 sed -i "/OPENWRT_RELEASE/d" package/base-files/files/usr/lib/os-release
-sed -i "/OPENWRT_DEVICE_REVISION/aOPENWRT_RELEASE=\"oR$Tag built by ilxp@%C\"" package/base-files/files/usr/lib/os-release
+sed -i "/OPENWRT_DEVICE_REVISION/aOPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"" package/base-files/files/usr/lib/os-release
 
 # 5、固件的命名格式：。
 #去掉版本号 openwrt-23.05.5-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
@@ -778,7 +777,7 @@ sed -i "s/TARGET_FLAG=Full/TARGET_FLAG=oR/g" package/diy/openwrt-autoupdate/auto
 Short_Date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
 Compile_Date=$(TZ=UTC-8 date +'%Y%m%d')
 #OP_VERSION="R${Short_Date}-${Compile_Date}"
-OP_VERSION="R${Tag}-${Compile_Date}"
+OP_VERSION="R${latest_release}-${Compile_Date}"
 sed -i "s/OP_VERSION=R24.1.1-20240101/OP_VERSION=$OP_VERSION/g" package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default  #使用双引号
 #3）源码作者
 #sed -i 's/OP_AUTHOR=openwrt/OP_AUTHOR=openwrt/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
