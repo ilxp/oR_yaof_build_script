@@ -1,0 +1,337 @@
+#!/bin/bash
+
+# 彩色输出函数
+color_output() {
+    echo -e "$1"
+}
+
+# 打印脚本头部，增加美观
+print_header() {
+    clear
+    # 获取系统信息
+    local model=$(cat /tmp/sysinfo/model 2>/dev/null || echo "未知设备")
+    # 使用更可靠的方式获取 CPU 使用率
+    local cpu_usage=$(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf "%.1f%%", usage}')
+    local mem_total=$(free | grep Mem | awk '{print $2}')
+    local mem_used=$(free | grep Mem | awk '{print $3}')
+    local mem_usage=$((mem_used * 100 / mem_total))
+
+    color_output "\e[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+    color_output "\e[36m┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\e[0m"
+    color_output "\e[36m┃                                       ┃\e[0m"
+    color_output "\e[36m┃           \e[33m欢迎使用 OprX 配置工具\e[36m      ┃\e[0m"
+    color_output "\e[36m┃                                       ┃\e[0m"
+    color_output "\e[36m┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\e[0m"
+    color_output "\e[36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+    color_output ""
+    color_output "\e[34m系统信息\e[0m"
+    color_output "----------------------------------------"
+    color_output "  设备型号: $model"
+    color_output "  CPU 占用: $cpu_usage"
+    color_output "  内存占用: ${mem_usage}%"
+    color_output "----------------------------------------"
+    color_output "\e[32m说明：本工具用于配置 OprX      \e[0m"
+    color_output "----------------------------------------"
+    echo ""
+}
+
+# 显示菜单
+show_menu() {
+    color_output "\e[36m┏━━━━━━━━━━━━━━━ 功能菜单 ━━━━━━━━━━━━━━━┓\e[0m"
+    color_output "\e[36m┃                                        ┃\e[0m"
+    color_output "\e[36m┃\e[0m  1. 更改 LAN 口 IP 地址                \e[36m┃\e[0m"
+    color_output "\e[36m┃\e[0m  2. 更改管理员密码                     \e[36m┃\e[0m"
+    color_output "\e[36m┃\e[0m  3. 切换默认主题                       \e[36m┃\e[0m"
+    color_output "\e[36m┃\e[0m  4. 恢复出厂设置                       \e[36m┃\e[0m"
+    color_output "\e[36m┃\e[0m  6. IPv6 开关 (仅适用于主路由)         \e[36m┃\e[0m"
+    color_output "\e[36m┃\e[0m  0. 退出                               \e[36m┃\e[0m"
+    color_output "\e[36m┃                                        ┃\e[0m"
+    color_output "\e[36m┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\e[0m"
+    read -p "$(color_output "\e[33m请输入您的选择 [0-10]: \e[0m")" choice
+    case "$choice" in
+        1) change_ip ;;
+        2) change_password ;;
+        3) change_theme ;;
+        4) reset_config ;;
+        5) change_source ;;
+        6) configure_ipv6 ;;
+        0) exit 0 ;;
+        *) echo "无效选项，请重新输入"; show_menu ;;
+    esac
+}
+
+# 1. 更换 LAN 口 IP 地址
+change_ip() {
+    color_output "\e[34m[更改 LAN 口 IP 地址]\e[0m"
+    read -p "请输入新的 LAN 口 IP 地址（如 192.168.8.1）: " new_ip
+    if [[ -n "$new_ip" ]]; then
+        uci set network.lan.ipaddr="$new_ip"
+        uci commit network
+        /etc/init.d/network restart
+        color_output "\e[32mLAN 口 IP 已成功更改为 $new_ip\e[0m"
+    else
+        color_output "\e[31m无效的 IP 地址，操作取消。\e[0m"
+    fi
+    read -p "按 Enter 键返回菜单..." 
+    show_menu
+}
+
+# 2. 更改管理员密码
+change_password() {
+    color_output "\e[34m[更改管理员密码]\e[0m"
+    read -p "请输入新的管理员密码: " new_password
+    if [[ -n "$new_password" ]]; then
+        # 使用 openssl 生成密码哈希，使用 -1 参数生成 MD5 格式的密码哈希
+        password_hash=$(openssl passwd -1 "$new_password")
+        
+        # 获取当前 shadow 文件的其他行
+        tail -n +2 /etc/shadow > /tmp/shadow.tmp
+        
+        # 创建新的 root 行
+        echo "root:$password_hash:0:0:99999:7:::" > /etc/shadow
+        
+        # 添加其他行
+        cat /tmp/shadow.tmp >> /etc/shadow
+        
+        # 清理临时文件
+        rm -f /tmp/shadow.tmp
+        
+        color_output "\e[32m管理员密码已成功更改。\e[0m"
+    else
+        color_output "\e[31m无效的密码，操作取消。\e[0m"
+    fi
+    read -p "按 Enter 键返回菜单..."
+    show_menu
+}
+
+# 3. 切换默认主题
+change_theme() {
+    color_output "\e[34m[切换默认主题]\e[0m"
+    uci set luci.main.mediaurlbase='/luci-static/bootstrap'
+    uci commit luci
+    color_output "\e[32m主题已成功切换为默认主题。\e[0m"
+    read -p "按 Enter 键返回菜单..."
+    show_menu
+}
+
+# 4. 一键重置配置
+reset_config() {
+    color_output "\e[31m[恢复出厂设置]\e[0m"
+    color_output "\e[31m警告：此操作将清除所有设置！\e[0m"
+    read -p "确定要继续吗？(y/n): " confirm
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        echo "恢复出厂设置中..."
+        firstboot -y
+        color_output "\e[33m设备将在 5 秒钟后重启...\e[0m"
+        sleep 5
+        reboot
+    else
+        color_output "\e[32m操作已取消\e[0m"
+        read -p "按 Enter 键返回菜单..."
+        show_menu
+    fi
+}
+
+# 5. 一键换源
+change_source() {
+    color_output "\e[34m[更换软件源]\e[0m"
+    color_output "\e[36m请选择要使用的源：\e[0m"
+    color_output "1. 阿里源"
+    color_output "2. 清华源"
+    color_output "3. 中科大源"
+    color_output "4. 高校联合镜像站"
+    color_output "5. 南方科技大学"    
+    color_output "6. 官方源"
+    color_output "0. 返回"
+    read -p "请输入您的选择 [0-6]: " source_choice
+
+    # 检测当前设备架构
+    arch=$(uname -m)
+	ver=$(grep VERSION_ID /usr/lib/os-release | cut -d "=" -f2 | sed 's/\"//g')
+
+    # 针对不同架构的设置
+    case "$arch" in
+        "x86_64")
+            arch_name="x86_64"
+            ;;
+        "i386" | "pentium4")
+            arch_name="i386_pentium4"
+            ;;
+        "aarch64")
+            arch_name="aarch64_generic"
+            ;;
+        "armv7l")
+            arch_name="arm_cortex-a9"
+            ;;
+        "armv6l")
+            arch_name="arm_arm1176jzf-s_vfp"
+            ;;
+        "mips64el")
+            arch_name="mips64el"
+            ;;
+        "mipsel")
+            arch_name="mipsel_24kc"
+            ;;
+        "aarch64_cortex-a72")
+            arch_name="aarch64_cortex-a72"
+            ;;
+        "aarch64_cortex-a53")
+            arch_name="aarch64_cortex-a53"
+            ;;
+        "armv5te")
+            arch_name="arm_cortex-a5_vfpv4"
+            ;;
+        "armv8")
+            arch_name="arm_cortex-a15_neon-vfpv4"
+            ;;
+        *)
+            color_output "\e[31m不支持此架构：$arch，请选择其他源。\e[0m"
+            return
+            ;;
+    esac
+
+    # 根据选择的源和架构来设置对应的 base_url
+    case "$source_choice" in
+        1)
+            base_url="https://mirrors.aliyun.com/openwrt/releases/$ver/packages/$arch_name"
+            ;;
+        2)
+            base_url="https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases/$ver/packages/$arch_name"
+            ;;
+        3)
+            base_url="https://mirrors.ustc.edu.cn/openwrt/releases/$ver/packages/$arch_name"
+            ;;
+        4)
+            base_url="https://mirrors.xjtu.edu.cn/openwrt/releases/$ver/packages/$arch_name"
+            ;;
+        5)
+            base_url="https://mirrors.sustech.edu.cn/openwrt/releases/$ver/packages/$arch_name"
+            ;;        
+        6)
+            base_url="https://downloads.openwrt.org/releases/$ver/packages/$arch_name"
+            ;;
+        0) show_menu ; return ;;
+        *)
+            color_output "\e[31m无效选项，返回菜单。\e[0m"
+            show_menu
+            return
+            ;;
+    esac
+
+    # 更新软件源
+    cat <<EOF > /etc/opkg/distfeeds.conf
+src/gz openwrt_base $base_url/base
+src/gz openwrt_luci $base_url/luci
+src/gz openwrt_packages $base_url/packages
+src/gz openwrt_routing $base_url/routing
+src/gz openwrt_telephony $base_url/telephony
+EOF
+
+    color_output "\e[32m软件源已成功切换。\e[0m"
+    read -p "按 Enter 键返回菜单..."
+    show_menu
+}
+
+
+# 8. IPv6 开关
+configure_ipv6() {
+    color_output "\e[34m[IPv6 设置]\e[0m"
+    
+    # 检查是否为 PPPoE 模式
+    local wan_proto=$(uci -q get network.wan.proto)
+    if [ "$wan_proto" != "pppoe" ]; then
+        color_output "\e[31m错误: 无法开启 IPv6\e[0m"
+        color_output "\e[31m当前上网方式为: $wan_proto\e[0m"
+        color_output "\e[31m请先切换为 PPPoE 模式\e[0m"
+        read -p "按 Enter 键返回菜单..."
+        show_menu
+        return
+    fi
+    
+    # 检查当前状态
+    local current_ra=$(uci -q get dhcp.lan.ra)
+    local current_dhcpv6=$(uci -q get dhcp.lan.dhcpv6)
+    local current_ndp=$(uci -q get dhcp.lan.ndp)
+    local current_filter_aaaa=$(uci -q get dhcp.@dnsmasq[0].filter_aaaa)
+    
+    if [ "$current_ra" = "server" ] && [ "$current_dhcpv6" = "server" ]; then
+        status_text="已开启"
+    else
+        status_text="已关闭"
+    fi
+    
+    color_output "\e[36m当前 IPv6 状态: $status_text\e[0m"
+    color_output "\e[36m请选择操作：\e[0m"
+    color_output "1. 开启 IPv6"
+    color_output "2. 关闭 IPv6"
+    color_output "0. 返回主菜单"
+    
+    read -p "请输入选择 [0-2]: " ipv6_choice
+    
+    case "$ipv6_choice" in
+        1)
+            # 开启 IPv6
+            # RA 服务设置为服务模式
+            uci set dhcp.lan.ra='server'
+            # DHCPv6 服务设置为服务模式
+            uci set dhcp.lan.dhcpv6='server'
+            # IPv6 分配长度设置为64
+            uci set dhcp.lan.ndp='64'
+            # 取消过滤 IPv6 AAAA 记录
+            uci set dhcp.@dnsmasq[0].filter_aaaa='0'
+            # 保存设置
+            uci commit dhcp
+            
+            # 重启相关服务（重定向输出）
+            /etc/init.d/odhcpd restart >/dev/null 2>&1
+            /etc/init.d/dnsmasq restart >/dev/null 2>&1
+            
+            color_output "\e[32mIPv6 已开启！\e[0m"
+            color_output "\e[32m- RA 服务: 服务模式\e[0m"
+            color_output "\e[32m- DHCPv6 服务: 服务模式\e[0m"
+            color_output "\e[32m- IPv6 分配长度: 64\e[0m"
+            color_output "\e[32m- IPv6 AAAA 记录过滤: 已关闭\e[0m"
+            ;;
+            
+        2)
+            # 关闭 IPv6
+            # RA 服务设置为已禁用
+            uci set dhcp.lan.ra='disabled'
+            # DHCPv6 服务设置为已禁用
+            uci set dhcp.lan.dhcpv6='disabled'
+            # IPv6 分配长度设置为已禁用
+            uci set dhcp.lan.ndp='disabled'
+            # 开启过滤 IPv6 AAAA 记录
+            uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+            # 保存设置
+            uci commit dhcp
+            
+            # 重启相关服务（重定向输出）
+            /etc/init.d/odhcpd restart >/dev/null 2>&1
+            /etc/init.d/dnsmasq restart >/dev/null 2>&1
+            
+            color_output "\e[32mIPv6 已关闭！\e[0m"
+            color_output "\e[32m- RA 服务: 已禁用\e[0m"
+            color_output "\e[32m- DHCPv6 服务: 已禁用\e[0m"
+            color_output "\e[32m- IPv6 分配长度: 已禁用\e[0m"
+            color_output "\e[32m- IPv6 AAAA 记录过滤: 已开启\e[0m"
+            ;;
+            
+        0)
+            show_menu
+            return
+            ;;
+            
+        *)
+            color_output "\e[31m无效选择\e[0m"
+            ;;
+    esac
+    
+    sleep 2
+    read -p "按 Enter 键返回菜单..."
+    show_menu
+}
+
+# 启动菜单
+print_header
+show_menu
