@@ -25,6 +25,7 @@ cp -rf ../immortalwrt_24/package/network/utils/fullconenat  ./package/network/ut
 sed -i 's,iptables-nft,iptables-legacy,g' ./package/new/luci-app-passwall2/Makefile
 sed -i 's,iptables-nft,iptables-legacy,g' ./package/helloworld/luci-app-passwall/Makefile
 sed -i 's,iptables-nft +kmod-nft-fullcone,iptables-mod-fullconenat,g' ./package/new/addition-trans-zh/Makefile
+#sed -i 's,+iptables-nft +kmod-nft-fullcone,,g' ./package/new/addition-trans-zh/Makefile
 
 #rm -rf ./feeds/packages/net/miniupnpd
 #cp -rf ../immortalwrt_pkg_24/net/miniupnpd ./feeds/packages/net/miniupnpd
