@@ -49,6 +49,7 @@ sed -i '/Nft/d' ./.config
 sed -i '/homeproxy/d' ./.config
 sed -i '/mihomo/d' ./.config
 sed -i '/qosmate/d' ./.config
+sed -i '/miniupnpd/d' ./.config
 echo '
 CONFIG_PACKAGE_firewall=y
 # CONFIG_PACKAGE_firewall4 is not set
@@ -68,6 +69,8 @@ CONFIG_PACKAGE_luci-app-sqm=y
 CONFIG_PACKAGE_sqm-scripts=y
 CONFIG_PACKAGE_sqm-scripts-extra=y
 CONFIG_PACKAGE_fullconenat=y
+CONFIG_PACKAGE_miniupnpd=y
+CONFIG_PACKAGE_miniupnpd-iptables=y
 ' >>./.config
 rm -rf ./feeds/luci/applications/luci-app-zerotier
 cp -rf ../lede_luci/applications/luci-app-zerotier ./feeds/luci/applications/luci-app-zerotier
