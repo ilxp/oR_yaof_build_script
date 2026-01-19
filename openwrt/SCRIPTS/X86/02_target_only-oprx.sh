@@ -430,15 +430,18 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app
 
 ##五）QOS相关
 #石像鬼qos采用我自己的，会有一个QOS栏目生成
-git clone -b 24.10 https://github.com/ilxp/gargoyle-qos-openwrt.git  package/diy/gargoyle-qos-openwrt
-sed -i 's/Gargoyle QoS/石像鬼 QoS/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
-sed -i 's/Download Settings/下载设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
-sed -i 's/Upload Settings/上传设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
+#git clone -b 24.10 https://github.com/ilxp/gargoyle-qos-openwrt.git  package/diy/gargoyle-qos-openwrt
+#sed -i 's/Gargoyle QoS/石像鬼 QoS/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
+#sed -i 's/Download Settings/下载设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
+#sed -i 's/Upload Settings/上传设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
 #wget -qO - https://raw.gitmirror.com/ilxp/gargoyle-qos-openwrt/openwrt-2203/010-revert_to_iptables.patch | patch -p1  #去除firwall4，用3
 #wget -N https://raw.githubusercontent.com/ilxp/gargoyle-qos-openwrt/refs/heads/imq/patch/iptables/608-add-gargoyle-netfilter-match-modules.patch -P package/network/utils/iptables/patches/
 #wget -N https://raw.githubusercontent.com/ilxp/gargoyle-qos-openwrt/refs/heads/imq/patch/kernel/608-add-kernel-gargoyle-netfilter-match-modules.patch -P target/linux/generic/pending-6.6/
 #解除依赖，编译不成功
-sed -i 's,+libnftbwctl,,g' package/diy/gargoyle-qos-openwrt/gargoyle-firewall-util/Makefile
+#sed -i 's,+libnftbwctl,,g' package/diy/gargoyle-qos-openwrt/gargoyle-firewall-util/Makefile
+
+git clone -b nftables https://github.com/ErickG233/openwrt-gargoyle-qos.git  package/diy/gargoyle-qos-openwrt
+
 
 #2）eqos，采用luci自带的即可。把eqos放在管控下。不在列入Qos目录下
 #rm -rf feeds/luci/applications/luci-app-eqos #lean库里没有eqos
