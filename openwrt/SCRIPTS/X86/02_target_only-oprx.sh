@@ -284,7 +284,7 @@ rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2sock
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
 
 #shadowsocks-rust报错
-rm -f package/passwall-packages/shadowsocks-rus
+rm -f package/passwall-packages/shadowsocks-rust
 merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/passwall-packages shadowsocks-rust
 
 # 移除 openwrt feeds 过时的luci版本
