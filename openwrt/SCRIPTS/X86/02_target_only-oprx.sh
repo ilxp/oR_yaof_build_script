@@ -252,8 +252,8 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-n
 
 #二）、翻墙系列（23.05编译系统自带为homeproxy）
 #golang版本【使用sbwnl库的记得要更新到最新26.x】
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
+#rm -rf feeds/packages/lang/golang
+#git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
 
 #1、ssr-plus【需要sbwml的仓库，记得要更新golang的版本】
 #rm -rf package/helloworld
@@ -283,8 +283,9 @@ rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
 git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
 
-rm -rf package/passwall-packages/xray-core  #26.1.18编译不成功
-git clone https://github.com/ilxp/xray-core.git package/passwall-packages
+#shadowsocks-rust报错
+rm -f package/passwall-packages/shadowsocks-rus
+merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/passwall-packages shadowsocks-rust
 
 # 移除 openwrt feeds 过时的luci版本
 rm -rf feeds/luci/applications/luci-app-passwall
