@@ -251,6 +251,10 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-nginx/Makefile
 
 #二）、翻墙系列（23.05编译系统自带为homeproxy）
+#golang版本【使用sbwnl库的记得要更新到最新26.x】
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
+
 #1、ssr-plus【需要sbwml的仓库，记得要更新golang的版本】
 #rm -rf package/helloworld
 #rm -rf feeds/luci/applications/luci-app-ssr-plus
@@ -720,10 +724,7 @@ git clone https://$github/sbwml/package_kernel_r8125 package/kernel/r8125
 git clone https://$github/sbwml/package_kernel_r8126 package/kernel/r8126
 git clone https://$github/sbwml/package_kernel_r8127 package/kernel/r8127
 
-#11、golang以及openlist
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 25.x feeds/packages/lang/golang
-
+#11、openlist2
 rm -rf feeds/luci/applications/luci-app-openlist
 rm -rf feeds/packages/net/openlist
 git clone https://github.com/sbwml/luci-app-openlist2 package/new/openlist2
