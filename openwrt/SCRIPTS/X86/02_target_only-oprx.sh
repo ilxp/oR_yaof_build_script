@@ -277,7 +277,8 @@ rm -rf package/new/helloworld
 rm -rf feeds/luci/applications/luci-app-passwall
 # 移除 openwrt feeds 自带的核心库
 rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
+#git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages  #新版编译不成功
+git clone https://github.com/ilxp/openwrt-passwall-packages package/passwall-packages  
 
 rm -rf package/passwall-packages/xray-core  #26.1.18编译不成功
 git clone https://github.com/ilxp/xray-core.git package/passwall-packages
