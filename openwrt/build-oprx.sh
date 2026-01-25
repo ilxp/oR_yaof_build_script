@@ -151,7 +151,7 @@ export kernel_version=6.6
 if [ "$1" = "dev" ]; then  #分支-Snapshots
     wget -qO- "https://github.com/openwrt/openwrt/raw/$branch/include/kernel-$kernel_version"  >> kernel.txt
 elif [ "$1" = "rc2" ]; then  #最新发布版
-    wget -qO- "https://raw.githubusercontent.com/openwrt/openwrt/refs/tags/$latest_release/include/kernel-$kernel_version"  >> kernel.txt
+    wget -qO- "https://raw.githubusercontent.com/openwrt/openwrt/refs/tags/$branch/include/kernel-$kernel_version"  >> kernel.txt
 fi
 
 # print version
