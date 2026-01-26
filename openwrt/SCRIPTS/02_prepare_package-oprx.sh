@@ -233,11 +233,10 @@ sed -i 's,@CMDLINE@ noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/
 
 ### ADD PKG 部分 ###
 #cp -rf ../OpenWrt-Add ./package/new
-rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box,frp,microsocks,shadowsocks-libev,zerotier,daed}
-rm -rf feeds/luci/applications/{luci-app-frps,luci-app-frpc,luci-app-zerotier,luci-app-filemanager}
-rm -rf feeds/packages/utils/coremark
-
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new openwrt_helloworld/xray-core openwrt_helloworld/v2ray-core openwrt_helloworld/v2ray-geodata imm_pkg/sing-box luci-app-frps luci-app-frpc imm_pkg/frp openwrt_helloworld/microsocks openwrt_helloworld/shadowsocks-libev openwrt_pkgs/coremark
+#rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box,frp,microsocks,shadowsocks-libev,zerotier,daed}
+#rm -rf feeds/luci/applications/{luci-app-frps,luci-app-frpc,luci-app-zerotier,luci-app-filemanager}
+#rm -rf feeds/packages/utils/coremark
+#merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new openwrt_helloworld/xray-core openwrt_helloworld/v2ray-core openwrt_helloworld/v2ray-geodata imm_pkg/sing-box luci-app-frps luci-app-frpc imm_pkg/frp openwrt_helloworld/microsocks openwrt_helloworld/shadowsocks-libev openwrt_pkgs/coremark
 
 ### 获取额外的 LuCI 应用、主题和依赖 ###
 # 更换 Nodejs 版本

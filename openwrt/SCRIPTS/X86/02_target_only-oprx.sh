@@ -283,37 +283,38 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-n
 rm -rf package/new/helloworld
 rm -rf feeds/luci/applications/luci-app-passwall
 # 移除 openwrt feeds 自带的核心库
-rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
-
-#shadowsocks-rust报错
-rm -f package/passwall-packages/shadowsocks-rust
-merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/passwall-packages shadowsocks-rust
+#rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
+#git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
 
 # 移除 openwrt feeds 过时的luci版本
-rm -rf feeds/luci/applications/luci-app-passwall
-git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/helloworld
+#rm -rf feeds/luci/applications/luci-app-passwall
+#git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/openwrt_helloworld
 
 #采用kenzok8的small库
-#git clone https://github.com/kenzok8/small.git package/helloworld
+#git clone https://github.com/kenzok8/small.git package/openwrt_helloworld
 
 # sbwml的SSRP & Passwall nikki
 #rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
-#git clone https://github.com/sbwml/openwrt_helloworld package/helloworld -b v5
+#git clone https://github.com/sbwml/openwrt_helloworld package/openwrt_helloworld -b v5
+
+#采用qiumos的库
+rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
+rm -rf feeds/luci/applications/luci-app-passwall
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package openwrt_helloworld
 
 ##FQ全部调到VPN菜单
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/controller/*.lua
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/passwall/*.lua
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/model/cbi/passwall/client/*.lua
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/model/cbi/passwall/server/*.lua
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/app_update/*.htm
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/socks_auto_switch/*.htm
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/global/*.htm
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/haproxy/*.htm
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/log/*.htm
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/node_list/*.htm
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/rule/*.htm
-sed -i 's/services/vpn/g' package/helloworld/luci-app-passwall/luasrc/view/passwall/server/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/controller/*.lua
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/passwall/*.lua
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/model/cbi/passwall/client/*.lua
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/model/cbi/passwall/server/*.lua
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/app_update/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/socks_auto_switch/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/global/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/haproxy/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/log/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/node_list/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/rule/*.htm
+sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/view/passwall/server/*.htm
 # Passwall 白名单
 echo '
 teamviewer.com
@@ -327,13 +328,13 @@ checkipv6.synology.com
 ntp.aliyun.com
 cn.ntp.org.cn
 ntp.ntsc.ac.cn
-' >>./package/helloworld/luci-app-passwall/root/usr/share/passwall/rules/direct_host
+' >>./package/openwrt_helloworld/luci-app-passwall/root/usr/share/passwall/rules/direct_host
 
 #3、clash
 #1）openclash
 rm -rf feeds/luci/applications/luci-app-openclash
 rm -rf package/new/OpenClash
-rm -rf package/helloworld/luci-app-openclash
+rm -rf package/openwrt_helloworld/luci-app-openclash
 #sed -i '$a src-git openclash https://github.com/vernesong/OpenClash.git' feeds.conf.default
 #注意master对应core打分master的分支，dev对应core的dev，
 git clone -b master --single-branch https://github.com/vernesong/OpenClash.git  package/diy/openclash
@@ -363,13 +364,13 @@ GEOSITE_URL="https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/dow
 #chmod +x package/base-files/files/etc/openclash/core/clash*
 
 # 4、mihomo（只支持firewall4.lede无望）
-rm -rf package/helloworld/luci-app-nikki
-rm -rf package/helloworld/nikki
+rm -rf package/openwrt_helloworld/luci-app-nikki
+rm -rf package/openwrt_helloworld/nikki
 git clone --depth=1 https://github.com/nikkinikki-org/OpenWrt-nikki package/diy/OpenWrt-nikki
 sed -i 's/services/vpn/g' package/diy/OpenWrt-nikki/luci-app-nikki/root/usr/share/luci/menu.d/luci-app-nikki.json
 
 # 5、homeproxy
-rm -rf package/helloworld/luci-app-homeproxy
+rm -rf package/openwrt_helloworld/luci-app-homeproxy
 git clone --depth=1 https://github.com/immortalwrt/homeproxy.git package/diy/luci-app-homeproxy
 rm -rf ./feeds/packages/net/sing-box
 merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new chinadns-ng
