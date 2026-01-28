@@ -100,8 +100,8 @@ cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/file
 rm -rf feeds/packages/utils/lrzsz
 git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 
-rm -rf feeds/packages/utils/runc
-merge_package master https://github.com/openwrt/packages.git feeds/packages/utils  utils/runc
+#rm -rf feeds/packages/utils/runc
+#merge_package master https://github.com/openwrt/packages.git feeds/packages/utils  utils/runc
 
 #四、系统优化########
 
