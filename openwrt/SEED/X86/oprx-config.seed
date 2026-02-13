@@ -286,6 +286,8 @@ CONFIG_PACKAG_kmod-ifb=y
 CONFIG_PACKAG_kmod-sched-act-mirred=y
 CONFIG_PACKAG_kmod-sched-core=y
 CONFIG_PACKAG_kmod-sched=y
+CONFIG_NET_SCH_INGRESS=y
+CONFIG_NET_SCH_IFB=y
 
 #动态ddns
 ### DDNS Scripts
