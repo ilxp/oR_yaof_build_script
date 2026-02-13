@@ -210,9 +210,9 @@ rm -rf openwrt master
 echo -e "\n${GREEN_COLOR}Prepare Mixedwrt ...${RES}\n"
 # SCRIPTS 注意先后顺序
 #杂交代码与克隆其他资源。在get_ready.sh
-curl -sO $mirror/openwrt/SCRIPTS/01_get_ready.sh
-chmod 0755 01_get_ready.sh
-bash 01_get_ready.sh
+curl -sO $mirror/openwrt/SCRIPTS/01_get_ready-oprx.sh
+chmod 0755 01_get_ready-oprx.sh
+bash 01_get_ready-oprx.sh
 ###############################################
 
 # immortalwrt master
@@ -453,8 +453,8 @@ if [ "$platform" = "x86_64" ]; then
             cp -a bin/packages/x86_64/base/*dpdk*.ipk $kmodpkg_name/ || true
             cp -a bin/packages/x86_64/base/*numa*.ipk $kmodpkg_name/ || true
         }
-        #bash kmod-sign $kmodpkg_name  #杂交了，不需要验证了
-        #tar zcf x86_64-$kmodpkg_name.tar.gz $kmodpkg_name
+        bash kmod-sign $kmodpkg_name  #如果杂交了，不需要验证了
+        tar zcf x86_64-$kmodpkg_name.tar.gz $kmodpkg_name
         rm -rf $kmodpkg_name
     fi
     # OTA json
