@@ -283,6 +283,7 @@ CONFIG_PACKAGE_kmod-nf-dup-inet=y
 CONFIG_PACKAG_kmod-NF_CONNTRACK=y  # 连接跟踪
 
 CONFIG_PACKAG_kmod-ifb=y
+CONFIG_PACKAG_kmod-nft-mangle=y
 CONFIG_PACKAG_kmod-sched-act-mirred=y
 CONFIG_PACKAG_kmod-sched-core=y
 CONFIG_PACKAG_kmod-sched=y
