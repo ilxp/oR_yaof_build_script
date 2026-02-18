@@ -276,7 +276,7 @@ CONFIG_PACKAGE_kmod-crypto-xxhash=y
 
 CONFIG_PACKAGE_fullconenat-nft=y
 
-#nftable防火墙需要
+#nftable需要
 CONFIG_PACKAGE_MODULES=y
 CONFIG_PACKAGE_NF_TABLES_INET=y
 CONFIG_PACKAGE_kmod-nf-dup-inet=y
@@ -409,7 +409,7 @@ CONFIG_PACKAGE_sqm-scripts=n
 CONFIG_PACKAGE_sqm-scripts-extra=n
 
 #qosmate
-CONFIG_PACKAGE_luci-app-qosmate=n
+CONFIG_PACKAGE_luci-app-qosmate=y
 
 #单ip限速
 CONFIG_PACKAGE_luci-app-eqos=n
