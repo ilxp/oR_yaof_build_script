@@ -460,9 +460,9 @@ git clone -b nft https://github.com/ilxp/gargoyle-qos-openwrt.git  package/diy/g
 git clone https://github.com/sirpdboy/luci-app-eqosplus  package/diy/luci-app-eqosplus
 
 #nft-qos
-#rm -rf feeds/packages/net/nft-qos
-#rm -rf feeds/luci/applications/luci-app-nft-qos
-#git clone https://github.com/ilxp/openwrt-nft-qos.git  package/diy/openwrt-nft-qos
+rm -rf feeds/packages/net/nft-qos
+rm -rf feeds/luci/applications/luci-app-nft-qos
+git clone https://github.com/ilxp/openwrt-nft-qos.git  package/diy/openwrt-nft-qos
 #merge_package master https://github.com/ilxp/openwrt-nft-qos.gi package/new luci-app-nft-qos nft-qos
 #sed -i 's/services/qos/g' feeds/luci/applications/luci-app-nft-qos/luasrc/controller/nft-qos.lua   #将其移动到QOS目录下
 
