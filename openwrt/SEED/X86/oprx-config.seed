@@ -283,10 +283,9 @@ CONFIG_PACKAG_kmod-ifb=y
 CONFIG_NET_SCH_IFB=y
 CONFIG_PACKAGE_kmod-sched-core=y
 CONFIG_PACKAGE_kmod-sched=y
+CONFIG_PACKAGE_kmod-sched-ctinfo=y
 CONFIG_NET_CLS_FLOWER=m   #内核flower支持
-CONFIG_NET_SCH_INGRESS=y         # 入口队列支持（通常已选）
-CONFIG_NET_ACT_CTINFO=y
-CONFIG_NET_SCH_CTINFO=y    # 注意这个选项
+CONFIG_NET_SCH_INGRESS=y   # 入口队列支持（通常已选）
 
 #动态ddns
 ### DDNS Scripts
