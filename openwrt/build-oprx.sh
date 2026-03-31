@@ -113,6 +113,7 @@ elif [ "$1" = "rc2" ]; then
 	latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')  #此处不用引号，调用的时候需要加
     #export branch="v${latest_release}"
 	export branch=v$latest_release
+	export branch=v24.10.5
     export version=rc2
 fi
 
