@@ -70,7 +70,7 @@ wait
 #cp -rf ./openwrt_snap/package/* ./openwrt/package/
 #cp -rf ./openwrt_snap/feeds.conf.default ./openwrt/feeds.conf.default
 # 修复缺失的 kmod-drm-lima
-cp -rf ./immortalwrt_24/package/kernel/linux/modules/video.mk ./openwrt/package/kernel/linux/modules/
+#cp -rf ./immortalwrt_24/package/kernel/linux/modules/video.mk ./openwrt/package/kernel/linux/modules/
 
 # 退出脚本
 exit 0
