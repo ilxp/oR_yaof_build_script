@@ -282,8 +282,8 @@ CONFIG_PACKAG_kmod-nf-conntrack=y
 CONFIG_PACKAG_kmod-nf-conntrack6=y
 CONFIG_PACKAG_kmod-ifb=y
 CONFIG_PACKAGE_kmod-sched=y
-#CONFIG_PACKAG_kmod-sched-ctinfo=y
-#CONFIG_PACKAG_kmod-sched-flower=y
+CONFIG_PACKAG_kmod-sched-ctinfo=y
+CONFIG_PACKAG_kmod-sched-flower=y
 CONFIG_PACKAGE_kmod-sched-core=y
 CONFIG_PACKAG_kmod-sched-connmark=y
 
