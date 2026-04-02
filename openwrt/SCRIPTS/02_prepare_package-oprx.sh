@@ -129,11 +129,11 @@ cp -rf ../openwrt_ma/package/network/config/firewall4 ./package/network/config/f
 
 ### 必要的 Patches ###
 # Patch arm64 型号名称
-cp -rf ../PATCH/kernel/arm/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/arm/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 # BBRv3
-cp -rf ../PATCH/kernel/bbr3/* ./target/linux/generic/backport-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/bbr3/* ./target/linux/generic/backport-${KERNEL_VERSION}/
 # LRNG
-cp -rf ../PATCH/kernel/lrng/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/lrng/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 echo '
 # CONFIG_RANDOM_DEFAULT_IMPL is not set
 CONFIG_LRNG=y
@@ -150,63 +150,63 @@ echo '
 CONFIG_NETKIT=y
 ' >>./target/linux/generic/config-${KERNEL_VERSION}
 # wg
-cp -rf ../PATCH/kernel/wg/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/wg/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 # dont wrongly interpret first-time data
 echo "net.netfilter.nf_conntrack_tcp_max_retrans=5" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
 # OTHERS
-cp -rf ../PATCH/kernel/others/* ./target/linux/generic/pending-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/others/* ./target/linux/generic/pending-${KERNEL_VERSION}/
 # luci-app-attendedsysupgrade
 sed -i '/luci-app-attendedsysupgrade/d' feeds/luci/collections/luci-nginx/Makefile
 
 ### Fullcone-NAT 部分 ###
 # bcmfullcone
-cp -rf ../PATCH/kernel/bcmfullcone/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/bcmfullcone/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 # set nf_conntrack_expect_max for fullcone
 wget -qO - https://github.com/openwrt/openwrt/commit/bbf39d07.patch | patch -p1
 echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
 # FW4
 mkdir -p package/network/config/firewall4/patches
-#cp -f ../PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
+#cp -f ./diydata/PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
 mkdir -p package/libs/libnftnl/patches
-cp -f ../PATCH/pkgs/firewall/libnftnl/*.patch ./package/libs/libnftnl/patches/
+cp -f ./diydata/PATCH/pkgs/firewall/libnftnl/*.patch ./package/libs/libnftnl/patches/
 sed -i '/PKG_INSTALL:=/iPKG_FIXUP:=autoreconf' package/libs/libnftnl/Makefile
 mkdir -p package/network/utils/nftables/patches
-cp -f ../PATCH/pkgs/firewall/nftables/*.patch ./package/network/utils/nftables/patches/
+cp -f ./diydata/PATCH/pkgs/firewall/nftables/*.patch ./package/network/utils/nftables/patches/
 # Patch LuCI 以增添 FullCone 开关
 pushd feeds/luci
-patch -p1 <../../../PATCH/pkgs/firewall/luci/0001-luci-app-firewall-add-nft-fullcone-and-bcm-fullcone-.patch
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0001-luci-app-firewall-add-nft-fullcone-and-bcm-fullcone-.patch
 popd
 
 ### Shortcut-FE 部分 ###
 # Patch Kernel 以支持 Shortcut-FE
-cp -rf ../PATCH/kernel/sfe/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/sfe/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 cp -rf ../lede/target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch ./target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch
 # Patch LuCI 以增添 Shortcut-FE 开关
 pushd feeds/luci
-patch -p1 <../../../PATCH/pkgs/firewall/luci/0002-luci-app-firewall-add-shortcut-fe-option.patch
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0002-luci-app-firewall-add-shortcut-fe-option.patch
 popd
 
 ### NAT6 部分 ###
 # custom nft command
-patch -p1 < ../PATCH/pkgs/firewall/100-openwrt-firewall4-add-custom-nft-command-support.patch
-cp -f ../PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
+patch -p1 < ./diydata/PATCH/pkgs/firewall/100-openwrt-firewall4-add-custom-nft-command-support.patch
+cp -f ./diydata/PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
 # Patch LuCI 以增添 NAT6 开关
 pushd feeds/luci
-patch -p1 <../../../PATCH/pkgs/firewall/luci/0003-luci-app-firewall-add-ipv6-nat-option.patch
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0003-luci-app-firewall-add-ipv6-nat-option.patch
 popd
 # Patch LuCI 以支持自定义 nft 规则
 pushd feeds/luci
-patch -p1 <../../../PATCH/pkgs/firewall/luci/0004-luci-add-firewall-add-custom-nft-rule-support.patch
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0004-luci-add-firewall-add-custom-nft-rule-support.patch
 popd
 
 ### natflow 部分 ###
 pushd feeds/luci
-patch -p1 <../../../PATCH/pkgs/firewall/luci/0005-luci-app-firewall-add-natflow-offload-support.patch
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0005-luci-app-firewall-add-natflow-offload-support.patch
 popd
 
 ### fullcone6 ###
 pushd feeds/luci
-patch -p1 <../../../PATCH/pkgs/firewall/luci/0007-luci-app-firewall-add-fullcone6-option-for-nftables-.patch
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0007-luci-app-firewall-add-fullcone6-option-for-nftables-.patch
 popd
 
 ### Other Kernel Hack 部分 ###
@@ -215,7 +215,7 @@ wget -qO - https://github.com/openwrt/openwrt/commit/c21a3570.patch | patch -p1
 # igc-fix
 cp -rf ../lede/target/linux/x86/patches-${KERNEL_VERSION}/996-intel-igc-i225-i226-disable-eee.patch ./target/linux/x86/patches-${KERNEL_VERSION}/996-intel-igc-i225-i226-disable-eee.patch
 # btf
-cp -rf ../PATCH/kernel/btf/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/btf/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 
 ### 获取额外的基础软件包 ###
 # Disable Mitigations
@@ -254,12 +254,12 @@ wget https://github.com/rust-lang/rust/commit/e8d97f0.patch -O feeds/packages/la
 sed -i 's/--set=llvm\.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' feeds/packages/lang/rust/Makefile
 # mount cgroupv2
 pushd feeds/packages
-#patch -p1 <../../../PATCH/pkgs/cgroupfs-mount/0001-fix-cgroupfs-mount.patch
+#patch -p1 <../.././diydata/PATCH/pkgs/cgroupfs-mount/0001-fix-cgroupfs-mount.patch
 popd
 mkdir -p feeds/packages/utils/cgroupfs-mount/patches
-cp -rf ../PATCH/pkgs/cgroupfs-mount/900-mount-cgroup-v2-hierarchy-to-sys-fs-cgroup-cgroup2.patch ./feeds/packages/utils/cgroupfs-mount/patches/
-cp -rf ../PATCH/pkgs/cgroupfs-mount/901-fix-cgroupfs-umount.patch ./feeds/packages/utils/cgroupfs-mount/patches/
-cp -rf ../PATCH/pkgs/cgroupfs-mount/902-mount-sys-fs-cgroup-systemd-for-docker-systemd-suppo.patch ./feeds/packages/utils/cgroupfs-mount/patches/
+cp -rf ./diydata/PATCH/pkgs/cgroupfs-mount/900-mount-cgroup-v2-hierarchy-to-sys-fs-cgroup-cgroup2.patch ./feeds/packages/utils/cgroupfs-mount/patches/
+cp -rf ./diydata/PATCH/pkgs/cgroupfs-mount/901-fix-cgroupfs-umount.patch ./feeds/packages/utils/cgroupfs-mount/patches/
+cp -rf ./diydata/PATCH/pkgs/cgroupfs-mount/902-mount-sys-fs-cgroup-systemd-for-docker-systemd-suppo.patch ./feeds/packages/utils/cgroupfs-mount/patches/
 # fstool
 wget -qO - https://github.com/coolsnowwolf/lede/commit/8a4db76.patch | patch -p1
 # Boost 通用即插即用
@@ -281,11 +281,11 @@ sed -i 's,/miniupnpd/,/,g' ./feeds/packages/net/miniupnpd/patches/3f3582b.patch
 wget https://github.com/miniupnp/miniupnp/commit/6aefa9a.patch -O feeds/packages/net/miniupnpd/patches/6aefa9a.patch
 sed -i 's,/miniupnpd/,/,g' ./feeds/packages/net/miniupnpd/patches/6aefa9a.patch
 pushd feeds/packages
-patch -p1 <../../../PATCH/pkgs/miniupnpd/01-set-presentation_url.patch
-patch -p1 <../../../PATCH/pkgs/miniupnpd/02-force_forwarding.patch
+patch -p1 <../.././diydata/PATCH/pkgs/miniupnpd/01-set-presentation_url.patch
+patch -p1 <../.././diydata/PATCH/pkgs/miniupnpd/02-force_forwarding.patch
 popd
 pushd feeds/luci
-patch -p1 <../../../PATCH/pkgs/miniupnpd/luci-upnp-support-force_forwarding-flag.patch
+patch -p1 <../.././diydata/PATCH/pkgs/miniupnpd/luci-upnp-support-force_forwarding-flag.patch
 popd
 # 动态DNS
 sed -i '/boot()/,+2d' feeds/packages/net/ddns-scripts/files/etc/init.d/ddns
@@ -301,7 +301,7 @@ sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
 rm -rf ./feeds/luci/collections/luci-lib-docker
 cp -rf ../docker_lib/collections/luci-lib-docker ./feeds/luci/collections/luci-lib-docker
 # IPv6 兼容助手
-patch -p1 <../PATCH/pkgs/odhcp6c/1002-odhcp6c-support-dhcpv6-hotplug.patch
+patch -p1 <./diydata/PATCH/pkgs/odhcp6c/1002-odhcp6c-support-dhcpv6-hotplug.patch
 # ODHCPD
 rm -rf ./package/network/services/odhcpd
 cp -rf ../openwrt_ma/package/network/services/odhcpd ./package/network/services/odhcpd
