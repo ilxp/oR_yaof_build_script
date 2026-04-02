@@ -105,12 +105,12 @@ fi
 
 # Source branch
 if [ "$1" = "dev" ]; then
-    export branch=openwrt-24.10
+    export branch=openwrt-25.12
     export version=dev
 elif [ "$1" = "rc2" ]; then
-    #latest_release="v$(curl -s $mirror/tags/v24)"
-	#latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
-	latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v24.10.+[0-9\.]" | head -n 1 | sed 's/v//g')  #此处不用引号，调用的时候需要加
+    #latest_release="v$(curl -s $mirror/tags/v25)"
+	#latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
+	latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g')  #此处不用引号，调用的时候需要加
     #export branch="v${latest_release}"
 	export branch=v$latest_release
     export version=rc2
@@ -146,7 +146,7 @@ export \
 # kernel version
 #[ "$TESTING_KERNEL" = "y" ] && export kernel_version=6.12 || export kernel_version=6.6
 
-export kernel_version=6.6
+export kernel_version=6.12
 
 if [ "$1" = "dev" ]; then  #分支-Snapshots
     wget -qO- "https://github.com/openwrt/openwrt/raw/$branch/include/kernel-$kernel_version"  >> kernel.txt

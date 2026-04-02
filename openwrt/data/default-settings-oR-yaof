@@ -45,7 +45,7 @@ else
 fi
 
 # extra packages
-echo "src/gz openwrt_extras https://opkg.cooluc.com/openwrt-24.10/$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)" >> /etc/opkg/distfeeds.conf
+echo "src/gz openwrt_extras https://opkg.cooluc.com/openwrt-25.12/$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)" >> /etc/opkg/distfeeds.conf
 
 # nginx #oR系列用yaof的
 #uci set nginx.global.uci_enable='true'
