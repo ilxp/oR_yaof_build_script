@@ -108,8 +108,8 @@ git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 #修改package/kernel/linux/modules
 rm -rf package/kernel/linux/modules/hwmon.mk  
 rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
-cp -rf ./diydata/data/modules-6.6/hwmon.mk  ./package/kernel/linux/modules/
-cp -rf ./diydata/data/modules-6.6/netsupport.mk ./package/kernel/linux/modules/
+cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
+cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
