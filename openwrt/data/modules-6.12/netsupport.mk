@@ -778,22 +778,6 @@ endef
 $(eval $(call KernelPackage,sched-act-sample))
 
 
-define KernelPackage/sched-act-ipt
-  SUBMENU:=$(NETWORK_SUPPORT_MENU)
-  TITLE:=IPtables targets
-  DEPENDS:=+kmod-ipt-core +kmod-sched-core
-  KCONFIG:=CONFIG_NET_ACT_IPT
-  FILES:=$(LINUX_DIR)/net/sched/act_ipt.ko
-  AUTOLOAD:=$(call AutoProbe, act_ipt)
-endef
-
-define KernelPackage/sched-act-ipt/description
-  Allows to invoke iptables targets after successful classification.
-endef
-
-$(eval $(call KernelPackage,sched-act-ipt))
-
-
 define KernelPackage/sched-act-vlan
   SUBMENU:=$(NETWORK_SUPPORT_MENU)
   TITLE:=Traffic VLAN manipulation
@@ -1076,9 +1060,9 @@ define KernelPackage/tcp-bbr3
 endef
 
 define KernelPackage/tcp-bbr3/description
- Kernel module for BBRv3 (Bottleneck Bandwidth and RTT) TCP congestion
+ Kernel module for BBR (Bottleneck Bandwidth and RTT) TCP congestion
  control. It requires the fq ("Fair Queue") pacing packet scheduler.
- For kernel 6.4+, TCP internal pacing is implemented as fallback.
+ For kernel 4.13+, TCP internal pacing is implemented as fallback.
 endef
 
 TCP_BBR_SYSCTL_CONF:=sysctl-tcp-bbr.conf
@@ -1089,7 +1073,6 @@ define KernelPackage/tcp-bbr3/install
 endef
 
 $(eval $(call KernelPackage,tcp-bbr3))
-
 
 define KernelPackage/tls
   SUBMENU:=$(NETWORK_SUPPORT_MENU)
@@ -1377,7 +1360,7 @@ $(eval $(call KernelPackage,mpls))
 define KernelPackage/9pnet
   SUBMENU:=$(NETWORK_SUPPORT_MENU)
   TITLE:=Plan 9 Resource Sharing Support (9P2000)
-  DEPENDS:=+LINUX_6_12:kmod-fs-netfs
+  DEPENDS:=+kmod-fs-netfs
   KCONFIG:= \
 	CONFIG_NET_9P \
 	CONFIG_NET_9P_DEBUG=n \
@@ -1508,8 +1491,8 @@ define KernelPackage/inet-diag
 endef
 
 define KernelPackage/inet-diag/description
-  Support for INET (TCP, DCCP, etc) socket monitoring interface used by
-  native Linux tools such as ss.
+Support for INET (TCP, DCCP, etc) socket monitoring interface used by
+native Linux tools such as ss.
 endef
 
 $(eval $(call KernelPackage,inet-diag))
@@ -1651,3 +1634,88 @@ define KernelPackage/qrtr-mhi/description
 endef
 
 $(eval $(call KernelPackage,qrtr-mhi))
+
+define KernelPackage/unix-diag
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=UNIX socket monitoring interface
+  KCONFIG:=CONFIG_UNIX_DIAG
+  FILES:= $(LINUX_DIR)/net/unix/unix_diag.ko
+  AUTOLOAD:=$(call AutoProbe,unix_diag)
+endef
+
+$(eval $(call KernelPackage,unix-diag))
+
+define KernelPackage/packet-diag
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=Packet sockets monitoring interface
+  KCONFIG:=CONFIG_PACKET_DIAG
+  FILES:= $(LINUX_DIR)/net/packet/af_packet_diag.ko
+  AUTOLOAD:=$(call AutoProbe,af_packet_diag)
+endef
+
+$(eval $(call KernelPackage,packet-diag))
+
+define KernelPackage/team
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=Ethernet team driver
+  KCONFIG:=CONFIG_NET_TEAM
+  FILES:=$(LINUX_DIR)/drivers/net/team/team.ko
+  AUTOLOAD:=$(call AutoProbe,team)
+endef
+
+$(eval $(call KernelPackage,team))
+
+define KernelPackage/team-mode-broadcast
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=Broadcast mode support
+  DEPENDS:=kmod-team
+  KCONFIG:=CONFIG_NET_TEAM_MODE_BROADCAST
+  FILES:=$(LINUX_DIR)/drivers/net/team/team_mode_broadcast.ko
+  AUTOLOAD:=$(call AutoProbe,team_mode_broadcast)
+endef
+
+$(eval $(call KernelPackage,team-mode-broadcast))
+
+define KernelPackage/team-mode-roundrobin
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=Round-robin mode support
+  DEPENDS:=kmod-team
+  KCONFIG:=CONFIG_NET_TEAM_MODE_ROUNDROBIN
+  FILES:=$(LINUX_DIR)/drivers/net/team/team_mode_roundrobin.ko
+  AUTOLOAD:=$(call AutoProbe,team_mode_roundrobin)
+endef
+
+$(eval $(call KernelPackage,team-mode-roundrobin))
+
+define KernelPackage/team-mode-random
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=Random mode support
+  DEPENDS:=kmod-team
+  KCONFIG:=CONFIG_NET_TEAM_MODE_RANDOM
+  FILES:=$(LINUX_DIR)/drivers/net/team/team_mode_random.ko
+  AUTOLOAD:=$(call AutoProbe,team_mode_random)
+endef
+
+$(eval $(call KernelPackage,team-mode-random))
+
+define KernelPackage/team-mode-activebackup
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=Active-backup mode support
+  DEPENDS:=kmod-team
+  KCONFIG:=CONFIG_NET_TEAM_MODE_ACTIVEBACKUP
+  FILES:=$(LINUX_DIR)/drivers/net/team/team_mode_activebackup.ko
+  AUTOLOAD:=$(call AutoProbe,team_mode_activebackup)
+endef
+
+$(eval $(call KernelPackage,team-mode-activebackup))
+
+define KernelPackage/team-mode-loadbalance
+  SUBMENU:=$(NETWORK_SUPPORT_MENU)
+  TITLE:=Load-balance mode support
+  DEPENDS:=kmod-team
+  KCONFIG:=CONFIG_NET_TEAM_MODE_LOADBALANCE
+  FILES:=$(LINUX_DIR)/drivers/net/team/team_mode_loadbalance.ko
+  AUTOLOAD:=$(call AutoProbe,team_mode_loadbalance)
+endef
+
+$(eval $(call KernelPackage,team-mode-loadbalance))
