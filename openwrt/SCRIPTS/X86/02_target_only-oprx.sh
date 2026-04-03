@@ -114,7 +114,7 @@ cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
 #grep HASH include/kernel-6.12 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
-grep HASH include/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
+grep HASH target/linux/generic/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
 
 # 2、Optimization level -Ofast
 #sed -i 's/Os/O2/g' include/target.mk
