@@ -257,7 +257,7 @@ rm -rf ../master
 # Load devices Config
 if [ "$platform" = "x86_64" ]; then
     #curl -s $mirror/openwrt/23-config-musl-x86 > .config
-    curl -s $mirror/openwrt/SEED/X86/oprx-config-sbwml.seed > .config
+    curl -s $mirror/openwrt/SEED/X86/oprx-config.seed > .config
 	#curl -s $mirror/openwrt/SEED/X86/oprx-config-small.seed > .config
 elif [ "$platform" = "bcm53xx" ]; then
     if [ "$MINIMAL_BUILD" = "y" ]; then
