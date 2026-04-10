@@ -103,6 +103,8 @@ git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 #rm -rf feeds/packages/utils/runc
 #merge_package master https://github.com/openwrt/packages.git feeds/packages/utils  utils/runc
 
+sed -i 's/~/-/g' package/base-files/Makefile
+
 #四、系统优化########
 
 #修改package/kernel/linux/modules
