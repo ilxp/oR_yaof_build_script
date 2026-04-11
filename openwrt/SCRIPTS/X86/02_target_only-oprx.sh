@@ -483,8 +483,8 @@ git clone https://github.com/hudra0/qosmate package/diy/qosmate
 #修改wan口eth0
 sed -i 's/eth1/eth0/g' package/diy/qosmate/etc/config/qosmate
 #载入规则
-mkdir -p package/base-files/files/etc/qosmate.d
-cp -f ./diydata/data/qosmate.d/inline_dscptag.nft package/base-files/files/etc/qosmate.d/inline_dscptag.nft
+#mkdir -p package/base-files/files/etc/qosmate.d
+#cp -f ./diydata/data/qosmate.d/inline_dscptag.nft package/base-files/files/etc/qosmate.d/inline_dscptag.nft
 #移动到qos栏目
 sed -i 's/\/network/\/qos/g' package/diy/luci-app-qosmate/root/usr/share/luci/menu.d/luci-app-qosmate.json
 
@@ -495,22 +495,22 @@ sed -i 's/\/network/\/qos/g' package/diy/luci-app-qosmate/root/usr/share/luci/me
 #git clone -b master https://github.com/pymumu/luci-app-smartdns.git package/diy/luci-app-smartdns  #官方的smartdns安装不上，只用luci库里的
 #git clone https://github.com/pymumu/openwrt-smartdns.git package/diy/smartdns
 
-mkdir -p package/base-files/files/etc/smartdns
+#mkdir -p package/base-files/files/etc/smartdns
 #中国域名列表
 #下载三个最新列表合并到cn.conf
-wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"  >> package/base-files/files/etc/smartdns/cn.conf
-wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-datt@release/apple-cn.txt"    >> package/base-files/files/etc/smartdns/cn.conf
-wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/google-cn.txt"   >> package/base-files/files/etc/smartdns/cn.conf
+#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"  >> package/base-files/files/etc/smartdns/cn.conf
+#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-datt@release/apple-cn.txt"    >> package/base-files/files/etc/smartdns/cn.conf
+#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/google-cn.txt"   >> package/base-files/files/etc/smartdns/cn.conf
 #去除full regexp并指定china组解析
-sed "s/^full://g;s/^regexp:.*$//g;s/^/nameserver \//g;s/$/\/cn/g" -i package/base-files/files/etc/smartdns/cn.conf
-chmod +x package/base-files/files/etc/smartdns/cn.conf
+#sed "s/^full://g;s/^regexp:.*$//g;s/^/nameserver \//g;s/$/\/cn/g" -i package/base-files/files/etc/smartdns/cn.conf
+#chmod +x package/base-files/files/etc/smartdns/cn.conf
 
 #广告域名列表
-wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/reject-list.txt"  >> package/base-files/files/etc/smartdns/block.conf
-wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-spy.txt"  >> package/base-files/files/etc/smartdns/block.conf
-wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-extra.txt"  >> package/base-files/files/etc/smartdns/block.conf
-sed "s/^full://g;s/^regexp:.*$//g;s/^/address \//g;s/$/\/#/g" -i package/base-files/files/etc/smartdns/block.conf
-chmod +x package/base-files/files/etc/smartdns/block.conf
+#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/reject-list.txt"  >> package/base-files/files/etc/smartdns/block.conf
+#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-spy.txt"  >> package/base-files/files/etc/smartdns/block.conf
+#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-extra.txt"  >> package/base-files/files/etc/smartdns/block.conf
+#sed "s/^full://g;s/^regexp:.*$//g;s/^/address \//g;s/$/\/#/g" -i package/base-files/files/etc/smartdns/block.conf
+#chmod +x package/base-files/files/etc/smartdns/block.conf
 
 #2）mosdns
 #rm -rf feeds/packages/net/mosdns
@@ -959,4 +959,3 @@ find ./ -name *.orig | xargs rm -f
 find ./ -name *.rej | xargs rm -f
 
 exit 0
-
