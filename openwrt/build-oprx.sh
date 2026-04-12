@@ -245,11 +245,13 @@ echo -e "\n${GREEN_COLOR}Prepare Package ...${RES}\n"
 curl -sO $mirror/openwrt/SCRIPTS/02_prepare_package-oprx.sh
 curl -sO $mirror/openwrt/SCRIPTS/X86/02_target_only-oprx.sh
 curl -sO $mirror/openwrt/SCRIPTS/04_remove_upx.sh
+curl -sO $mirror/openwrt/SCRIPTS/fix_pkg_version.sh
 
 chmod 0755 *sh
 bash 02_prepare_package-oprx.sh
 bash 02_target_only-oprx.sh
 bash 04_remove_upx.sh
+bash fix_pkg_version.sh
 
 rm -f 0*-*.sh
 rm -rf ../master
