@@ -696,17 +696,17 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 #8、Docker 容器
 ## QiuSimons大神
-rm -rf feeds/luci/applications/luci-app-dockerman
-rm -rf feeds/luci/collections/luci-lib-docker
-merge_package master https://github.com/lisaac/luci-app-dockerman.git feeds/luci/applications applications/luci-app-dockerman
-sed -i '/auto_start/d' feeds/luci/applications/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman
-pushd feeds/packages
-wget -qO- https://github.com/openwrt/packages/commit/e2e5ee69.patch | patch -p1
-wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
-popd
-sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
-rm -rf ./feeds/luci/collections/luci-lib-docker
-merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
+#rm -rf feeds/luci/applications/luci-app-dockerman
+#rm -rf feeds/luci/collections/luci-lib-docker
+#merge_package master https://github.com/lisaac/luci-app-dockerman.git feeds/luci/applications applications/luci-app-dockerman
+#sed -i '/auto_start/d' feeds/luci/applications/luci-app-dockerman/root/etc/uci-defaults/luci-app-dockerman
+#pushd feeds/packages
+#wget -qO- https://github.com/openwrt/packages/commit/e2e5ee69.patch | patch -p1
+#wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
+#popd
+#sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
+#rm -rf ./feeds/luci/collections/luci-lib-docker
+#merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
 
 # sbwml大神 【yaof使用sbwml的最新】
 #rm -rf feeds/luci/applications/luci-app-dockerman
