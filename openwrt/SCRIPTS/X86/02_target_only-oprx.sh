@@ -511,11 +511,11 @@ sed "s/^full://g;s/^regexp:.*$//g;s/^/address \//g;s/$/\/#/g" -i package/base-fi
 chmod +x package/base-files/files/etc/smartdns/block.conf
 
 #2）mosdns
-rm -rf feeds/packages/net/mosdns
-rm -rf feeds/luci/applications/luci-app-mosdns
-rm -rf feeds/packages/net/v2ray-geodata
+#rm -rf feeds/packages/net/mosdns
+#rm -rf feeds/luci/applications/luci-app-mosdns
+#rm -rf feeds/packages/net/v2ray-geodata
 #git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns package/diy/luci-app-mosdns #需要v2ray-geodata依赖
-git clone -b master --single-branch https://github.com/QiuSimons/openwrt-mos  package/diy/openwrt-mos  #自带mosdns以及v2ray-geodata
+#git clone -b master --single-branch https://github.com/QiuSimons/openwrt-mos  package/diy/openwrt-mos  #自带mosdns以及v2ray-geodata
 
 #七、广告过滤
 #1）adguardhome带核心安装。
