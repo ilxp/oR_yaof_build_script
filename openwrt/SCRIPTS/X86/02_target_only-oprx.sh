@@ -111,6 +111,9 @@ rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
 cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
 cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 
+#base-files补丁
+ptch -p1 <./diydata/data/patches/base-files.patch
+
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
 #grep HASH include/kernel-6.12 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
