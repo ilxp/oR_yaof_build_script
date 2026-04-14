@@ -346,10 +346,10 @@ rm -rf package/openwrt_helloworld/luci-app-openclash
 #注意master对应core打分master的分支，dev对应core的dev，
 git clone -b master --single-branch https://github.com/vernesong/OpenClash.git  package/diy/openclash
 # 添加内核（新版只支持meta内核）
-#wget https://github.com/vernesong/OpenClash/raw/core/master/meta/clash-linux-amd64-v1.tar.gz&&tar -zxvf *.tar.gz
-#chmod 0755 clash
-#rm -rf *.tar.gz&&mkdir -p package/base-files/files/etc/openclash/core&&mv clash package/base-files/files/etc/openclash/core/clash_meta
-#chmod +x package/base-files/files/etc/openclash/core/clash*
+wget https://github.com/vernesong/OpenClash/raw/core/master/meta/clash-linux-amd64-v1.tar.gz&&tar -zxvf *.tar.gz
+chmod 0755 clash
+rm -rf *.tar.gz&&mkdir -p package/base-files/files/etc/openclash/core&&mv clash package/base-files/files/etc/openclash/core/clash_meta
+chmod +x package/base-files/files/etc/openclash/core/clash*
 ##FQ全部调到VPN菜单
 sed -i 's/services/vpn/g' package/diy/openclash/luci-app-openclash/luasrc/controller/*.lua
 sed -i 's/services/vpn/g' package/diy/openclash/luci-app-openclash/luasrc/*.lua
@@ -450,13 +450,6 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/diy/luci-app
 ##五）QOS相关
 #石像鬼qos采用我自己的，会有一个QOS栏目生成
 git clone -b main https://github.com/ilxp/iqos-openwrt.git  package/diy/iqos-openwrt
-#sed -i 's/Gargoyle QoS/石像鬼 QoS/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
-#sed -i 's/Download Settings/下载设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
-#sed -i 's/Upload Settings/上传设置/g' package/diy/gargoyle-qos-openwrt/luci-app-qos-gargoyle/luasrc/controller/qos_gargoyle.lua
-#wget -qO - https://raw.gitmirror.com/ilxp/gargoyle-qos-openwrt/openwrt-2203/010-revert_to_iptables.patch | patch -p1  #去除firwall4，用3
-#wget -N https://raw.githubusercontent.com/ilxp/gargoyle-qos-openwrt/refs/heads/ipt/patch/iptables/608-add-gargoyle-netfilter-match-modules.patch -P package/network/utils/iptables/patches/
-#wget -N https://raw.githubusercontent.com/ilxp/gargoyle-qos-openwrt/refs/heads/ipt/patch/kernel/608-add-kernel-gargoyle-netfilter-match-modules.patch -P target/linux/generic/pending-6.6/
-
 
 #2）eqos，采用luci自带的即可。把eqos放在管控下。不在列入Qos目录下
 #rm -rf feeds/luci/applications/luci-app-eqos #lean库里没有eqos
@@ -543,10 +536,10 @@ latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep
 #v0.108.X内核，api里面没有v0.107.
 #latest_version="$(curl -s https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | grep -Eo "v0.108.0-b.+[0-9\.]" | head -n 1)"
 #解压缩
-#wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
-#chmod 0755 AdGuardHome
-#chmod 0755 AdGuardHome/AdGuardHome
-#rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
+wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
+chmod 0755 AdGuardHome
+chmod 0755 AdGuardHome/AdGuardHome
+rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
 
 #2）ikoolproxy与openssl
 #由于openssl从1.1.1升级到了3.0.10导致ikoolproxy无法下载证书。故只能退回。https://github.com/coolsnowwolf/lede/commit/7494eb16185a176de226f55e842cadf94f1c5a11
