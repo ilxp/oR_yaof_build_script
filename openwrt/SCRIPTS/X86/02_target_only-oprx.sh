@@ -112,7 +112,7 @@ cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
 cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 
 #base-files补丁
-ptch -p1 <./diydata/data/patches/base-files.patch
+patch -p1 <./diydata/data/patches/base-files.patch
 
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
