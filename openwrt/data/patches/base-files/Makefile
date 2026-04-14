@@ -31,6 +31,9 @@ PKG_CONFIG_DEPENDS += \
 
 include $(INCLUDE_DIR)/package.mk
 
+# 修复：定义 IDIR_base-files 变量，避免后续脚本中出现 "command not found"
+IDIR_base-files = $(PKG_INSTALL_DIR)
+
 ifneq ($(DUMP),1)
   STAMP_CONFIGURED:=$(strip $(STAMP_CONFIGURED))_$(shell echo $(CONFIG_TARGET_INIT_PATH) | $(MKHASH) md5)
   TARGET:=-$(BOARD)
@@ -46,7 +49,8 @@ define Package/base-files
 	+SELINUX:busybox-selinux +!SELINUX:busybox
   TITLE:=Base filesystem for OpenWrt
   URL:=http://openwrt.org/
-  VERSION:=$(PKG_RELEASE):$(lastword $(subst -, ,$(REVISION)))   # 修改点：~ 改为 :
+  # 修复：将波浪号改为冒号，使版本号符合 APK 规范
+  VERSION:=$(PKG_RELEASE):$(lastword $(subst -, ,$(REVISION)))
 endef
 
 define Package/base-files/conffiles
@@ -256,7 +260,8 @@ ifneq ($(CONFIG_USE_APK),)
 
 	rm -f $(1)/etc/uci-defaults/13_fix-group-user
 	rm -f $(1)/sbin/pkg_check
-	echo $(PKG_RELEASE):$(lastword $(subst -, ,$(REVISION))) >$(STAGING_DIR)/base-files.version   # 修改点：~ 改为 :
+	# 修复：将波浪号改为冒号
+	echo $(PKG_RELEASE):$(lastword $(subst -, ,$(REVISION))) >$(STAGING_DIR)/base-files.version
 else
 	$(if $(CONFIG_CLEAN_IPKG),, \
 		mkdir -p $(1)/etc/opkg; \
