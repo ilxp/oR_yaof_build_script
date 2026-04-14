@@ -115,7 +115,7 @@ cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 #patch -p1 <./diydata/data/patches/base-files.patch  成功可，但是依旧失败
 
 rm -rf package/base-files
-merge_package master https://github.com/coolsnowwolf/lede.git  package  package/base-files
+merge_package openwrt-25.12 https://github.com/immortalwrt/immortalwrt.git  package  package/base-files
 
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
