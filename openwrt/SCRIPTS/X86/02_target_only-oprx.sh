@@ -112,10 +112,11 @@ cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
 cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 
 #base-files补丁
-#patch -p1 <./diydata/data/patches/base-files.patch  成功可，但是依旧失败
+patch -p1 <./diydata/data/patches/base-files/base-files.patch
 
-#rm -rf package/base-files
-#merge_package openwrt-25.12 https://github.com/immortalwrt/immortalwrt.git  package  package/base-files
+rm -rf package/base-files/Makefile
+cp -rf ./diydata/data/patches/base-files/Makefile  ./package/base-files/
+
 
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
@@ -343,12 +344,12 @@ rm -rf package/new/OpenClash
 rm -rf package/openwrt_helloworld/luci-app-openclash
 #sed -i '$a src-git openclash https://github.com/vernesong/OpenClash.git' feeds.conf.default
 #注意master对应core打分master的分支，dev对应core的dev，
-#git clone -b master --single-branch https://github.com/vernesong/OpenClash.git  package/diy/openclash
+git clone -b master --single-branch https://github.com/vernesong/OpenClash.git  package/diy/openclash
 # 添加内核（新版只支持meta内核）
-#wget https://github.com/vernesong/OpenClash/raw/core/master/meta/clash-linux-amd64-v1.tar.gz&&tar -zxvf *.tar.gz
-#chmod 0755 clash
-#rm -rf *.tar.gz&&mkdir -p package/base-files/files/etc/openclash/core&&mv clash package/base-files/files/etc/openclash/core/clash_meta
-#chmod +x package/base-files/files/etc/openclash/core/clash*
+wget https://github.com/vernesong/OpenClash/raw/core/master/meta/clash-linux-amd64-v1.tar.gz&&tar -zxvf *.tar.gz
+chmod 0755 clash
+rm -rf *.tar.gz&&mkdir -p package/base-files/files/etc/openclash/core&&mv clash package/base-files/files/etc/openclash/core/clash_meta
+chmod +x package/base-files/files/etc/openclash/core/clash*
 ##FQ全部调到VPN菜单
 sed -i 's/services/vpn/g' package/diy/openclash/luci-app-openclash/luasrc/controller/*.lua
 sed -i 's/services/vpn/g' package/diy/openclash/luci-app-openclash/luasrc/*.lua
@@ -537,16 +538,15 @@ merge_package master https://github.com/Hyy2001X/AutoBuild-Packages.git package/
 
 # 添加内核
 #v0.107.X内核
-#latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[0-9][0-9]/p' | sed -n 1p | sed 's/.tar.gz//g')"
+latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[0-9][0-9]/p' | sed -n 1p | sed 's/.tar.gz//g')"
 
 #v0.108.X内核，api里面没有v0.107.
 #latest_version="$(curl -s https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | grep -Eo "v0.108.0-b.+[0-9\.]" | head -n 1)"
-
 #解压缩
-#wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
-#chmod 0755 AdGuardHome
-#chmod 0755 AdGuardHome/AdGuardHome
-#rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
+wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
+chmod 0755 AdGuardHome
+chmod 0755 AdGuardHome/AdGuardHome
+rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
 
 #2）ikoolproxy与openssl
 #由于openssl从1.1.1升级到了3.0.10导致ikoolproxy无法下载证书。故只能退回。https://github.com/coolsnowwolf/lede/commit/7494eb16185a176de226f55e842cadf94f1c5a11
