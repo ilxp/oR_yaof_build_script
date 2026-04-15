@@ -106,10 +106,10 @@ git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 #四、系统优化########
 
 #修改package/kernel/linux/modules
-rm -rf package/kernel/linux/modules/hwmon.mk  
-rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
-cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
-cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
+#rm -rf package/kernel/linux/modules/hwmon.mk  
+#rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
+#cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
+#cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 
 #base-files补丁
 #patch -p1 <./diydata/data/patches/base-files/base-files.patch
