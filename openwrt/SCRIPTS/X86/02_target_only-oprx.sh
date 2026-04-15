@@ -138,10 +138,10 @@ latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | gre
 #latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
 #Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
-sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
+#sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
 
-#sed -i "/OPENWRT_RELEASE/d" package/base-files/files/usr/lib/os-release
-#sed -i "/OPENWRT_DEVICE_REVISION/aOPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"" package/base-files/files/usr/lib/os-release
+sed -i "/OPENWRT_RELEASE/d" package/base-files/files/usr/lib/os-release
+sed -i "/OPENWRT_DEVICE_REVISION/aOPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"" package/base-files/files/usr/lib/os-release
 
 # 5、固件的命名格式：。
 #去掉版本号 openwrt-23.05.5-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
