@@ -225,7 +225,8 @@ sed -i 's,@CMDLINE@ noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/
 sed -i 's,@CMDLINE@ noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/grub-pc.cfg
 
 ### ADD PKG 部分 ###
-cp -rf ./OpenWrt-Add ./package/new
+#cp -rf ../OpenWrt-Add ./package/new
+git clone https://github.com/QiuSimons/OpenWrt-Add.git package/new
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box,frp,microsocks,shadowsocks-libev,zerotier,daed}
 rm -rf feeds/luci/applications/{luci-app-frps,luci-app-frpc,luci-app-zerotier,luci-app-filemanager}
 rm -rf feeds/packages/utils/coremark
@@ -238,13 +239,13 @@ sed -i '/REQUIRE_IMAGE_METADATA/d' target/linux/rockchip/armv8/base-files/lib/up
 wget https://github.com/coolsnowwolf/lede/raw/refs/heads/master/target/linux/rockchip/patches-6.12/991-arm64-dts-rockchip-add-more-cpu-operating-points-for.patch -O target/linux/rockchip/patches-6.12/991.patch
 wget https://github.com/coolsnowwolf/lede/raw/refs/heads/master/target/linux/rockchip/patches-6.12/992-rockchip-rk3399-overclock-to-2.2-1.8-GHz.patch -O target/linux/rockchip/patches-6.12/992.patch
 # 更换 Nodejs 版本
-#rm -rf ./feeds/packages/lang/node
-#rm -rf ./package/new/feeds_packages_lang_node-prebuilt
-#cp -rf ../OpenWrt-Add/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
+rm -rf ./feeds/packages/lang/node
+rm -rf ./package/new/feeds_packages_lang_node-prebuilt
+cp -rf package/new/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
 # 更换 golang 版本
-#rm -rf ./feeds/packages/lang/golang
-#cp -rf ../openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
-#git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+rm -rf ./feeds/packages/lang/golang
+cp -rf ../openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 # apk
 pushd feeds/luci
 wget -qO- https://github.com/sbwml/r4s_build_script/raw/refs/heads/master/openwrt/patch/luci/applications/luci-app-package-manager/0001-luci-app-package-manager-support-installing-uploaded.patch | patch -p1
