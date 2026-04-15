@@ -240,12 +240,12 @@ wget https://github.com/coolsnowwolf/lede/raw/refs/heads/master/target/linux/roc
 wget https://github.com/coolsnowwolf/lede/raw/refs/heads/master/target/linux/rockchip/patches-6.12/992-rockchip-rk3399-overclock-to-2.2-1.8-GHz.patch -O target/linux/rockchip/patches-6.12/992.patch
 # 更换 Nodejs 版本
 rm -rf ./feeds/packages/lang/node
-rm -rf ./package/new/feeds_packages_lang_node-prebuilt
-cp -rf package/new/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
+#rm -rf ./package/new/feeds_packages_lang_node-prebuilt
+cp -rf ./package/new/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
 # 更换 golang 版本
 rm -rf ./feeds/packages/lang/golang
 cp -rf ../openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+#git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 # apk
 pushd feeds/luci
 wget -qO- https://github.com/sbwml/r4s_build_script/raw/refs/heads/master/openwrt/patch/luci/applications/luci-app-package-manager/0001-luci-app-package-manager-support-installing-uploaded.patch | patch -p1

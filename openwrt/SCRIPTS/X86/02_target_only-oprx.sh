@@ -344,17 +344,17 @@ ntp.ntsc.ac.cn
 #rm -rf package/openwrt_helloworld/luci-app-openclash
 #sed -i '$a src-git openclash https://github.com/vernesong/OpenClash.git' feeds.conf.default
 #注意master对应core打分master的分支，dev对应core的dev，
-#git clone -b master --single-branch https://github.com/vernesong/OpenClash.git  package/new/openclash
+#git clone -b master --single-branch https://github.com/vernesong/OpenClash.git  package/new/OpenClash
 # 添加内核（新版只支持meta内核）
 wget https://github.com/vernesong/OpenClash/raw/core/master/meta/clash-linux-amd64-v1.tar.gz&&tar -zxvf *.tar.gz
 chmod 0755 clash
 rm -rf *.tar.gz&&mkdir -p package/base-files/files/etc/openclash/core&&mv clash package/base-files/files/etc/openclash/core/clash_meta
 chmod +x package/base-files/files/etc/openclash/core/clash*
 ##FQ全部调到VPN菜单
-sed -i 's/services/vpn/g' package/new/openclash/luci-app-openclash/luasrc/controller/*.lua
-sed -i 's/services/vpn/g' package/new/openclash/luci-app-openclash/luasrc/*.lua
-sed -i 's/services/vpn/g' package/new/openclash/luci-app-openclash/luasrc/model/cbi/openclash/*.lua
-sed -i 's/services/vpn/g' package/new/openclash/luci-app-openclash/luasrc/view/openclash/*.htm
+sed -i 's/services/vpn/g' package/new/OpenClash/luci-app-openclash/luasrc/controller/*.lua
+sed -i 's/services/vpn/g' package/new/OpenClash/luci-app-openclash/luasrc/*.lua
+sed -i 's/services/vpn/g' package/new/OpenClash/luci-app-openclash/luasrc/model/cbi/openclash/*.lua
+sed -i 's/services/vpn/g' package/new/OpenClash/luci-app-openclash/luasrc/view/openclash/*.htm
 
 # DHDAXCW骷髅头的preset-clash-core.sh
 #mkdir -p package/base-files/files/etc/openclash/core
@@ -410,8 +410,8 @@ sed -i 's/eth1/eth0/g' package/diy/netwizard/luci-app-netwizard/root/etc/init.d/
 #任务设置（会产生一个control管控栏目）
 #rm -rf package/sirpdboy/luci-app-taskplan
 #git clone https://github.com/sirpdboy/luci-app-taskplan package/new/luci-app-taskplan
-sed -i 's/Task Plan/任务设置/g' package/new/luci-app-taskplan/luci-app-taskplan/luasrc/controller/taskplan.lua
-sed -i 's/Control/管控/g' package/new/luci-app-taskplanlan/luci-app-taskplan/luasrc/controller/taskplan.lua
+sed -i 's/Task Plan/任务设置/g' package/new/luci-app-taskplan/luci-app-taskplan/root/usr/share/luci/menu.d/luci-app-taskplan.json
+sed -i 's/Control/管控/g' package/new/luci-app-taskplan/luci-app-taskplan/root/usr/share/luci/menu.d/luci-app-taskplan.json
 
 #关机  编译不成功采用esir的
 #git clone https://github.com/sirpdboy/luci-app-poweroffdevice package/diy/luci-app-poweroffdevice
