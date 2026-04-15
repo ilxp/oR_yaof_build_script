@@ -585,11 +585,11 @@ rm -rf feeds/luci/applications/luci-app-timecontrol
 rm -rf feeds/luci/applications/luci-app-filebrowser
 rm -rf package/new/custom/luci-app-wolplus
 
-rm -rf feeds/luci/applications/luci-app-openvpn-server  #采用lienol的，会生成一个vpn的栏目
-merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-openvpn-server
+#rm -rf feeds/luci/applications/luci-app-openvpn-server  #采用lienol的，会生成一个vpn的栏目
+#merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-openvpn-server
 
 #采用我自己的control
-git clone -b main --depth 1 https://github.com/ilxp/openwrt-control  package/diy/openwrt-control
+#git clone -b main --depth 1 https://github.com/ilxp/openwrt-control  package/diy/openwrt-control
 
 #zxlhhyccc大佬的 修复无法运行问题。
 #时间控制accesscontrol,timecontrol网络唤醒wolplus，访问限制webrestriction， 过滤控制weburl
@@ -627,9 +627,9 @@ git clone -b main --depth 1 https://github.com/ilxp/openwrt-control  package/diy
 #merge_package master https://github.com/xiangfeidexiaohuo/openwrt-packages.git package/new patch/luci-app-turboacc
 
 #适配 firewall4
-merge_package luci https://github.com/chenmozhijin/turboacc.git package/new/turboacc luci-app-turboacc
+#merge_package luci https://github.com/chenmozhijin/turboacc.git package/new/turboacc luci-app-turboacc
 #修改 bbr为bbr3
-sed -i 's/kmod-tcp-bbr/kmod-tcp-bbr3/g' package/new/turboacc/luci-app-turboacc/Makefile
+#sed -i 's/kmod-tcp-bbr/kmod-tcp-bbr3/g' package/new/turboacc/luci-app-turboacc/Makefile
 
 #适lede的luci23.05已经适配 firewall4，#lede的在oR上会导致没有其他系统软件，慎用
 #merge_package openwrt-24.10 https://github.com/coolsnowwolf/luci.git package/new applications/luci-app-turboacc
@@ -676,24 +676,24 @@ sed -i 's/services/vpn/g' package/new/luci-app-zerotier/root/usr/share/luci/menu
 
 #7、终端ZSH工具
 # DHDAXCW骷髅头的preset-terminal-tools.sh
-mkdir -p files/root
-pushd files/root
+#mkdir -p files/root
+#pushd files/root
 ## Install oh-my-zsh
 # Clone oh-my-zsh repository
-git clone https://github.com/ohmyzsh/ohmyzsh ./.oh-my-zsh
+#git clone https://github.com/ohmyzsh/ohmyzsh ./.oh-my-zsh
 # Install extra plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ./.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ./.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-completions ./.oh-my-zsh/custom/plugins/zsh-completions
+#git clone https://github.com/zsh-users/zsh-autosuggestions ./.oh-my-zsh/custom/plugins/zsh-autosuggestions
+#git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ./.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+#git clone https://github.com/zsh-users/zsh-completions ./.oh-my-zsh/custom/plugins/zsh-completions
 # Get .zshrc dotfile
-cp ../.././diydata/data/zsh/.zshrc .
-popd
+#cp ../.././diydata/data/zsh/.zshrc .
+#popd
 # Change default shell to zsh将系统/bin/ash/改为/usr/bin/zsh
-sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd 
+#sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd 
 sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 #sbwml大神已经改成bash了。所以将bash改为zsh
-sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
+#sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 #8、Docker 容器
 ## QiuSimons大神
@@ -732,11 +732,11 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #git clone https://$github/sbwml/package_kernel_r8127 package/kernel/r8127
 
 #11、openlist2
-rm -rf feeds/luci/applications/luci-app-openlist
-rm -rf feeds/packages/net/openlist
-git clone https://github.com/sbwml/luci-app-openlist2 package/new/openlist2
+#rm -rf feeds/luci/applications/luci-app-openlist
+#rm -rf feeds/packages/net/openlist
+#git clone https://github.com/sbwml/luci-app-openlist2 package/new/openlist2
 #移动到nas栏目
-sed -i 's/services/nas/g' package/new/openlist2/luci-app-openlist2/root/usr/share/luci/menu.d/luci-app-openlist2.json
+#sed -i 's/services/nas/g' package/new/openlist2/luci-app-openlist2/root/usr/share/luci/menu.d/luci-app-openlist2.json
 
 #12、diskman
 #merge_package master https://github.com/lisaac/luci-app-diskman.git package/new applications/luci-app-diskman
@@ -752,17 +752,17 @@ sed -i 's/services/nas/g' package/new/openlist2/luci-app-openlist2/root/usr/shar
 #15、在线升级（通过对链接的前缀10.16.2024进行比较大小进行升级）
  #原地址：https://github.com/ilxp/builder/releases/download/标签名/10.16.2024-oprx-x86-64-generic-squashfs-combined-efi.img.gz
  #原地址：https://github.com/ilxp/builder/releases/download/标签名/vermd5.txt  其中firmware为固定的tag名称。在Release发布的时候注意。
-git clone https://github.com/ilxp/openwrt-gpsysupgrade-kiddin9  package/diy/openwrt-gpsysupgrade
+#git clone https://github.com/ilxp/openwrt-gpsysupgrade-kiddin9  package/diy/openwrt-gpsysupgrade
 #改固件（要先改）
-sed -i "s/oprx/oprx-oR/g" package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/model/cbi/gpsysupgrade/sysupgrade.lua
+#sed -i "s/oprx/oprx-oR/g" package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/model/cbi/gpsysupgrade/sysupgrade.lua
 #改仓库名builder
-sed -i "s/builder/oprx-release/g" package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/model/cbi/gpsysupgrade/sysupgrade.lua
+#sed -i "s/builder/oprx-release/g" package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/model/cbi/gpsysupgrade/sysupgrade.lua
 #改vermd5名称：
-sed -i "s/vermd5/vermd5-oR/g" package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/model/cbi/gpsysupgrade/sysupgrade.lua
+#sed -i "s/vermd5/vermd5-oR/g" package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/model/cbi/gpsysupgrade/sysupgrade.lua
 ##全部调到系统菜单
-sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/controller/*.lua
-sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/admin_status/index/*.htm
-sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/gpsysupgrade/*.htm
+#sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/controller/*.lua
+#sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/admin_status/index/*.htm
+#sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/gpsysupgrade/*.htm
 
 #2）autoupdate
 git clone -b main --single-branch https://github.com/ilxp/openwrt-autoupdate.git  package/diy/openwrt-autoupdate
