@@ -137,8 +137,8 @@ ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
 latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g') #不要引号
 #latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
 #Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
-#sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
-#sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
+sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
+sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
 
 #sed -i "/OPENWRT_RELEASE/d" package/base-files/files/usr/lib/os-release
 #sed -i "/OPENWRT_DEVICE_REVISION/aOPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"" package/base-files/files/usr/lib/os-release
