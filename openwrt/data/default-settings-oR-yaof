@@ -1,12 +1,14 @@
 #!/bin/sh
+. /etc/os-release
+. /lib/functions/uci-defaults.sh
 
 #修改kmod的链接  杂交不需要
-#sed -i '/openwrt_core/d' /etc/opkg/distfeeds.conf
-sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf  #oR系列为kmods
-#获取/usr/lib/opkg/info/kernel.control中的第二行“Version: 6.1.76-1-6845aa9a30f20a242bd9b8aa42d8e480”中的6.1.76-1-6845aa9a30f20a242bd9b8aa42d8e480
-#sed -i "/openwrt_core/c\src/gz openwrt_core https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
-sed -i "/openwrt_core/c\src/gz openwrt_core https://gh-proxy.org/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
-#sed -i "/openwrt_core/c\src/gz openwrt_core https://raw.kkgithub.com/ilxp/oprx-or_core/x86_64/$(grep Version /usr/lib/opkg/info/kernel.control | awk '{print $2}')" /etc/opkg/distfeeds.conf
+sed -i '/targets/d' /etc/apk/repositories.d/distfeeds.list
+
+#获取etc/apk/world中的内核版本kernel=6.12.74~03b33c7d54d5c49b5f63a6e2886d8d14-r1
+#echo "https://raw.kkgithub.com/ilxp/oprx-or_core/x86_64/$(grep kernel /etc/apk/world | awk -F= '{print $2}')/packages.adb" >> /etc/apk/repositories.d/distfeeds.list
+echo "https://gh-proxy.com/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep kernel /etc/apk/world | awk -F= '{print $2}')/packages.adb" >> /etc/apk/repositories.d/distfeeds.list
+#echo "https://ghfast.top/raw.githubusercontent.com/ilxp/oprx-or_core/x86_64/$(grep kernel /etc/apk/world | awk -F= '{print $2}')/packages.adb" >> /etc/apk/repositories.d/distfeeds.list
 
 # theme
 if [ -d "/www/luci-static/argon" ] && [ -z "$(uci -q get luci.main.pollinterval)" ]; then
@@ -36,16 +38,17 @@ uci set system.@system[0].zram_size_mb="$zram_size"
 uci set system.@system[0].zram_comp_algo='lz4'
 uci commit system
 
-# opkg mirror
-if [ $(grep -c SNAPSHOT /etc/opkg/distfeeds.conf) -eq '0' ]; then
-    #sed -i 's,downloads.openwrt.org,mirrors.aliyun.com/openwrt,g' /etc/apk/repositories.d/distfeeds.list
-	sed -i 's,downloads.openwrt.org,mirrors.xjtu.edu.cn/openwrt,g' /etc/apk/repositories.d/distfeeds.list
+# apk mirror
+distfeeds=/etc/apk/repositories.d/distfeeds.list
+if [ $(grep -c SNAPSHOT "$distfeeds") -eq '0' ]; then
+   sed -i 's,downloads.openwrt.org,mirrors.mirrors.xjtu.edu.cn/openwrt,g' "$distfeeds"
+   #sed -i 's,downloads.openwrt.org,mirrors.cloud.tencent.com/openwrt,g' "$distfeeds"
 else
-    sed -i 's,downloads.openwrt.org,mirrors.pku.edu.cn/openwrt,g' /etc/apk/repositories.d/distfeeds.list
+  sed -i 's,downloads.openwrt.org,mirror.pku.edu.cn/openwrt,g' "$distfeeds"
 fi
 
 # extra packages
-echo "src/gz openwrt_extras https://opkg.cooluc.com/openwrt-25.12/$(. /etc/openwrt_release ; echo $DISTRIB_ARCH)" >> /etc/opkg/distfeeds.conf
+echo "https://opkg.cooluc.com/openwrt-25.12/$(cat /etc/apk/arch)/packages.adb" >> "$distfeeds"
 
 # nginx #oR系列用yaof的
 #uci set nginx.global.uci_enable='true'
