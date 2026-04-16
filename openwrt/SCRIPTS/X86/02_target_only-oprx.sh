@@ -134,7 +134,7 @@ sed -i 's/Os/O2 -march=x86-64-v2/g' include/target.mk
 #date=`TZ=UTC-8 date +%m.%d.%Y`  #升级用，统一这样
 #R$(TZ=UTC-8 date +'%y.%-m.%-d')
 ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
-#latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g') #不要引号
+#latest_release="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g')"
 latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
 Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
 
