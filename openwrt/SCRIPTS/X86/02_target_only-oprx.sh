@@ -717,8 +717,8 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
 #popd
 #sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
-#rm -rf ./feeds/luci/collections/luci-lib-docker
-#merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
+rm -rf ./feeds/luci/collections/luci-lib-docker
+merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
 
 # sbwml大神 【yaof使用sbwml的最新】
 #rm -rf feeds/luci/applications/luci-app-dockerman
