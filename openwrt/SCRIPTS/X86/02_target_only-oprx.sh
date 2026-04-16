@@ -134,21 +134,15 @@ sed -i 's/Os/O2 -march=x86-64-v2/g' include/target.mk
 #date=`TZ=UTC-8 date +%m.%d.%Y`  #升级用，统一这样
 #R$(TZ=UTC-8 date +'%y.%-m.%-d')
 ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
-latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g') #不要引号
-#latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
-#Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
+#latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g') #不要引号
+latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
+Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
 
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
+sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
 
-#sed -i '/DISTRIB_REVISION/d' package/base-files/files/etc/openwrt_release
-#echo "DISTRIB_REVISION='oR$latest_release built by ilxp@%C'" >> package/base-files/files/etc/openwrt_release
-
-#sed -i "s/DISTRIB_DESCRIPTION.*/DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'/g" package/base-files/files/etc/openwrt_release
-#sed -i "/OPENWRT_RELEASE/d" package/base-files/files/usr/lib/os-release
-#sed -i "/OPENWRT_DEVICE_REVISION/aOPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"" package/base-files/files/usr/lib/os-release
-
-#sed -i '/OPENWRT_RELEASE/d' package/base-files/files/usr/lib/os-release
-#echo 'OPENWRT_RELEASE="oR$latest_release built by ilxp@%C"' >> package/base-files/files/usr/lib/os-release
+sed -i "/OPENWRT_RELEASE/d" package/base-files/files/usr/lib/os-release
+sed -i "/OPENWRT_DEVICE_REVISION/aOPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"" package/base-files/files/usr/lib/os-release
 
 # 5、固件的命名格式：。
 #去掉版本号 openwrt-23.05.5-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
@@ -526,17 +520,17 @@ sed -i 's/eth1/eth0/g' package/diy/qosmate/etc/config/qosmate
 
 #七、广告过滤
 #1）adguardhome带核心安装。
-#rm -rf feeds/packages/net/adguardhome
-#rm -rf feeds/luci/applications/luci-app-adguardhome
+rm -rf feeds/packages/net/adguardhome
+rm -rf feeds/luci/applications/luci-app-adguardhome
 rm -rf package/new/luci-app-adguardhome
 #可以选择版本的luci-app-adguardhome
-#merge_package master https://github.com/Hyy2001X/AutoBuild-Packages.git package/new luci-app-adguardhome
+merge_package master https://github.com/Hyy2001X/AutoBuild-Packages.git package/new luci-app-adguardhome
 #kiddin9的luci-app-adguardhome
 #merge_package main https://github.com/kiddin9/kwrt-packages.gitt package/new adguardhome r8101 luci-app-openvpn-server
 #sed -i 's/services/vpn/g' package/kiddin/luci-app-openvpn-server/luasrc/controller/openvpn-server.lua
 #git clone -b master --single-branch https://github.com/kiddin9/openwrt-adguardhome package/diy/openwrt-adguardhome #编译不成功
 
-git clone https://github.com/kenzok78/luci-app-adguardhome.git package/new/luci-app-adguardhome
+#git clone https://github.com/kenzok78/luci-app-adguardhome.git package/new/luci-app-adguardhome  #不好用
 #不需要二进制
 #sed -i 's/+PACKAGE_$(PKG_NAME)_INCLUDE_binary:adguardhome/ /g' package/new/luci-app-adguardhome/Makefile
 #sed -i '/PKG_CONFIG_DEPENDS:= CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_binary/d' package/new/luci-app-adguardhome/Makefile
@@ -548,10 +542,10 @@ latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep
 #v0.108.X内核，api里面没有v0.107.
 #latest_version="$(curl -s https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | grep -Eo "v0.108.0-b.+[0-9\.]" | head -n 1)"
 #解压缩
-#wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
-#chmod 0755 AdGuardHome
-#chmod 0755 AdGuardHome/AdGuardHome
-#rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
+wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
+chmod 0755 AdGuardHome
+chmod 0755 AdGuardHome/AdGuardHome
+rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
 
 #2）ikoolproxy与openssl
 #由于openssl从1.1.1升级到了3.0.10导致ikoolproxy无法下载证书。故只能退回。https://github.com/coolsnowwolf/lede/commit/7494eb16185a176de226f55e842cadf94f1c5a11
@@ -717,17 +711,17 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
 #popd
 #sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
-rm -rf ./feeds/luci/collections/luci-lib-docker
-merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
+#rm -rf ./feeds/luci/collections/luci-lib-docker
+#merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
 
 # sbwml大神 【yaof使用sbwml的最新】
-#rm -rf feeds/luci/applications/luci-app-dockerman
-#git clone https://git.cooluc.com/sbwml/luci-app-dockerman -b nft feeds/luci/applications/luci-app-dockerman
-#rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
-#git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
-#git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
-#git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
-#git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
+rm -rf feeds/luci/applications/luci-app-dockerman
+git clone https://git.cooluc.com/sbwml/luci-app-dockerman -b nft feeds/luci/applications/luci-app-dockerman
+rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
+git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
+git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
+git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
+git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
 
 #9、全能推送（商店自己安装）
 #rm -rf feeds/luci/applications/luci-app-pushbot
