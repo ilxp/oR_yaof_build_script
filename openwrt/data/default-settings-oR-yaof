@@ -1,5 +1,21 @@
 #!/bin/sh
 
+# 4、固件版本号(21.3.2 %y : 年份的最后两位数字)
+#date=`TZ=UTC-8 date +%m.%d.%Y`  #升级用，统一这样
+#R$(TZ=UTC-8 date +'%y.%-m.%-d')
+ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
+latest_release=$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g') #不要引号
+#latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9]4/p' | sed -n 1p | sed 's/.tar.gz//g')"
+#Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
+
+sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
+
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION='oR$latest_release built by ilxp@%C'" >> /etc/openwrt_release
+
+sed -i '/OPENWRT_RELEASE/d' /usr/lib/os-release
+echo 'OPENWRT_RELEASE="oR$latest_release built by ilxp@%C"' >> /usr/lib/os-release
+
 #修改kmod的链接  杂交不需要
 #sed -i '/openwrt_core/d' /etc/opkg/distfeeds.conf
 sed -i '/openwrt_kmods/d' /etc/opkg/distfeeds.conf  #oR系列为kmods
