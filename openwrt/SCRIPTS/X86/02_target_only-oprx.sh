@@ -133,24 +133,18 @@ sed -i 's/Os/O2 -march=x86-64-v2/g' include/target.mk
 # 4、固件版本号(21.3.2 %y : 年份的最后两位数字)
 #date=`TZ=UTC-8 date +%m.%d.%Y`  #升级用，统一这样
 #R$(TZ=UTC-8 date +'%y.%-m.%-d')
-ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
+#ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1  apk不支持1-24.1.1 只支持1~r12345 或 1~20260417
+ReV_Date=`TZ=UTC-8 date +%y%-m%-d`  #26年1月1日：2611
 #latest_release="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g')"
 latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
 Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
 
-#sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk
-
-sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" include/version.mk
+# 在25.12分支采用aok后，VERSION_CODE不能是24.1.1这个的格式了。
+sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
 
 sed -i --follow-symlinks "s#DISTRIB_DESCRIPTION.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'#g" package/base-files/files/etc/openwrt_release
 sed -i --follow-symlinks "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"#" package/base-files/files/usr/lib/os-release
 	
-#sed -i --follow-symlinks \
-    #'s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='\''oR'"$latest_release"' built by ilxp@%C'\''#' \
-    #package/base-files/files/etc/openwrt_release	
-#sed -i --follow-symlinks \
-    #'s#^OPENWRT_RELEASE=".*"#OPENWRT_RELEASE="oR'"$latest_release"' built by ilxp@%C"#' \
-    #package/base-files/files/usr/lib/os-release
 
 # 5、固件的命名格式：。
 #去掉版本号 openwrt-23.05.5-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
