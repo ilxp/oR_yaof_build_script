@@ -50,6 +50,13 @@ fi
 # extra packages
 echo "https://opkg.cooluc.com/openwrt-25.12/$(cat /etc/apk/arch)/packages.adb" >> "$distfeeds"
 
+echo "#src/gz kiddin-packages https://dl.openwrt.ai/packages-25.12/x86_64/packages" >> /etc/apk/repositories.d/customfeeds.list
+echo "#src/gz kiddin-luci https://dl.openwrt.ai/packages-25.12/x86_64/luci" >> /etc/apk/repositories.d/customfeeds.list
+echo "#src/gz kiddin-base https://dl.openwrt.ai/packages-25.12/x86_64/base" >> /etc/apk/repositories.d/customfeeds.list
+echo "#src/gz kiddin-routing https://dl.openwrt.ai/packages-25.12/x86_64/routing" >> /etc/apk/repositories.d/customfeeds.list
+echo "#src/gz kiddin-telephony https://dl.openwrt.ai/packages-25.12/x86_64/telephony" >> /etc/apk/repositories.d/customfeeds.list
+echo "#src/gz kiddin9 https://dl.openwrt.ai/packages-25.12/x86_64/kiddin9" >> /etc/apk/repositories.d/customfeeds.list
+
 # nginx #oR系列用yaof的
 #uci set nginx.global.uci_enable='true'
 #uci del nginx._lan
