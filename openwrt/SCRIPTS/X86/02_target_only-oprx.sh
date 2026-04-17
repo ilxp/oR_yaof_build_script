@@ -941,9 +941,6 @@ sed -i "s/network/services/g" feeds/luci/applications/luci-app-upnp/root/usr/sha
 git clone https://github.com/timsaya/luci-app-bandix  package/new/bandix-luci
 git clone https://github.com/timsaya/openwrt-bandix  package/new/bandix
 
-#ddns
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new openwrt_pkgs/ddns-scripts-aliyun
-
 #fullconenat-nft
 rm -rf package/new/nft-fullcone
 merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new lede_pkg/fullconenat-nft
