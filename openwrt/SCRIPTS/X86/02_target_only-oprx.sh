@@ -139,7 +139,7 @@ ReV_Date=`TZ=UTC-8 date +%y%-m%-d`  #26年1月1日：2611
 latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
 Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
 
-# 在25.12分支采用aok后，VERSION_CODE不能是24.1.1这个的格式了。
+# 在25.12分支采用apk后，VERSION_CODE不能是24.1.1这个的格式了。
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
 
 sed -i --follow-symlinks "s#DISTRIB_DESCRIPTION.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'#g" package/base-files/files/etc/openwrt_release
