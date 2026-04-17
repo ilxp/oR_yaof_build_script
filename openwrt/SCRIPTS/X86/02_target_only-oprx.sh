@@ -111,13 +111,6 @@ rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
 cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
 cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 
-#base-files补丁
-#patch -p1 <./diydata/data/patches/base-files/base-files.patch
-
-#rm -rf package/base-files/Makefile
-#cp -rf ./diydata/data/patches/base-files/Makefile  ./package/base-files/
-
-
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
 #grep HASH include/kernel-6.12 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
@@ -543,10 +536,10 @@ latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep
 #v0.108.X内核，api里面没有v0.107.
 #latest_version="$(curl -s https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | grep -Eo "v0.108.0-b.+[0-9\.]" | head -n 1)"
 #解压缩
-wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
-chmod 0755 AdGuardHome
-chmod 0755 AdGuardHome/AdGuardHome
-rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
+#wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
+#chmod 0755 AdGuardHome
+#chmod 0755 AdGuardHome/AdGuardHome
+#rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
 
 #2）ikoolproxy与openssl
 #由于openssl从1.1.1升级到了3.0.10导致ikoolproxy无法下载证书。故只能退回。https://github.com/coolsnowwolf/lede/commit/7494eb16185a176de226f55e842cadf94f1c5a11
