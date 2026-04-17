@@ -142,9 +142,9 @@ Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE}
 # 在25.12分支采用apk后，VERSION_CODE不能是24.1.1这个的格式了。
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
 
-sed -i --follow-symlinks "s#DISTRIB_DESCRIPTION.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'#g" package/base-files/files/etc/openwrt_release
-sed -i --follow-symlinks "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"#" package/base-files/files/usr/lib/os-release
-	
+sed -i "s#DISTRIB_DESCRIPTION.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'#g" package/base-files/files/etc/openwrt_release
+sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"#" package/base-files/files/usr/lib/os-release
+
 
 # 5、固件的命名格式：。
 #去掉版本号 openwrt-23.05.5-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
