@@ -552,10 +552,10 @@ latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep
 #v0.108.X内核，api里面没有v0.107.
 #latest_version="$(curl -s https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | grep -Eo "v0.108.0-b.+[0-9\.]" | head -n 1)"
 #解压缩
-#wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
-#chmod 0755 AdGuardHome
-#chmod 0755 AdGuardHome/AdGuardHome
-#rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/
+wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
+chmod 0755 AdGuardHome
+chmod 0755 AdGuardHome/AdGuardHome
+rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/
 
 #2）ikoolproxy与openssl
 #由于openssl从1.1.1升级到了3.0.10导致ikoolproxy无法下载证书。故只能退回。https://github.com/coolsnowwolf/lede/commit/7494eb16185a176de226f55e842cadf94f1c5a11
