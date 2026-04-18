@@ -490,7 +490,7 @@ sed -i 's/eth1/eth0/g' package/diy/qosmate/etc/config/qosmate
 #mkdir -p package/base-files/files/etc/qosmate.d
 #cp -f ./diydata/data/qosmate.d/inline_dscptag.nft package/base-files/files/etc/qosmate.d/inline_dscptag.nft
 #移动到qos栏目
-#sed -i 's/\/network/\/qos/g' package/diy/luci-app-qosmate/root/usr/share/luci/menu.d/luci-app-qosmate.json
+sed -i 's/\/network/\/qos/g' package/diy/luci-app-qosmate/root/usr/share/luci/menu.d/luci-app-qosmate.json
 
 #六）、DNS相关（openwrt带mosdns）
 #1）smartdns（lede是lede的luci18-branch，master分支是js，lede的luci-23.05分支是js）
@@ -499,29 +499,29 @@ sed -i 's/eth1/eth0/g' package/diy/qosmate/etc/config/qosmate
 #git clone -b master https://github.com/pymumu/luci-app-smartdns.git package/diy/luci-app-smartdns  #官方的smartdns安装不上，只用luci库里的
 #git clone https://github.com/pymumu/openwrt-smartdns.git package/diy/smartdns
 
-#mkdir -p package/base-files/files/etc/smartdns
+mkdir -p package/base-files/files/etc/smartdns
 #中国域名列表
 #下载三个最新列表合并到cn.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"  >> package/base-files/files/etc/smartdns/cn.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-datt@release/apple-cn.txt"    >> package/base-files/files/etc/smartdns/cn.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/google-cn.txt"   >> package/base-files/files/etc/smartdns/cn.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/direct-list.txt"  >> package/base-files/files/etc/smartdns/cn.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-datt@release/apple-cn.txt"    >> package/base-files/files/etc/smartdns/cn.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/google-cn.txt"   >> package/base-files/files/etc/smartdns/cn.conf
 #去除full regexp并指定china组解析
-#sed "s/^full://g;s/^regexp:.*$//g;s/^/nameserver \//g;s/$/\/cn/g" -i package/base-files/files/etc/smartdns/cn.conf
-#chmod +x package/base-files/files/etc/smartdns/cn.conf
+sed "s/^full://g;s/^regexp:.*$//g;s/^/nameserver \//g;s/$/\/cn/g" -i package/base-files/files/etc/smartdns/cn.conf
+chmod +x package/base-files/files/etc/smartdns/cn.conf
 
 #广告域名列表
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/reject-list.txt"  >> package/base-files/files/etc/smartdns/block.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-spy.txt"  >> package/base-files/files/etc/smartdns/block.conf
-#wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-extra.txt"  >> package/base-files/files/etc/smartdns/block.conf
-#sed "s/^full://g;s/^regexp:.*$//g;s/^/address \//g;s/$/\/#/g" -i package/base-files/files/etc/smartdns/block.conf
-#chmod +x package/base-files/files/etc/smartdns/block.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/reject-list.txt"  >> package/base-files/files/etc/smartdns/block.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-spy.txt"  >> package/base-files/files/etc/smartdns/block.conf
+wget -qO- "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/win-extra.txt"  >> package/base-files/files/etc/smartdns/block.conf
+sed "s/^full://g;s/^regexp:.*$//g;s/^/address \//g;s/$/\/#/g" -i package/base-files/files/etc/smartdns/block.conf
+chmod +x package/base-files/files/etc/smartdns/block.conf
 
 #2）mosdns
-#rm -rf feeds/packages/net/mosdns
-#rm -rf feeds/luci/applications/luci-app-mosdns
-#rm -rf feeds/packages/net/v2ray-geodata
+rm -rf feeds/packages/net/mosdns
+rm -rf feeds/luci/applications/luci-app-mosdns
+rm -rf feeds/packages/net/v2ray-geodata
 #git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns package/diy/luci-app-mosdns #需要v2ray-geodata依赖
-#git clone -b master --single-branch https://github.com/QiuSimons/openwrt-mos  package/diy/openwrt-mos  #自带mosdns以及v2ray-geodata
+git clone -b master --single-branch https://github.com/QiuSimons/openwrt-mos  package/diy/openwrt-mos  #自带mosdns以及v2ray-geodata
 
 #七、广告过滤
 #1）adguardhome带核心安装。
