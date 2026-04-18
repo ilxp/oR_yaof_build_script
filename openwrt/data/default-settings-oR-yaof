@@ -41,7 +41,7 @@ uci commit system
 # apk mirror
 distfeeds=/etc/apk/repositories.d/distfeeds.list
 if [ $(grep -c SNAPSHOT "$distfeeds") -eq '0' ]; then
-   sed -i 's,downloads.openwrt.org,mirrors.mirrors.xjtu.edu.cn/openwrt,g' "$distfeeds"
+   sed -i 's,downloads.openwrt.org,mirrors.xjtu.edu.cn/openwrt,g' "$distfeeds"
    #sed -i 's,downloads.openwrt.org,mirrors.cloud.tencent.com/openwrt,g' "$distfeeds"
 else
   sed -i 's,downloads.openwrt.org,mirror.pku.edu.cn/openwrt,g' "$distfeeds"

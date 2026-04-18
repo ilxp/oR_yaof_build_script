@@ -145,7 +145,8 @@ Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE}
 #sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
 
 #不修改发布号。
-sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
+#sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk  
+ 
 sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR%C built by ilxp@$ReV_Date'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
 sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR%C built by ilxp@$ReV_Date\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
 
@@ -529,7 +530,11 @@ rm -rf feeds/packages/net/adguardhome
 rm -rf feeds/luci/applications/luci-app-adguardhome
 rm -rf package/new/luci-app-adguardhome
 #可以选择版本的luci-app-adguardhome
-merge_package master https://github.com/Hyy2001X/AutoBuild-Packages.git package/new luci-app-adguardhome
+#merge_package master https://github.com/Hyy2001X/AutoBuild-Packages.git package/new luci-app-adguardhome
+
+merge_package master https://github.com/immortalwrt/luci.git  package/new  applications/luci-app-adguardhome
+#sed -i 's/+adguardhome/ /g' package/new/luci-app-adguardhome/Makefile
+
 #kiddin9的luci-app-adguardhome
 #merge_package main https://github.com/kiddin9/kwrt-packages.gitt package/new adguardhome r8101 luci-app-openvpn-server
 #sed -i 's/services/vpn/g' package/kiddin/luci-app-openvpn-server/luasrc/controller/openvpn-server.lua
@@ -547,10 +552,10 @@ latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep
 #v0.108.X内核，api里面没有v0.107.
 #latest_version="$(curl -s https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | grep -Eo "v0.108.0-b.+[0-9\.]" | head -n 1)"
 #解压缩
-wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
-chmod 0755 AdGuardHome
-chmod 0755 AdGuardHome/AdGuardHome
-rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/ #软件包安装，不能带核心0.108，否则不能成功
+#wget https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_version}/AdGuardHome_linux_amd64.tar.gz&&tar -zxvf *.tar.gz
+#chmod 0755 AdGuardHome
+#chmod 0755 AdGuardHome/AdGuardHome
+#rm -rf *.tar.gz&&mkdir -p package/base-files/files/usr/bin&&mv AdGuardHome/AdGuardHome package/base-files/files/usr/bin/
 
 #2）ikoolproxy与openssl
 #由于openssl从1.1.1升级到了3.0.10导致ikoolproxy无法下载证书。故只能退回。https://github.com/coolsnowwolf/lede/commit/7494eb16185a176de226f55e842cadf94f1c5a11
@@ -947,7 +952,7 @@ merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new le
 
 #fanchmwrt
 #git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
-#merge_package fanchmwrt-24.10.4 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
+#merge_package fanchmwrt-25.12.2 https://github.com/fanchmwrt/fanchmwrt.git package package/fcm
 #fcmwrt的oaf更新特征库
 #pushd package/fcm
 #wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O ./fwxd/files/feature.cfg
@@ -955,9 +960,8 @@ merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new le
 #删除主题依赖
 #sed -i "s/+luci-i18n-base-zh-cn/ /g" package/fcm/luci-theme-fanchmwrt/Makefile
 #nf补丁
-#rm -rf target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
-#wget -P target/linux/generic/hack-6.6/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-24.10.4/target/linux/generic/hack-6.6/980-nf-contrack-support-fwx-data.patch
-
+#rm -rf target/linux/generic/hack-6.12/950-fwx-nf-conn-struct-user-hook.patch
+#wget -P target/linux/generic/hack-6.12/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-25.12.2/target/linux/generic/hack-6.12/950-fwx-nf-conn-struct-user-hook.patch
 ##########################################################################
 
 chmod -R 755 ./
