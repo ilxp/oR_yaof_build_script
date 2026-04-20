@@ -160,13 +160,13 @@ sed -i '/luci-app-attendedsysupgrade/d' feeds/luci/collections/luci-nginx/Makefi
 
 ### Fullcone-NAT 部分 ###
 # bcmfullcone
-#cp -rf ./diydata/PATCH/kernel/bcmfullcone/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ./diydata/PATCH/kernel/bcmfullcone/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 # set nf_conntrack_expect_max for fullcone
 wget -qO - https://github.com/openwrt/openwrt/commit/bbf39d07.patch | patch -p1
 echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
 # FW4
 mkdir -p package/network/config/firewall4/patches
-#cp -f ./diydata/PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
+cp -f ./diydata/PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
 mkdir -p package/libs/libnftnl/patches
 cp -f ./diydata/PATCH/pkgs/firewall/libnftnl/*.patch ./package/libs/libnftnl/patches/
 sed -i '/PKG_INSTALL:=/iPKG_FIXUP:=autoreconf' package/libs/libnftnl/Makefile
