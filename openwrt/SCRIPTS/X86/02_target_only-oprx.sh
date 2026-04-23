@@ -111,12 +111,6 @@ rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
 cp -rf ./diydata/data/modules-6.12/hwmon.mk  ./package/kernel/linux/modules/
 cp -rf ./diydata/data/modules-6.12/netsupport.mk ./package/kernel/linux/modules/
 
-#base-files补丁
-#patch -p1 <./diydata/data/patches/base-files/base-files.patch
-
-#rm -rf package/base-files/Makefile
-#cp -rf ./diydata/data/patches/base-files/Makefile  ./package/base-files/
-
 
 # 1、kenrel Vermagic  杂交用上面yaof的
 sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
@@ -825,7 +819,7 @@ git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages
 # Shortcut Forwarding Engine
 git clone https://git.cooluc.com/sbwml/shortcut-fe package/new/shortcut-fe
 # FullCone module
-#git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone #编译不成功
+git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone
 # IPv6 NAT
 git clone https://github.com/sbwml/packages_new_nat6 package/new/nat6
 # natflow
@@ -947,8 +941,8 @@ git clone https://github.com/timsaya/luci-app-bandix  package/new/bandix-luci
 git clone https://github.com/timsaya/openwrt-bandix  package/new/bandix
 
 #fullconenat-nft
-rm -rf package/new/nft-fullcone
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new lede_pkg/fullconenat-nft
+#rm -rf package/new/nft-fullcone
+#merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new lede_pkg/fullconenat-nft
 
 #fanchmwrt
 #git clone https://github.com/fanchmwrt/fanchmwrt-packages.git package/fcm-packages
