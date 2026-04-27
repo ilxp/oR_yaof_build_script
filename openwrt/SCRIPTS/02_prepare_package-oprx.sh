@@ -108,7 +108,7 @@ sed -i 's/;)\s*\\/; \\/' include/feeds.mk
 # Patch arm64 型号名称
 cp -rf ./diydata/PATCH/kernel/arm/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 # BBRv3
-cp -rf ./diydata/PATCH/kernel/bbr3/* ./target/linux/generic/backport-${KERNEL_VERSION}/
+#cp -rf ./diydata/PATCH/kernel/bbr3/* ./target/linux/generic/backport-${KERNEL_VERSION}/
 
 ### Fullcone-NAT 部分 ###
 # bcmfullcone
