@@ -133,15 +133,14 @@ latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[
 Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
 
 # 在25.12分支采用apk后，VERSION_CODE不能是24.1.1这个的格式了。
-#sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
-#sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
-#sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
+sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
+sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
+sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
 
 #不修改发布号。
 #sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk  
- 
-sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@$ReV_Date'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
-sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@$ReV_Date\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
+#sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@$ReV_Date'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
+#sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@$ReV_Date\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
 
 # 5、固件的命名格式：。
 #去掉版本号 openwrt-23.05.5-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
@@ -718,13 +717,13 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 #merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
 
 # sbwml大神 【yaof使用sbwml的最新】
-rm -rf feeds/luci/applications/luci-app-dockerman
-git clone https://git.cooluc.com/sbwml/luci-app-dockerman -b nft feeds/luci/applications/luci-app-dockerman
-rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
-git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
-git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
-git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
-git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
+#rm -rf feeds/luci/applications/luci-app-dockerman
+#git clone https://git.cooluc.com/sbwml/luci-app-dockerman -b nft feeds/luci/applications/luci-app-dockerman
+#rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
+#git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
+#git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
+#git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
+#git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
 
 #9、全能推送（商店自己安装）
 #rm -rf feeds/luci/applications/luci-app-pushbot
