@@ -453,7 +453,7 @@ if [ "$platform" = "x86_64" ]; then
             cp -a bin/packages/x86_64/base/*dpdk*.ipk $kmodpkg_name/ || true
             cp -a bin/packages/x86_64/base/*numa*.ipk $kmodpkg_name/ || true
         }
-        bash kmod-sign $kmodpkg_name  #如果杂交了，不需要验证了
+        bash kmod-sign $kmodpkg_name
         tar zcf x86_64-$kmodpkg_name.tar.gz $kmodpkg_name
         rm -rf $kmodpkg_name
     fi
