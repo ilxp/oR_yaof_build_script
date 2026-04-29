@@ -300,7 +300,9 @@ wget -qO- https://github.com/openwrt/packages/pull/20054.patch | patch -p1
 popd
 sed -i '/sysctl.d/d' feeds/packages/utils/dockerd/Makefile
 rm -rf ./feeds/luci/collections/luci-lib-docker
-cp -rf ../docker_lib/collections/luci-lib-docker ./feeds/luci/collections/luci-lib-docker
+#cp -rf ../docker_lib/collections/luci-lib-docker ./feeds/luci/collections/luci-lib-docker
+merge_package master https://github.com/lisaac/luci-lib-docker.git package/new collections/luci-lib-docker
+
 # IPv6 兼容助手
 patch -p1 <./diydata/PATCH/pkgs/odhcp6c/1002-odhcp6c-support-dhcpv6-hotplug.patch
 # ODHCPD
