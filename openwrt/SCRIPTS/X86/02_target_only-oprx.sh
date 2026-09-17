@@ -517,8 +517,9 @@ chmod +x package/base-files/files/etc/smartdns/block.conf
 #2）mosdns
 rm -rf feeds/packages/net/mosdns
 rm -rf feeds/luci/applications/luci-app-mosdns
-#rm -rf feeds/packages/net/v2ray-geodata
+rm -rf feeds/packages/net/v2ray-geodata
 git clone -b v5 --single-branch https://github.com/sbwml/luci-app-mosdns package/diy/luci-app-mosdns
+git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
 #git clone -b master --single-branch https://github.com/QiuSimons/openwrt-mos  package/diy/openwrt-mos
 
 #七、广告过滤
