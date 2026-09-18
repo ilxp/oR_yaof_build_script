@@ -39,15 +39,15 @@ uci set system.@system[0].zram_comp_algo='lz4'
 uci commit system
 
 #将官方openwrt-25.12的公钥签名导入：
-wget -O /etc/apk/keys/openwrt-25.12.pem https://codeberg.org/aparcar/keyring/raw/branch/master/apk/openwrt-25.12.pem
+#wget -O /etc/apk/keys/openwrt-25.12.pem https://codeberg.org/aparcar/keyring/raw/branch/master/apk/openwrt-25.12.pem  #空白文件
 
 #手动创建：https://git.openwrt.org/keyring/commit/?id=f0670054fd3aa9616bcd8d0d0357a1a15c65b758
-#cat > /etc/apk/keys/openwrt-25.12.pem << 'EOF'
-#-----BEGIN PUBLIC KEY-----
-#MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECqruC4JU7pfpnkQuueBaT29I1dFx
-#Xbc7xYsY5R2+r3Hg3SO3B2QLpMaghA9Uzx/E2PGaNkYe24uPPg/n7Q9Jeg==
-#-----END PUBLIC KEY-----
-#EOF
+cat > /etc/apk/keys/openwrt-25.12.pem << 'EOF'
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECqruC4JU7pfpnkQuueBaT29I1dFx
+Xbc7xYsY5R2+r3Hg3SO3B2QLpMaghA9Uzx/E2PGaNkYe24uPPg/n7Q9Jeg==
+-----END PUBLIC KEY-----
+EOF
 
 # apk mirror
 distfeeds=/etc/apk/repositories.d/distfeeds.list
