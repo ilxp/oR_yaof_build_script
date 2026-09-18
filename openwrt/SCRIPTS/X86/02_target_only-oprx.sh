@@ -110,16 +110,6 @@ git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 
 #四、系统优化########
 
-#将官方openwrt-25.12的公钥签名导入：
-wget -O /etc/apk/keys/openwrt-25.12.pem https://codeberg.org/aparcar/keyring/raw/branch/master/apk/openwrt-25.12.pem
-#手动创建：https://git.openwrt.org/keyring/commit/?id=f0670054fd3aa9616bcd8d0d0357a1a15c65b758
-#cat > /etc/apk/keys/openwrt-25.12.pem << 'EOF'
-#-----BEGIN PUBLIC KEY-----
-#MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECqruC4JU7pfpnkQuueBaT29I1dFx
-#Xbc7xYsY5R2+r3Hg3SO3B2QLpMaghA9Uzx/E2PGaNkYe24uPPg/n7Q9Jeg==
-#-----END PUBLIC KEY-----
-#EOF
-
 #修改package/kernel/linux/modules
 rm -rf package/kernel/linux/modules/hwmon.mk  
 rm -rf package/kernel/linux/modules/netsupport.mk   #tcp-bbr为tcp-bbr3
