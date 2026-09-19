@@ -571,7 +571,7 @@ git clone -b main --single-branch https://github.com/ilxp/luci-app-ikoolproxy.gi
 #七、管控相关
 #1） APP 过滤
 git clone -b master --depth 1 https://github.com/destan19/OpenAppFilter.git package/diy/OpenAppFilter
-sed -i 's/services/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
+#sed -i 's/services/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/oaf.lua  #新版不能移动，否则没有数据
 
 #git clone -b master --depth 1 https://github.com/sbwml/OpenAppFilter.git  package/diy/OpenAppFilter
 #sed -i 's/network/control/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
@@ -586,7 +586,7 @@ pushd package/diy/OpenAppFilter
 wget https://github.com/ilxp/oaf/raw/main/feature.cfg -O ./open-app-filter/files/feature.cfg
 popd
 #翻译应用过滤
-sed -i 's/App Filter/应用过滤/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
+#sed -i 's/Parental Control/行为管理/g' package/diy/OpenAppFilter/luci-app-oaf/luasrc/controller/oaf.lua
 
 #2、管控
 rm -rf feeds/luci/applications/luci-app-control-webrestriction
