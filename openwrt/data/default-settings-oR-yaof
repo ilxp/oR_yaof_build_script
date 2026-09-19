@@ -42,7 +42,7 @@ uci commit system
 #wget -qO- https://codeberg.org/aparcar/keyring/raw/branch/master/apk/openwrt-25.12.pem > /etc/apk/keys/openwrt-25.12.pem
 #wget -P /etc/apk/keys/ https://codeberg.org/aparcar/keyring/raw/branch/master/apk/openwrt-25.12.pem
 
-#手动创建：https://git.openwrt.org/keyring/commit/?id=f0670054fd3aa9616bcd8d0d0357a1a15c65b758
+#手动创建：https://git.cdn.openwrt.org/keyring/tree/apk/openwrt-25.12.pem  https://git.cdn.openwrt.org/keyring/plain/apk/openwrt-25.12.pem
 cat > /etc/apk/keys/openwrt-25.12.pem << 'EOF'
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAECqruC4JU7pfpnkQuueBaT29I1dFx
