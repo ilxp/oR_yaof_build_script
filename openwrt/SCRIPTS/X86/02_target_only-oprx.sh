@@ -710,13 +710,16 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 #8、Docker 容器  js
 # sbwml大神 【yaof使用sbwml的最新】
-rm -rf feeds/luci/applications/luci-app-dockerman
-git clone https://github.com/sbwml/luci-app-dockerman -b openwrt-25.12 feeds/luci/applications/luci-app-dockerman
-rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
-git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
-git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
-git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
-git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
+#rm -rf feeds/luci/applications/luci-app-dockerman
+#git clone https://github.com/sbwml/luci-app-dockerman -b openwrt-25.12 feeds/luci/applications/luci-app-dockerman
+#rm -rf feeds/packages/utils/{docker,dockerd,containerd,runc}
+#git clone https://github.com/sbwml/packages_utils_docker feeds/packages/utils/docker
+#git clone https://github.com/sbwml/packages_utils_dockerd feeds/packages/utils/dockerd
+#git clone https://github.com/sbwml/packages_utils_containerd feeds/packages/utils/containerd
+#git clone https://github.com/sbwml/packages_utils_runc feeds/packages/utils/runc
+
+#采用nftables的podman替代docker 
+git clone https://github.com/Zerogiven-OpenWRT-Packages/luci-app-podman  package/diy/luci-app-podman
 
 #9、全能推送（商店自己安装）
 #rm -rf feeds/luci/applications/luci-app-pushbot
