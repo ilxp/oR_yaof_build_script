@@ -801,7 +801,7 @@ sed -i 's/OP_BRANCH=main/OP_BRANCH=openwrt-24.10/g' package/diy/openwrt-autoupda
 
 #17、更换 Nodejs 版本
 rm -rf feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 feeds/packages/lang/node
+git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-25.12 feeds/packages/lang/node
 #rm -rf ./feeds/packages/lang/node
 #merge_package master https://github.com/QiuSimons/OpenWrt-Add  package/custom  feeds_packages_lang_node-prebuilt
 #cp -rf ../package/custom/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
