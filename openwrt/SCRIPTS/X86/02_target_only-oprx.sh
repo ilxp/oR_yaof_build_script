@@ -386,7 +386,7 @@ merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new sin
 #移动到VPN栏目
 sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json
 
-#三）、应用商店
+#三）、istore应用商店
 git clone https://github.com/linkease/istore.git  package/diy/istore
 git clone https://github.com/linkease/istore-ui package/diy/istore-ui
 rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
