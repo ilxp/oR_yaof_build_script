@@ -387,10 +387,7 @@ merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new sin
 sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json
 
 #三）、应用商店
-#git clone https://github.com/linkease/nas-packages.git  package/diy/nas-packages
-#git clone https://github.com/linkease/nas-packages-luci.git  package/diy/nas-packages-luci
 #git clone https://github.com/linkease/istore.git  package/diy/istore
-#git clone https://github.com/linkease/istore-ui.git  package/diy/istore-ui
 #rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
 
 echo >> feeds.conf.default
