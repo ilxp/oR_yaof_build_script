@@ -247,7 +247,7 @@ git clone https://github.com/sbwml/feeds_packages_lang_node -b packages-25.12 fe
 # 更换 golang 版本
 rm -rf ./feeds/packages/lang/golang
 cp -rf ../openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
-#git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+#git clone https://github.com/sbwml/packages_lang_golang -b 27.x feeds/packages/lang/golang
 # apk
 pushd feeds/luci
 wget -qO- https://github.com/sbwml/r4s_build_script/raw/refs/heads/master/openwrt/patch/luci/applications/luci-app-package-manager/0001-luci-app-package-manager-support-installing-uploaded.patch | patch -p1

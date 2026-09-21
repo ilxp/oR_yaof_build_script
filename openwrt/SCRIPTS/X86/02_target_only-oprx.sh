@@ -105,9 +105,6 @@ cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/file
 rm -rf feeds/packages/utils/lrzsz
 git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
 
-#rm -rf feeds/packages/utils/runc
-#merge_package master https://github.com/openwrt/packages.git feeds/packages/utils  utils/runc
-
 #四、系统优化########
 
 #修改package/kernel/linux/modules
@@ -267,7 +264,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-n
 #二）、翻墙系列（23.05编译系统自带为homeproxy）
 #golang版本【使用sbwnl库的记得要更新到最新26.x】
 rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 27.x feeds/packages/lang/golang
 
 #1、ssr-plus【需要sbwml的仓库，记得要更新golang的版本】
 #rm -rf package/helloworld
@@ -804,7 +801,7 @@ sed -i 's/OP_BRANCH=main/OP_BRANCH=openwrt-24.10/g' package/diy/openwrt-autoupda
 
 #17、更换 Nodejs 版本
 rm -rf feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 feeds/packages/lang/node
+git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-25.12 feeds/packages/lang/node
 #rm -rf ./feeds/packages/lang/node
 #merge_package master https://github.com/QiuSimons/OpenWrt-Add  package/custom  feeds_packages_lang_node-prebuilt
 #cp -rf ../package/custom/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
@@ -838,7 +835,7 @@ sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/g' feeds/packages/ut
 
 #20、autocore
 rm -rf package/system/autocore 
-git clone -b openwrt-24.10 --depth 1 https://github.com/sbwml/autocore-arm  package/system/autocore
+git clone -b openwrt-25.12 --depth 1 https://github.com/sbwml/autocore-arm  package/system/autocore
 sed -i '/init/d' package/system/autocore/Makefile
 sed -i '/autocore.json/a\\	$(INSTALL_BIN) ./files/x86/autocore $(1)/etc/init.d/' package/system/autocore/Makefile
 sed -i '/autocore.json/a\\	$(INSTALL_DIR) $(1)/etc/init.d' package/system/autocore/Makefile
@@ -912,13 +909,9 @@ git clone -b master --depth 1 https://github.com/NateLol/luci-app-oled.git packa
 #git clone --depth 1 https://github.com/muink/luci-app-natmapt  package/new/luci-app-natmapt
 #git clone --depth 1 https://github.com/muink/openwrt-natmapt  package/new/openwrt-natmapt 
 
-# 22、UPX 可执行软件压缩  sbwml已经在mainline
-#sed -i '/patchelf pkgconf/i\tools-y += ucl upx' ./tools/Makefile
-#sed -i '\/autoconf\/compile :=/i\$(curdir)/upx/compile := $(curdir)/ucl/compile' ./tools/Makefile
-##merge_package main https://github.com/Lienol/openwrt.git  ./tools tools/ucl tools/upx  #表示在根目录生成一个tools文件夹。本来就会有，所以报错。
-##merge_package main https://github.com/Lienol/openwrt.git tools tools/ucl tools/upx  #表示在移动到根目录已经存在的tools文件夹。lienol版本有点旧3.95。
-#merge_package main https://github.com/Lienol/openwrt.git tools tools/ucl
-#merge_package main https://github.com/ilxp/upx-openwrt.git tools upx   #最新版4.2.4
+# 22、UPX 可执行软件压缩  来源sbwml的00-prepare_base.sh
+patch -p1 <./diydata/data/patches/upx/0001-tools-add-upx-tools.patch
+patch -p1 <./diydata/data/patches/upx/0002-rootfs-add-upx-compression-support.patch
 
 #23 v2raya
 git clone --depth 1 https://github.com/zxlhhyccc/luci-app-v2raya.git package/new/luci-app-v2raya
