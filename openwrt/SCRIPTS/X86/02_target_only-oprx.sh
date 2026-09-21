@@ -390,11 +390,6 @@ sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/men
 #git clone https://github.com/linkease/istore.git  package/diy/istore
 #rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
 
-echo >> feeds.conf.default
-echo 'src-git istore https://github.com/linkease/istore;main' >> feeds.conf.default
-./scripts/feeds update istore
-./scripts/feeds install -d y -p istore luci-app-store
-
 #四）、sirpdboy大神的相关插件
 #中文netdata
 rm -rf feeds/luci/applications/luci-app-netdata
