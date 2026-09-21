@@ -722,6 +722,8 @@ sed -i 's/\/bin\/bash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 #采用nftables的podman替代docker 
 git clone https://github.com/Zerogiven-OpenWRT-Packages/luci-app-podman  package/diy/luci-app-podman
+rm -rf feeds/packages/lang/rust  #25.12为1.96.0 无法编译通过  采用sbwml的1.95.0
+git clone https://github.com/sbwml/packages_lang_rust -b main feeds/packages/lang/rust
 
 #9、全能推送（商店自己安装）
 #rm -rf feeds/luci/applications/luci-app-pushbot
