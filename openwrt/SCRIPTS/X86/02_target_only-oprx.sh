@@ -387,8 +387,9 @@ merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new sin
 sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json
 
 #三）、应用商店
-#git clone https://github.com/linkease/istore.git  package/diy/istore
-#rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
+git clone https://github.com/linkease/istore.git  package/diy/istore
+git clone https://github.com/linkease/istore-ui package/diy/istore-ui
+rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
 
 #四）、sirpdboy大神的相关插件
 #中文netdata
@@ -813,7 +814,9 @@ git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone
 # IPv6 NAT
 git clone https://github.com/sbwml/packages_new_nat6 package/new/nat6
 # natflow
-git clone https://github.com/sbwml/package_new_natflow package/new/natflow
+#git clone https://github.com/sbwml/package_new_natflow package/new/natflow
+
+git clone https://github.com/QiuSimons/openwrt-natflow package/new/natflow
 
 #19、sbwml大神的优化
 # x86 - disable intel_pstate & mitigations
