@@ -263,8 +263,8 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci-n
 
 #二）、翻墙系列（23.05编译系统自带为homeproxy）
 #golang版本【使用sbwnl库的记得要更新到最新26.x】
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+#rm -rf feeds/packages/lang/golang
+#git clone https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 
 #1、ssr-plus【需要sbwml的仓库，记得要更新golang的版本】
 #rm -rf package/helloworld
@@ -801,7 +801,7 @@ sed -i 's/OP_BRANCH=main/OP_BRANCH=openwrt-24.10/g' package/diy/openwrt-autoupda
 
 #17、更换 Nodejs 版本
 rm -rf feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-25.12 feeds/packages/lang/node
+git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 feeds/packages/lang/node
 #rm -rf ./feeds/packages/lang/node
 #merge_package master https://github.com/QiuSimons/OpenWrt-Add  package/custom  feeds_packages_lang_node-prebuilt
 #cp -rf ../package/custom/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
