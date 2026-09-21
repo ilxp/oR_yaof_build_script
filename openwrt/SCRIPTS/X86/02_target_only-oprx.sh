@@ -389,9 +389,14 @@ sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/men
 #三）、应用商店
 #git clone https://github.com/linkease/nas-packages.git  package/diy/nas-packages
 #git clone https://github.com/linkease/nas-packages-luci.git  package/diy/nas-packages-luci
-git clone https://github.com/linkease/istore.git  package/diy/istore
-git clone https://github.com/linkease/istore-ui.git  package/diy/istore-ui
-rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
+#git clone https://github.com/linkease/istore.git  package/diy/istore
+#git clone https://github.com/linkease/istore-ui.git  package/diy/istore-ui
+#rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
+
+echo >> feeds.conf.default
+echo 'src-git istore https://github.com/linkease/istore;main' >> feeds.conf.default
+./scripts/feeds update istore
+./scripts/feeds install -d y -p istore luci-app-store
 
 #四）、sirpdboy大神的相关插件
 #中文netdata
