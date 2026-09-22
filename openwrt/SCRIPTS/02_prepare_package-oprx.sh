@@ -241,7 +241,7 @@ wget https://github.com/coolsnowwolf/lede/raw/refs/heads/master/target/linux/roc
 # 更换 Nodejs 版本
 rm -rf ./feeds/packages/lang/node
 rm -rf ./package/new/feeds_packages_lang_node-prebuilt
-cp -rf ../OpenWrt-Add/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
+#cp -rf ../OpenWrt-Add/feeds_packages_lang_node-prebuilt ./feeds/packages/lang/node
 git clone https://github.com/sbwml/feeds_packages_lang_node -b packages-25.12 feeds/packages/lang/node
 
 # 更换 golang 版本

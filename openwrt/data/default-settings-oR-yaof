@@ -121,7 +121,8 @@ crontab /etc/crontabs/root
 
 #==============以下来源yaof==========
 #自动语言
-uci set luci.main.lang=auto
+#uci set luci.main.lang=auto
+uci set luci.main.lang='zh_cn'  #配置为中文
 uci commit luci
 
 #自动挂载

@@ -916,8 +916,14 @@ git clone -b master --depth 1 https://github.com/NateLol/luci-app-oled.git packa
 #git clone --depth 1 https://github.com/muink/openwrt-natmapt  package/new/openwrt-natmapt 
 
 # 22、UPX 可执行软件压缩  来源sbwml的00-prepare_base.sh
+#sed -i '/patchelf pkgconf/i\tools-y += ucl upx' ./tools/Makefile
+#sed -i '\/autoconf\/compile :=/i\$(curdir)/upx/compile := $(curdir)/ucl/compile' ./tools/Makefile
+#merge_package main https://github.com/ilxp/upx-openwrt.git tools upx   #最新版5.2.1
+
 patch -p1 <./diydata/data/patches/upx/0001-tools-add-upx-tools.patch
 patch -p1 <./diydata/data/patches/upx/0002-rootfs-add-upx-compression-support.patch
+#将需要压缩的upx_list.txt 【已经build-oprx中处理】
+#curl -s https://raw.githubusercontent.com/sbwml/r4s_build_script/master/openwrt/generic/upx_list.txt -o upx_list.txt
 
 #23 v2raya
 git clone --depth 1 https://github.com/zxlhhyccc/luci-app-v2raya.git package/new/luci-app-v2raya
