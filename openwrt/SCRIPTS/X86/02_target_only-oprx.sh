@@ -388,8 +388,7 @@ sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/men
 
 #三）、istore应用商店
 git clone https://github.com/linkease/istore.git  package/diy/istore
-git clone https://github.com/linkease/istore-ui package/diy/istore-ui
-rm -rf package/diy/istore-ui/app-store-ui/src/dist/luci-static/istore/i18n/en.json
+git clone https://github.com/linkease/istore-ui.git package/diy/istore-ui
 
 #四）、sirpdboy大神的相关插件
 #中文netdata
