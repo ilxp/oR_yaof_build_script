@@ -178,7 +178,7 @@ popd
 
 # 9、kiddin9大神的####for openwrt
 #sed -i 's/Os/O2/g' include/target.mk
-sed -i 's/=bbr/=cubic/' package/kernel/linux/files/sysctl-tcp-bbr.conf
+#sed -i 's/=bbr/=cubic/' package/kernel/linux/files/sysctl-tcp-bbr.conf
 #for X—86
 sed -i 's/kmod-r8169/kmod-r8168/' target/linux/x86/image/64.mk
 
@@ -390,13 +390,14 @@ merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new sin
 sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json
 
 #三）、istore应用商店
+rm -rf package/new/istore
 git clone https://github.com/linkease/istore.git  package/diy/istore
 git clone https://github.com/linkease/istore-ui.git package/diy/istore-ui
 cd package/diy/istore
 patch -p1 < ../../../diydata/data/patches/istore-lang.patch
 cd -
 
-#git clone https://github.com/gxnas/istore.git package/diy/istore   #修复了istore默认显示为中文
+#git clone https://github.com/ilxp/istore.git package/diy/istore   #修复了istore默认显示为中文
 
 #四）、sirpdboy大神的相关插件
 #中文netdata
