@@ -102,8 +102,9 @@ cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/file
 
 #三、编译出错的########
 # lrzsz - 0.12.20
-rm -rf feeds/packages/utils/lrzsz
-git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
+#rm -rf feeds/packages/utils/lrzsz
+#git clone https://github.com/sbwml/packages_utils_lrzsz package/new/lrzsz
+#merge_package master https://github.com/openwrt/packages.git feeds/packages/utils utils/lrzsz
 
 #四、系统优化########
 
@@ -118,11 +119,13 @@ sed -ie 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/'
 #grep HASH include/kernel-6.12 | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
 grep HASH target/linux/generic/kernel-$kernel_version | awk -F'HASH-' '{print $2}' | awk '{print $1}' | md5sum | awk '{print $1}' > .vermagic
 
-# 2、Optimization level -Ofast
+# 2、Optimization level -O2 or O3 
 #sed -i 's/Os/O2/g' include/target.mk
-sed -i 's/Os/O2 -march=x86-64-v2/g' include/target.mk
+#sed -i 's/Os/O2 -march=x86-64-v2/g' include/target.mk
+sed -i 's/Os/O2 -mtune=generic/g' include/target.mk
+#sed -i 's/Os/O3 -mtune=generic/g' include/target.mk  #sbwml已经降级O2
 
-# 3、Fix x86 - CONFIG_ALL_KMODS  会导致无法登陆
+# 3、Fix x86 - CONFIG_ALL_KMODS  已在hwmon.mk 修了
 #sed -i 's/hwmon, +PACKAGE_kmod-thermal:kmod-thermal/hwmon/g' package/kernel/linux/modules/hwmon.mk
 
 # 4、固件版本号(21.3.2 %y : 年份的最后两位数字)

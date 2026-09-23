@@ -13,7 +13,7 @@
 +    local uci = require("luci.model.uci").cursor()
 +    local lang = uci:get("luci", "main", "lang") or "en"
 +
-+    if lang == "zh_cn" then
++    if lang == "zh_cn" or lang == "auto" then
 +        return "zh-cn"
 +    elseif lang == "zh_tw" then
 +        return "zh-tw"
