@@ -475,18 +475,18 @@ EOF
 	   ##${{ env.build_dir }}/openwrt/*-*.tar.gz
 	   #rm -rf ota
 	   
-	# 重命名固件 格式：OprX-openwrt-x86_64-oR-R24.9.18-2024091815-Fsquashfs-uefi-c347f.img.gz
+	# oR重命名固件 格式：OprX-openwrt-oR25.12.5-20260915-x86_64-squashfs-combined-uefi-c020e.img.gz
 	#Build_DATE=$(date +%Y%m%d%H)  #日期+小时
 	#Build_DATE=$(date +%Y%m%d)  #日期	   
 	Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${ReV_Date} 
     if [ "$1" = "dev" ]; then  #分支-Snapshots，采用短日期作为版本号
         Short_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1 
-	    OP_VERSION="R${Short_Date}-${Build_DATE}"   #这里带R
+	    OP_VERSION="${Short_Date}-${Build_DATE}"   #这里不带R
 	    #OP_VERSION="R$Short_Date-$Build_DATE"
     elif [ "$1" = "rc2" ]; then  #最新发布版号
          #VERSION=$(sed 's/v//g' version.txt)
 	     #OP_VERSION="R${VERSION}-${Build_DATE}"
-		 OP_VERSION="R${latest_release}-${Build_DATE}"
+		 OP_VERSION="${latest_release}-${Build_DATE}"
     fi
 
 	#SHA256=$(sha256sum bin/targets/x86/64*/*-generic-squashfs-combined.img.gz | awk '{print $1}')
@@ -495,9 +495,9 @@ EOF
 	sha5_efi=$(egrep -o '[a-z0-9]+' <<< ${SHA256_efi} | cut -c1-5)  #获取前5位
 	#SHA256_efi4=$(sha256sum bin/targets/x86/64*/*-generic-ext4-combined-efi.img.gz | awk '{print $1}')
 	#sha5_efi4=$(egrep -o '[a-z0-9]+' <<< ${SHA256_efi} | cut -c1-5)  #获取前5位
-	rename -v "s/openwrt-x86-64-generic-squashfs-combined-efi/OprX-openwrt-x86_64-oR-$OP_VERSION-Fsquashfs-uefi-$sha5_efi/" bin/targets/x86/64*/*.gz || true  #能成功
-	#rename -v "s/openwrt-x86-64-generic-ext4-combined-efi/OprX-openwrt-x86_64-oR-$OP_VERSION-Fext4-uefi-$sha5_efi4/" bin/targets/x86/64*/*.gz || true  #能成功
-	#rename -v "s/openwrt-x86-64-generic-squashfs-combined/OprX-openwrt-x86_64-oR-$OP_VERSION-Fsquashfs-bios-$sha5/" bin/targets/x86/64*/*.gz || true  #能成功，但一定要在efi后面。
+	rename -v "s/openwrt-x86-64-generic-squashfs-combined-efi/OprX-openwrt-oR$OP_VERSION-x86_64-squashfs-combined-uefi-$sha5_efi/" bin/targets/x86/64*/*.gz || true  #能成功
+	#rename -v "s/openwrt-x86-64-generic-ext4-combined-efi/OprX-openwrt-oR$OP_VERSION-x86_64-ext4-combined-uefi-$sha5_efi4/" bin/targets/x86/64*/*.gz || true  #能成功
+	#rename -v "s/openwrt-x86-64-generic-squashfs-combined/OprX-openwrt-oR$OP_VERSION-x86_64-squashfs-bios-$sha5/" bin/targets/x86/64*/*.gz || true  #能成功，但一定要在efi后面。
 	   
     # Backup download cache
     if [ "$isCN" = "CN" ] && [ "$1" = "rc2" ]; then
