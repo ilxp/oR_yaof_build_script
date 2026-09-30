@@ -135,7 +135,7 @@ sed -i 's/Os/O2 -mtune=generic/g' include/target.mk
 ReV_Date=`TZ=UTC-8 date +%y%-m%-d`  #26年1月1日：2611
 #latest_release="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g')"
 latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
-Build_DATE=$(TZ=UTC-8 date +'%Y%m%d')  #这个引用要带{}，即${Build_DATE} 
+Build_DATE=$(TZ=UTC-8 date +'%Y%m%d%H')  #这个引用要带{}，即${Build_DATE} 
 
 # 在25.12分支采用apk后，VERSION_CODE不能是24.1.1这个的格式了。
 sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
@@ -772,10 +772,10 @@ sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgr
 sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/admin_status/index/*.htm
 sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/gpsysupgrade/*.htm
 
-#2）autoupdate
-git clone -b main --single-branch https://github.com/ilxp/openwrt-autoupdate.git  package/diy/openwrt-autoupdate
+#2）soup
+git clone -b main --single-branch https://github.com/ilxp/openwrt-soup.git  package/diy/openwrt-soup
 #将版本号以及固件的相关信息写入默认配置文件。
-#cat >> package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default <<EOF
+#cat >> package/diy/openwrt-soup/soup/files/etc/soup/default <<EOF
 #Author=ilxp
 #Github=https://github.com/ilxp/oprx-release
 #TARGET_PROFILE=x86_64
@@ -796,21 +796,21 @@ git clone -b main --single-branch https://github.com/ilxp/openwrt-autoupdate.git
 
 #修改内容
 #1）固件标签
-sed -i "s/TARGET_FLAG=Full/TARGET_FLAG=oR/g" package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
+sed -i "s/TARGET_FLAG=oR/TARGET_FLAG=oR/g" package/diy/openwrt-soup/soup/files/etc/soup/default
 #2）版本号：需要固定成：R24.1.1-20240101
 #Build_DATE=$(date +%Y%m%d%H)  #日期+小时
 #Short_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
 Short_Date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
-Compile_Date=$(TZ=UTC-8 date +'%Y%m%d')
+Compile_Date=$(TZ=UTC-8 date +'%Y%m%d%H')
 #OP_VERSION="${Short_Date}-${Compile_Date}"
 OP_VERSION="${latest_release}-${Compile_Date}"  #oR使用类似：25.12.5-2026.923
-sed -i "s/OP_VERSION=24.10.1/OP_VERSION=$OP_VERSION/g" package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default  #使用双引号
+sed -i "s/OP_VERSION=25.12.5/OP_VERSION=$OP_VERSION/g" package/diy/openwrt-soup/soup/files/etc/soup/default  #使用双引号
 #3）源码作者
-#sed -i 's/OP_AUTHOR=openwrt/OP_AUTHOR=openwrt/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
+#sed -i 's/OP_AUTHOR=openwrt/OP_AUTHOR=openwrt/g' package/diy/openwrt-soup/soup/files/etc/soup/default
 #4）项目
-#sed -i 's/OP_REPO=openwrt/OP_REPO=openwrt/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
+#sed -i 's/OP_REPO=openwrt/OP_REPO=openwrt/g' package/diy/openwrt-soup/soup/files/etc/soup/default
 #5）分支
-sed -i 's/OP_BRANCH=24.10/OP_BRANCH=25.12/g' package/diy/openwrt-autoupdate/autoupdate/files/etc/autoupdate/default
+sed -i 's/OP_BRANCH=25.12/OP_BRANCH=25.12/g' package/diy/openwrt-soup/soup/files/etc/soup/default
 
 #17、更换 Nodejs 版本
 rm -rf feeds/packages/lang/node
