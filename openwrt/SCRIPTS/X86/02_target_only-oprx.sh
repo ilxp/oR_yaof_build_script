@@ -795,7 +795,12 @@ git clone -b main --single-branch https://github.com/ilxp/openwrt-soup.git  pack
 #EOF
 
 #修改内容
-#1）固件标签
+#修改 json地址
+sed -i "s#^API_Url=.*#API_Url=https://github.com/ilxp/oprx-release/releases/download/firmware/oR.json#" \
+    package/diy/openwrt-soup/soup/files/etc/soup/default
+#perl -i -pe 's{^API_Url=.*}{API_Url=https://github.com/ilxp/oprx-release/releases/download/firmware/eS.json}' \
+    #package/diy/openwrt-soup/soup/files/etc/soup/default
+#1）固件前缀和标签
 sed -i "s/TARGET_FLAG=oR/TARGET_FLAG=oR/g" package/diy/openwrt-soup/soup/files/etc/soup/default
 #2）版本号：需要固定成：R24.1.1-20240101
 #Build_DATE=$(date +%Y%m%d%H)  #日期+小时
