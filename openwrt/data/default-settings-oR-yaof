@@ -144,9 +144,9 @@ uci add_list system.ntp.server='cn.ntp.org.cn'
 uci add_list system.ntp.server='ntp.ntsc.ac.cn'
 uci commit system
 
-#Dropbear指定lan口可以登陆ssh  导致已无法登陆
-#uci set dropbear.@dropbear[0].Interface='lan'
-#uci set dropbear.@dropbear[0].Interface=''    #任何口都可以登陆
+#Dropbear指定lan口可以登陆ssh   导致无法登陆
+#uci set dropbear.@dropbear[0].Interface='lan'  #导致无法登陆
+#uci set dropbear.@dropbear[0].Interface=''    #系统默认：任何口都可以登陆
 #uci commit dropbear
 
 #PASSWALL
