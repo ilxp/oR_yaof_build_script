@@ -128,28 +128,34 @@ sed -i 's/Os/O2 -mtune=generic/g' include/target.mk
 # 3、Fix x86 - CONFIG_ALL_KMODS  已在hwmon.mk 修了
 #sed -i 's/hwmon, +PACKAGE_kmod-thermal:kmod-thermal/hwmon/g' package/kernel/linux/modules/hwmon.mk
 
-# 4、固件版本号(21.3.2 %y : 年份的最后两位数字)
-#date=`TZ=UTC-8 date +%m.%d.%Y`  #升级用，统一这样
-#R$(TZ=UTC-8 date +'%y.%-m.%-d')
-#ReV_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1  apk不支持1-24.1.1 只支持1~r12345 或 1~20260417
-ReV_Date=`TZ=UTC-8 date +%y%-m%-d`  #26年1月1日：2611
-#latest_release="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g')"
-latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
-Build_DATE=$(TZ=UTC-8 date +'%Y%m%d%H')  #这个引用要带{}，即${Build_DATE} 
+# 4、固件版本号(21.3.2 %y : 年份的最后两位数字)  已经引用只脚本build-oprx.sh
+#build_date=$(TZ=UTC-8 date +'%Y%m%d%H')  #这个引用要带{}，即${build_date} 
+#short_date=$(TZ=UTC-8 date +'%y.%m.%d' | awk -F. '{print $1"."$2+0"."$3+0}') #24年1月1日：24.1.1
+#short_date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
+
+# 引用主脚本 build-oprx.sh 万一主脚本不存在或者单独运行时兜底取当前时间
+build_date="${build_date:-$(TZ=UTC-8 date +'%Y%m%d%H')}"
+short_date="${short_date:-$(TZ=UTC-8 date +'%y.%-m.%-d')}"
 
 # 在25.12分支采用apk后，VERSION_CODE不能是24.1.1这个的格式了。
-sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   
-sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@%C'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
-sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@%C\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
+
+# oR系列需要获取官方版本号
+#latest_release="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g')"
+latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
+
+sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=${short_date}" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   #修改 %c
+sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@${build_date}'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
+sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@${build_date}\"#g" package/base-files/files/usr/lib/os-release     #原文是双引号
 
 #不修改发布号。
-#sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=$ReV_Date" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk  
-#sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@$ReV_Date'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
-#sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@$ReV_Date\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
+#sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=${short_date}" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk  
+#sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@${build_date}'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
+#sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@${build_date}\"#" package/base-files/files/usr/lib/os-release     #原文是双引号
 
-# 5、固件的命名格式：。
-#去掉版本号 openwrt-23.05.5-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
-sed -i 's/IMG_PREFIX:=$(VERSION_DIST_SANITIZED)-$(IMG_PREFIX_VERNUM)$(IMG_PREFIX_VERCODE)$(IMG_PREFIX_EXTRA)/IMG_PREFIX:=$(VERSION_DIST_SANITIZED)-/g' include/image.mk
+# 固件的命名格式：。
+#去掉版本号 openwrt-23.05.2-x86-64或者openwrt-23.05-snapshot-r0-60e49cf-x86-64改为openwrt-x86-64
+#sed -i 's/IMG_PREFIX:=\$(VERSION_DIST_SANITIZED)-\$(IMG_PREFIX_VERNUM)\$(IMG_PREFIX_VERCODE)\$(IMG_PREFIX_EXTRA)/IMG_PREFIX:=$(VERSION_DIST_SANITIZED)-/g' include/image.mk
+sed -i 's/\$(IMG_PREFIX_VERNUM)\$(IMG_PREFIX_VERCODE)\$(IMG_PREFIX_EXTRA)//g' include/image.mk
 
 #采用kiddin9大神的gpsysupgrade升级方式：https://github.com/ilxp/openwrt-gpsysupgrade-kiddin9：
 #格式：10.23.2024-oprx-oD-x86-64-generic-squashfs-combined-efi.img.gz   #oD是固件分类标签
@@ -804,13 +810,12 @@ sed -i 's#API_Url=.*#API_Url=https://github.com/ilxp/oprx-release/releases/downl
 sed -i 's/TARGET_FLAG=.*/TARGET_FLAG=oR/g' package/diy/openwrt-soup/soup/files/etc/soup/default
 sed -i 's/FW_Prefix=.*/FW_Prefix=OprX/g' package/diy/openwrt-soup/soup/files/etc/soup/default
 #2）版本号：需要固定成：R24.1.1-20240101
-#Build_DATE=$(date +%Y%m%d%H)  #日期+小时
-#Short_Date=`TZ=UTC-8 date +%y.%-m.%-d`  #24年1月1日：24.1.1
-#Short_Date=$(TZ=UTC-8 date +'%y.%m.%d' | awk -F. '{print $1"."$2+0"."$3+0}') #24年1月1日：24.1.1
-Short_Date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
-Compile_Date=$(TZ=UTC-8 date +'%Y%m%d%H')
-#OP_VERSION="${Short_Date}-${Compile_Date}"
-OP_VERSION="${latest_release}-${Compile_Date}"  #oR使用类似：25.12.5-2026.923
+#build_date=$(date +%Y%m%d%H)  #日期+小时
+#short_date=$(TZ=UTC-8 date +'%y.%m.%d' | awk -F. '{print $1"."$2+0"."$3+0}') #24年1月1日：24.1.1
+short_date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
+build_date=$(TZ=UTC-8 date +'%Y%m%d%H')
+#OP_VERSION="${short_date}-${build_date}"
+OP_VERSION="${latest_release}-${build_date}"  #oR使用类似：25.12.5-2026.923
 sed -i "s|OP_VERSION=.*|OP_VERSION=$OP_VERSION|g" package/diy/openwrt-soup/soup/files/etc/soup/default  #可用/#|,使用双引号
 #3）源码作者
 sed -i 's/OP_AUTHOR=.*/OP_AUTHOR=openwrt/g' package/diy/openwrt-soup/soup/files/etc/soup/default
