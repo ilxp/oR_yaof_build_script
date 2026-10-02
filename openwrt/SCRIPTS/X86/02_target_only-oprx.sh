@@ -135,15 +135,21 @@ sed -i 's/Os/O2 -mtune=generic/g' include/target.mk
 
 # 引用主脚本 build-oprx.sh 万一主脚本不存在或者单独运行时兜底取当前时间
 build_date="${build_date:-$(TZ=UTC-8 date +'%Y%m%d%H')}"
-short_date="${short_date:-$(TZ=UTC-8 date +'%y.%-m.%-d')}"
-
-# 在25.12分支采用apk后，VERSION_CODE不能是24.1.1这个的格式了。
+short_date="${short_date:-$(TZ=UTC-8 date +'%y.%-m.%-d')}"  #26.10.1
 
 # oR系列需要获取官方版本号
 #latest_release="$(curl -s https://api.github.com/repos/openwrt/openwrt/tags | grep -Eo "v25.12.+[0-9\.]" | head -n 1 | sed 's/v//g')"
 latest_release="$(curl -s https://github.com/openwrt/openwrt/tags | grep -Eo "v[0-9\.]+\-*r*c*[0-9]*.tar.gz" | sed -n '/[2-9][5-9]/p' | sed -n 1p | sed 's/v//g' | sed 's/.tar.gz//g')" 
 
-sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=${short_date}" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   #修改 %c
+#sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=${short_date}" -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' include/version.mk   #修改%c，apk后，VERSION_CODE不能是26.10.1，只能26101
+
+# apk 不接受特殊字符了
+# 从锁定的 build_date 截取后 6 位（yymmdd），不再调用 date
+REVISION_APK="${build_date:2:6}"    # 2026100105 → 261001
+sed -i -e "/\(# \)\?REVISION:=/c\REVISION:=${REVISION_APK}" \
+       -e '/VERSION_CODE:=/c\VERSION_CODE:=$(REVISION)' \
+       include/version.mk    #此时%c  显示261001，后续继续显示26.10.1 只能调用${short_date}
+
 sed -i "s#^DISTRIB_DESCRIPTION=.*#DISTRIB_DESCRIPTION='oR$latest_release built by ilxp@${build_date}'#g" package/base-files/files/etc/openwrt_release   #原文是单引号
 sed -i "s#^OPENWRT_RELEASE=\".*\"#OPENWRT_RELEASE=\"oR$latest_release built by ilxp@${build_date}\"#g" package/base-files/files/usr/lib/os-release     #原文是双引号
 
