@@ -149,6 +149,11 @@ uci commit system
 #uci set dropbear.@dropbear[0].Interface=''    #系统默认：任何口都可以登陆
 #uci commit dropbear
 
+#禁用openssh-server提供的sshd，采用Dropbear，两者抢端口22，导致luci崩溃
+/etc/init.d/sshd stop
+/etc/init.d/sshd disable
+
+
 #PASSWALL
 [ -f '/usr/share/v2ray/geoip.dat' ] && uci set passwall.@global_rules[0].v2ray_location_asset='/usr/share/v2ray/'
 uci set passwall.@global_subscribe[0].ss_aead_type='shadowsocks-rust'
