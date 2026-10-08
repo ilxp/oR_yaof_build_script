@@ -151,7 +151,7 @@ uci commit dropbear
 
 #ttyd也绑定lan口，安全
 uci set ttyd.@ttyd[0].interface='@lan'
-uci set ttyd.@ttyd[0].debug='7'
+uci set ttyd.@ttyd[0].debug='0'
 uci commit ttyd
 /etc/init.d/ttyd restart
 
@@ -427,8 +427,20 @@ uci commit wrtbwmon
 /etc/init.d/qemu-ga stop
 #/etc/init.d/dnsproxy disable 2>/dev/null
 #/etc/init.d/dnsproxy stop
-#/etc/init.d/dockerd disable 2>/dev/null
-#/etc/init.d/dockerd stop
+
+# 停止 Podman 服务
+/etc/init.d/podman stop
+/etc/init.d/podman disable  2>/dev/null
+
+# dockerd禁用
+# 把 auto_start 改回 1，允许手动启动
+uci set dockerd.globals.auto_start='1'
+uci commit dockerd
+# 停当前进程
+/etc/init.d/dockerd stop
+# 用 disable 阻止开机自启
+/etc/init.d/dockerd disable
+
 
 chmod 0755 /etc/init.d/*
 
