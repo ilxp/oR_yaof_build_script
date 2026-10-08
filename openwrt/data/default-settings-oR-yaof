@@ -144,15 +144,19 @@ uci add_list system.ntp.server='cn.ntp.org.cn'
 uci add_list system.ntp.server='ntp.ntsc.ac.cn'
 uci commit system
 
-#Dropbear指定lan口可以登陆ssh   导致无法登陆
-#uci set dropbear.@dropbear[0].Interface='lan'  #导致无法登陆
-#uci set dropbear.@dropbear[0].Interface=''    #系统默认：任何口都可以登陆
-#uci commit dropbear
+#Dropbear指定lan口可以登陆ssh
+uci set dropbear.@dropbear[0].Interface='lan'
+uci commit dropbear
+/etc/init.d/dropbear restart
+
+#ttyd也绑定lan口，安全
+uci set ttyd.@ttyd[0].interface='lan'
+uci commit ttyd
+/etc/init.d/ttyd restart
 
 #禁用openssh-server提供的sshd，采用Dropbear，两者抢端口22，导致luci崩溃
 /etc/init.d/sshd stop
 /etc/init.d/sshd disable
-
 
 #PASSWALL
 [ -f '/usr/share/v2ray/geoip.dat' ] && uci set passwall.@global_rules[0].v2ray_location_asset='/usr/share/v2ray/'
