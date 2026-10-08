@@ -151,6 +151,7 @@ uci commit dropbear
 
 #ttyd也绑定lan口，安全
 uci set ttyd.@ttyd[0].interface='@lan'
+uci set ttyd.@ttyd[0].debug='7'
 uci commit ttyd
 /etc/init.d/ttyd restart
 
