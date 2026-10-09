@@ -149,11 +149,18 @@ uci set dropbear.@dropbear[0].Interface='lan'
 uci commit dropbear
 /etc/init.d/dropbear restart
 
-#ttyd也绑定lan口，安全
-uci set 'ttyd.@ttyd[0].interface=@lan'
-uci set 'ttyd.@ttyd[0].debug=0'
+#ttyd也绑定lan口，安全 写不成功
+uci set ttyd.@ttyd[0].interface='@lan'
+uci set ttyd.@ttyd[0].debug='0'
 uci commit ttyd
 /etc/init.d/ttyd restart
+#用cat直接写
+cat > /etc/config/ttyd << 'EOF'
+config ttyd
+	option command '/bin/login -f root'
+	option interface '@lan'
+	option debug '0'
+EOF
 
 #禁用openssh-server提供的sshd，采用Dropbear，两者抢端口22，导致luci崩溃
 /etc/init.d/sshd stop
