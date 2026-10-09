@@ -1,0 +1,4 @@
+config ttyd
+	option command '/bin/login -f root'
+	option interface '@lan'
+	option debug '0'
