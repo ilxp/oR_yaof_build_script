@@ -507,7 +507,7 @@ rm -f S99nft-qos || true
 #--------以下设置是能考来源https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/files/etc/uci-defaults/99-custom.sh
 # 设置默认防火墙规则，方便虚拟机首次访问 WebUI
 # 因为本项目中 单网口模式是dhcp模式 直接就能上网并且访问web界面
-uci set firewall.@zone[1].input='ACCEPT'
+#uci set firewall.@zone[1].input='ACCEPT'   #wan区域暴漏，攻击就来了，必须关闭
 
 # 设置主机名映射，解决安卓原生 TV 无法联网的问题
 uci add dhcp domain
@@ -625,7 +625,7 @@ else
 fi
 
 # 设置所有网口可访问网页终端
-uci delete ttyd.@ttyd[0].interface
+#uci delete ttyd.@ttyd[0].interface
 
 # 设置所有网口可连接 SSH
 #uci set dropbear.@dropbear[0].Interface=''
