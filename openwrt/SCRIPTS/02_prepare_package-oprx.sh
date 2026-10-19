@@ -166,25 +166,6 @@ wget -qO - https://github.com/openwrt/openwrt/commit/bbf39d07.patch | patch -p1
 echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
 # FW4
 mkdir -p package/network/config/firewall4/patches
-cp -f ./diydata/PATCH/pkgs/firewall/firewall4_patches/*.patch ./package/network/config/firewall4/patches/
-mkdir -p package/libs/libnftnl/patches
-cp -f ./diydata/PATCH/pkgs/firewall/libnftnl/*.patch ./package/libs/libnftnl/patches/
-sed -i '/PKG_INSTALL:=/iPKG_FIXUP:=autoreconf' package/libs/libnftnl/Makefile
-mkdir -p package/network/utils/nftables/patches
-cp -f ./diydata/PATCH/pkgs/firewall/nftables/*.patch ./package/network/utils/nftables/patches/
-# Patch LuCI 以增添 FullCone 开关
-pushd feeds/luci
-patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0001-luci-app-firewall-add-nft-fullcone-and-bcm-fullcone-.patch
-popd
-
-### Shortcut-FE 部分 ###
-# Patch Kernel 以支持 Shortcut-FE
-cp -rf ./diydata/PATCH/kernel/sfe/* ./target/linux/generic/hack-${KERNEL_VERSION}/
-cp -rf ../lede/target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch ./target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch
-# Patch LuCI 以增添 Shortcut-FE 开关
-pushd feeds/luci
-patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0002-luci-app-firewall-add-shortcut-fe-option.patch
-popd
 
 ### NAT6 部分 ###
 # custom nft command
@@ -199,14 +180,9 @@ pushd feeds/luci
 patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0004-luci-add-firewall-add-custom-nft-rule-support.patch
 popd
 
-### natflow 部分 ###
+### Broadcom FullCone NAT (must come after 0003/0004: generated against them) ###
 pushd feeds/luci
-patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0005-luci-app-firewall-add-natflow-offload-support.patch
-popd
-
-### fullcone6 ###
-pushd feeds/luci
-patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0007-luci-app-firewall-add-fullcone6-option-for-nftables-.patch
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0001-luci-app-firewall-add-brcm-fullcone-nat-option.patch
 popd
 
 ### Other Kernel Hack 部分 ###
@@ -226,12 +202,18 @@ sed -i 's,@CMDLINE@ noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/
 
 ### ADD PKG 部分 ###
 #cp -rf ../OpenWrt-Add ./package/new
-#git clone https://github.com/QiuSimons/OpenWrt-Add.git package/new
+#rm -rf ./package/new/shortcut-fe
+# nft-fullcone is superseded by the Broadcom scheme; drop its kmod from the build
+# and from addition-trans-zh's DEPENDS, which would otherwise reference a package
+# that no longer exists (07_fw3.sh does the iptables-side equivalent).
+#rm -rf ./package/new/lede_pkg/fullconenat-nft
+#sed -i 's/ +kmod-nft-fullcone//' ./package/new/addition-trans-zh/Makefile
 #rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box,frp,microsocks,shadowsocks-libev,zerotier,daed}
-#rm -rf feeds/luci/applications/{luci-app-frps,luci-app-frpc,luci-app-zerotier,luci-app-filemanager}
+#rm -rf feeds/luci/applications/{luci-app-frps,luci-app-frpc,luci-app-zerotier}
 #rm -rf feeds/packages/utils/coremark
 #sed -i 's/+@KERNEL_DEBUG_INFO_BTF/+vmlinux-btf/' ./package/new/openwrt-einat-ebpf/Makefile
 #git clone https://github.com/QiuSimons/vmlinux-btf ./package/new/vmlinux-btf
+
 
 ### 获取额外的 LuCI 应用、主题和依赖 ###
 # RK
@@ -248,6 +230,9 @@ git clone https://github.com/sbwml/feeds_packages_lang_node -b packages-25.12 fe
 rm -rf ./feeds/packages/lang/golang
 cp -rf ../openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
 #git clone https://github.com/sbwml/packages_lang_golang -b 27.x feeds/packages/lang/golang
+# gn
+rm -rf ./feeds/packages/devel/gn
+cp -rf ../imm_pkg/devel/gn ./feeds/packages/devel/gn
 # apk
 pushd feeds/luci
 wget -qO- https://github.com/sbwml/r4s_build_script/raw/refs/heads/master/openwrt/patch/luci/applications/luci-app-package-manager/0001-luci-app-package-manager-support-installing-uploaded.patch | patch -p1
