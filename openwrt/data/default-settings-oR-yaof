@@ -654,6 +654,39 @@ uci commit
 
 #----------网络端口配置结束-----
 
+#----------linux内核网络优化----------
+# ====== 确保 sysctl 网络优化文件存在并生效 ======
+SYSCTL_CONF="/etc/sysctl.d/99-network-tuning.conf"
+
+mkdir -p /etc/sysctl.d
+
+if [ ! -f "$SYSCTL_CONF" ]; then
+    cat > "$SYSCTL_CONF" << 'EOF'
+# 网络优化 (由 UCI defaults 脚本部署)
+net.ipv4.tcp_fastopen=3
+net.ipv4.tcp_max_syn_backlog=8192
+net.core.somaxconn=8192
+net.ipv4.tcp_fin_timeout=15
+net.ipv4.ip_local_port_range=1024 65535
+
+# 缓冲区上限：64MB，面向跨国高延迟代理场景，彻底解除 BDP 瓶颈
+net.core.rmem_max=67108864
+net.core.wmem_max=67108864
+net.ipv4.tcp_rmem=4096 87380 67108864
+net.ipv4.tcp_wmem=4096 65536 67108864
+
+# 慎用 tw_reuse：如果你决定启用，取消下一行注释
+# net.ipv4.tcp_tw_reuse=1
+
+fs.file-max=65535
+EOF
+fi
+
+# 立即加载，使优化在当前启动周期内生效
+sysctl -p "$SYSCTL_CONF" >/dev/null 2>&1
+exit 0
+#------------------------------
+
 #清除 LuCI 残留缓存
 rm -rf /tmp/luci-modulecache
 rm -f /tmp/luci-indexcache
