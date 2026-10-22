@@ -580,6 +580,8 @@ latest_version="$(curl -s https://github.com/AdguardTeam/AdGuardHome/tags | grep
 #merge_package main https://github.com/ilxp/luci-app-ikoolproxy.git package/new luci-app-ikoolproxy
 git clone -b main --single-branch https://github.com/ilxp/luci-app-ikoolproxy.git package/diy/luci-app-ikoolproxy
 
+git clone -b main --single-branch https://github.com/ilxp/admask-openwrt.git package/diy/admask-openwrt
+
 #3）dnsfilter去广告广告kiddin9大神
 #git clone --depth 1 https://github.com/kiddin9/luci-app-dnsfilter package/diy/luci-app-dnsfilter
 

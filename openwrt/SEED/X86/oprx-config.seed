@@ -370,9 +370,10 @@ CONFIG_PACKAGE_luci-app-wolplus=y
 #sbwml的openlist2
 CONFIG_PACKAGE_luci-app-openlist2=y
 
-#koolproxy去除广告
-CONFIG_PACKAGE_luci-app-ikoolproxy=y
-CONFIG_PACKAGE_libustream-openssl=n #选择导致编译不成功
+#去除广告
+CONFIG_PACKAGE_luci-app-ikoolproxy=n
+CONFIG_PACKAGE_luci-app-admask=y
+
 
 ##石像鬼iqos
 CONFIG_PACKAGE_luci-app-iqos=y
