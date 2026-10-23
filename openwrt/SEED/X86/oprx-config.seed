@@ -160,7 +160,7 @@ CONFIG_PACKAGE_htop=y
 # CONFIG_PACKAGE_natflow-boot=y
 CONFIG_PACKAGE_luci-app-nikki=n
 CONFIG_PACKAGE_luci-app-filemanager=n
-CONFIG_PACKAGE_luci-app-einat=n
+CONFIG_PACKAGE_luci-app-flowcone=n
 CONFIG_PACKAGE_luci-app-bandix=y
 
 ### SSRP ###
