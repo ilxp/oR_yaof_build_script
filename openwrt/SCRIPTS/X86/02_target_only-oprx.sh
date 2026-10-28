@@ -618,8 +618,8 @@ rm -rf package/new/custom/luci-app-wolplus
 rm -rf feeds/luci/applications/luci-app-openvpn-server  #采用lienol的，会生成一个vpn的栏目
 merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-openvpn-server
 
-#采用我自己的control
-git clone -b main --depth 1 https://github.com/ilxp/openwrt-control  package/diy/openwrt-control
+#采用我自己的controlplus
+git clone -b main --depth 1 https://github.com/ilxp/controlplus-openwrt  package/diy/controlplus-openwrt
 
 #zxlhhyccc大佬的 修复无法运行问题。
 #时间控制accesscontrol,timecontrol网络唤醒wolplus，访问限制webrestriction， 过滤控制weburl
