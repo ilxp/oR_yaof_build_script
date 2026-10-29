@@ -657,9 +657,9 @@ git clone -b main --depth 1 https://github.com/ilxp/controlplus-openwrt  package
 #merge_package master https://github.com/xiangfeidexiaohuo/openwrt-packages.git package/new patch/luci-app-turboacc
 
 #适配 firewall4
-merge_package luci https://github.com/chenmozhijin/turboacc.git package/new/turboacc luci-app-turboacc
+#merge_package luci https://github.com/chenmozhijin/turboacc.git package/new/turboacc luci-app-turboacc
 #修改 bbr为bbr3
-sed -i 's/kmod-tcp-bbr/kmod-tcp-bbr3/g' package/new/turboacc/luci-app-turboacc/Makefile
+#sed -i 's/kmod-tcp-bbr/kmod-tcp-bbr3/g' package/new/turboacc/luci-app-turboacc/Makefile
 
 #适lede的luci23.05已经适配 firewall4，#lede的在oR上会导致没有其他系统软件，慎用
 #merge_package openwrt-24.10 https://github.com/coolsnowwolf/luci.git package/new applications/luci-app-turboacc
@@ -977,7 +977,13 @@ git clone https://github.com/timsaya/openwrt-bandix  package/new/bandix
 #nf补丁
 #rm -rf target/linux/generic/hack-6.12/950-fwx-nf-conn-struct-user-hook.patch
 #wget -P target/linux/generic/hack-6.12/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-25.12.2/target/linux/generic/hack-6.12/950-fwx-nf-conn-struct-user-hook.patch
+
+#FlowCone 
+git clone https://github.com/QiuSimons/FlowCone  package/new/FlowCone
+git clone https://github.com/QiuSimons/vmlinux-btf package/new/vmlinux-btf
+
 ##########################################################################
+
 
 chmod -R 755 ./
 find ./ -name *.orig | xargs rm -f
