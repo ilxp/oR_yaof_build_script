@@ -843,7 +843,7 @@ git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages
 # Shortcut Forwarding Engine
 git clone https://git.cooluc.com/sbwml/shortcut-fe package/new/shortcut-fe
 # FullCone module
-git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone
+#git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone
 # IPv6 NAT
 git clone https://github.com/sbwml/packages_new_nat6 package/new/nat6
 # natflow
