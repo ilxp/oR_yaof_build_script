@@ -79,7 +79,7 @@ starttime=`date +'%Y-%m-%d %H:%M:%S'`
 # 构建时间与版本号，一起作为soup判断固件是否更新
 export build_date=$(TZ=UTC-8 date +'%Y%m%d%H')  #2026100111 
 export short_date=$(TZ=UTC-8 date +'%y.%-m.%-d')  #26.10.1
-echo "[soup] 编译日期已锁定: ${build_date} (${short_date})"
+echo "[onup] 编译日期已锁定: ${build_date} (${short_date})"
 
 CURRENT_DATE="${build_date}"
 
@@ -446,7 +446,7 @@ fi
 #####SOUP系统升级工具需要API相关函数（json格式）###########
 
 # ============================================================
-# soup JSON 辅助函数
+# onup JSON 辅助函数
 # ============================================================
 # ---- 转义字符串供 JSON 使用(含首尾引号) ----
 # 用法: JSON_ESC "字符串"
@@ -484,10 +484,10 @@ LOGS_URL="${mirror}/logs.md"
 Soup_LOGS_JSON='""'
 if curl -fsSL "$LOGS_URL" -o /tmp/.soup_logs.md 2>/dev/null && [ -s /tmp/.soup_logs.md ]; then
     Soup_LOGS_JSON=$(JSON_LOGS /tmp/.soup_logs.md)
-    echo "[soup] 已从远端加载日志: ($(wc -c < /tmp/.soup_logs.md) 字节)"
+    echo "[onup] 已从远端加载日志: ($(wc -c < /tmp/.soup_logs.md) 字节)"
     rm -f /tmp/.soup_logs.md
 else
-    echo "[soup] 警告: 无法加载日志: $LOGS_URL" >&2
+    echo "[onup] 警告: 无法加载日志: $LOGS_URL" >&2
 fi
 
 # ============================================================
@@ -499,7 +499,7 @@ _rename_fw() {
     local src="$1" dst="$2"
     [ -f "$src" ] || return 1
     mv -f "$src" "$dst"
-    echo "[soup] 固件已更名为: $(basename "$dst")"
+    echo "[onup] 固件已更名为: $(basename "$dst")"
     return 0
 }
 
@@ -533,7 +533,7 @@ ${item}"
 _emit_json() {
     local outfile="$1"
     if [ ${#_JSON_KEYS[@]} -eq 0 ]; then
-        echo "[soup] 警告: 无固件条目,跳过 $outfile" >&2
+        echo "[onup] 警告: 无固件条目,跳过 $outfile" >&2
         return 1
     fi
     mkdir -p "$(dirname "$outfile")"
@@ -551,7 +551,7 @@ _emit_json() {
         echo "}"
     } > "$outfile"
 
-    echo "[soup] JSON 文件已生成: $outfile"
+    echo "[onup] JSON 文件已生成: $outfile"
 }
 
 #####################################################
@@ -588,7 +588,7 @@ if [ "$platform" = "x86_64" ]; then
 
     _add_json_item "x86_64" "$EFI_NEW"
     _add_json_item "x86_64" "$BIOS_NEW"
-    _emit_json "soup/${Soup_TAG}.json"
+    _emit_json "onup/${Soup_TAG}.json"
 
     # Backup download cache
     if [ "$isCN" = "CN" ] && [ "$1" = "rc2" ]; then
@@ -621,7 +621,7 @@ if [ "$platform" = "armv8" ]; then
         _rename_fw "$SRC" "$NEW"
 
         _add_json_item "armsr,armv8" "$NEW"
-        _emit_json "soup/${Soup_TAG}.json"
+        _emit_json "onup/${Soup_TAG}.json"
     fi
     exit 0
 fi
@@ -649,7 +649,7 @@ if [ "$platform" = "bcm53xx" ]; then
             _rename_fw "$CHK_SRC" "$NEW"
 
             _add_json_item "netgear,r8500" "$NEW"
-            _emit_json "soup/${Soup_TAG}.json"
+            _emit_json "onup/${Soup_TAG}.json"
         fi
     fi
     exit 0
@@ -697,7 +697,7 @@ if [ "$1" = "rc2" ]; then
         ;;
     esac
 
-    _emit_json "soup/${Soup_TAG}.json"
+    _emit_json "onup/${Soup_TAG}.json"
 fi
 
 # Backup download cache
