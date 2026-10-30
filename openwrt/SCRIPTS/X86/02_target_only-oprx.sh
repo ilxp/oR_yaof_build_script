@@ -96,7 +96,8 @@ cp -rf ./diydata/data/app/*  ./
 #初始化文件
 
 #克隆default-settings
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new addition-trans-zh
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new apps/addition-trans-zh
+sed -i 's/ +iptables-nft//' ./package/new/addition-trans-zh/Makefile  #使用全新的flowcone
 #复制default-settings文件
 cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/files/zzz-default-settings
 
@@ -323,7 +324,7 @@ rm -rf feeds/luci/applications/luci-app-passwall
 #采用qiumos的库
 rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
 rm -rf feeds/luci/applications/luci-app-passwall
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package openwrt_helloworld
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package legacy/openwrt_helloworld
 
 ##FQ全部调到VPN菜单
 sed -i 's/services/vpn/g' package/openwrt_helloworld/luci-app-passwall/luasrc/controller/*.lua
@@ -429,8 +430,6 @@ sed -i 's/NetSpeedtest/网络测速/g' package/diy/netspeedtest/luci-app-netspee
 #任务设置（会产生一个control管控栏目）
 rm -rf package/sirpdboy/luci-app-taskplan
 git clone https://github.com/sirpdboy/luci-app-taskplan package/diy/taskplan
-sed -i 's/Task Plan/任务设置/g' package/diy/taskplan/luci-app-taskplan/luasrc/controller/taskplan.lua
-sed -i 's/Control/管控/g' package/diy/taskplan/luci-app-taskplan/luasrc/controller/taskplan.lua
 
 #关机  编译不成功采用esir的
 #git clone https://github.com/sirpdboy/luci-app-poweroffdevice package/diy/luci-app-poweroffdevice
@@ -440,9 +439,8 @@ sed -i 's/PowerOff/关机/g' package/diy/luci-app-poweroff/luasrc/controller/pow
 
 #家长控制（会生成Control管控栏目） #无法运行
 #git clone https://github.com/sirpdboy/luci-app-parentcontrol package/diy/luci-app-parentcontrol
-git clone https://github.com/ilxp/luci-app-parentcontrol package/diy/luci-app-parentcontrol
-sed -i 's/Parent Control/家长控制/g' package/diy/luci-app-parentcontrol/luasrc/controller/parentcontrol.lua
-sed -i 's/Control/管控/g' package/diy/luci-app-parentcontrol/luasrc/controller/parentcontrol.lua
+#sed -i 's/Parent Control/家长控制/g' package/diy/luci-app-parentcontrol/luasrc/controller/parentcontrol.lua
+#sed -i 's/Control/管控/g' package/diy/luci-app-parentcontrol/luasrc/controller/parentcontrol.lua
 
 #自动扩容分区
 git clone https://github.com/sirpdboy/luci-app-partexp package/diy/partexp
@@ -619,7 +617,7 @@ rm -rf feeds/luci/applications/luci-app-openvpn-server  #采用lienol的，会�
 merge_package main https://github.com/Lienol/openwrt-package.git package/new luci-app-openvpn-server
 
 #采用我自己的controlplus
-git clone -b main --depth 1 https://github.com/ilxp/controlplus-openwrt  package/diy/controlplus-openwrt
+git clone -b main https://github.com/ilxp/controlplus-openwrt  package/diy/controlplus-openwrt
 
 #zxlhhyccc大佬的 修复无法运行问题。
 #时间控制accesscontrol,timecontrol网络唤醒wolplus，访问限制webrestriction， 过滤控制weburl
@@ -843,9 +841,9 @@ git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages
 # Shortcut Forwarding Engine
 git clone https://git.cooluc.com/sbwml/shortcut-fe package/new/shortcut-fe
 # FullCone module
-#git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone
+#git clone https://git.cooluc.com/sbwml/nft-fullcone package/new/nft-fullcone  #使用 flowcone
 # IPv6 NAT
-git clone https://github.com/sbwml/packages_new_nat6 package/new/nat6
+#git clone https://github.com/sbwml/packages_new_nat6 package/new/nat6
 # natflow
 #git clone https://github.com/sbwml/package_new_natflow package/new/natflow
 
@@ -870,7 +868,7 @@ rm -rf package/system/autocore
 #sed -i 's/png/svg/g' package/system/autocore/files/generic/29_ports.js
 
 #直接采用QiuSimons修改好的sbwml的
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git  package/system/autocore autocore-arm
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git  package/system/autocore apps/autocore-arm
 
 #采用immortalwrt的
 # AutoCore
@@ -921,14 +919,14 @@ sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/samba.confi
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/smb.conf.template
 
 #22、USB 打印机与KMS 激活助手  #USB 打印机 会产生一个nas项目
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new openwrt_pkgs/luci-app-usb-printer
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new legacy/openwrt_pkgs/luci-app-usb-printer
 
 #23、KMS 激活助手
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  openwrt_pkgs/luci-app-vlmcsd
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  openwrt_pkgs/vlmcsd
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  legacy/openwrt_pkgs/luci-app-vlmcsd
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  legacy/openwrt_pkgs/vlmcsd
 
 #24、 清理内存
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new luci-app-ramfree
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new apps/luci-app-ramfree
 
 #25、 OLED 驱动程序
 git clone -b master --depth 1 https://github.com/NateLol/luci-app-oled.git package/new/luci-app-oled

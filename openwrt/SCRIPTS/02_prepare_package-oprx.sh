@@ -197,7 +197,7 @@ sed -i 's,@CMDLINE@ noinitrd,noinitrd mitigations=off,g' target/linux/x86/image/
 # and from addition-trans-zh's DEPENDS, which would otherwise reference a package
 # that no longer exists (07_fw3.sh does the iptables-side equivalent).
 #rm -rf ./package/new/lede_pkg/fullconenat-nft
-sed -i 's/ +kmod-nft-fullcone//' ./package/new/addition-trans-zh/Makefile
+#sed -i 's/ +kmod-nft-fullcone//' ./package/new/addition-trans-zh/Makefile
 #rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box,frp,microsocks,shadowsocks-libev,zerotier,daed}
 #rm -rf feeds/luci/applications/{luci-app-frps,luci-app-frpc,luci-app-zerotier}
 rm -rf feeds/packages/utils/coremark
