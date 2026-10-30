@@ -76,7 +76,7 @@ fi
 starttime=`date +'%Y-%m-%d %H:%M:%S'`
 #CURRENT_DATE=$(date +%s)
 
-# 构建时间与版本号，一起作为soup判断固件是否更新
+# 构建时间与版本号，一起作为onup判断固件是否更新
 export build_date=$(TZ=UTC-8 date +'%Y%m%d%H')  #2026100111 
 export short_date=$(TZ=UTC-8 date +'%y.%-m.%-d')  #26.10.1
 echo "[onup] 编译日期已锁定: ${build_date} (${short_date})"
@@ -443,7 +443,7 @@ else
 fi
 
 
-#####SOUP系统升级工具需要API相关函数（json格式）###########
+#####ONUP系统升级工具需要API相关函数（json格式）###########
 
 # ============================================================
 # onup JSON 辅助函数
@@ -467,10 +467,10 @@ elif [ "$1" = "rc2" ]; then
     OP_VERSION="${VERSION}-${build_date}"       # 如 25.12.5-2026100112
 fi
 
-Soup_TAG="oR"
-Soup_PREFIX="OprX"
-Soup_DATE="${build_date}"
-Soup_URL="https://github.com/ilxp/oprx-release/releases/download/firmware"
+Onup_TAG="oR"
+Onup_PREFIX="OprX"
+Onup_DATE="${build_date}"
+Onup_URL="https://github.com/ilxp/oprx-release/releases/download/firmware"
 
 ### 日志logs.md的存放目录 ########
 # ============================================================
@@ -481,11 +481,11 @@ Soup_URL="https://github.com/ilxp/oprx-release/releases/download/firmware"
 #   logs.md 位置: eS_lede_build_script/logs.md (仓库根)
 # ============================================================
 LOGS_URL="${mirror}/logs.md"
-Soup_LOGS_JSON='""'
-if curl -fsSL "$LOGS_URL" -o /tmp/.soup_logs.md 2>/dev/null && [ -s /tmp/.soup_logs.md ]; then
-    Soup_LOGS_JSON=$(JSON_LOGS /tmp/.soup_logs.md)
-    echo "[onup] 已从远端加载日志: ($(wc -c < /tmp/.soup_logs.md) 字节)"
-    rm -f /tmp/.soup_logs.md
+Onup_LOGS_JSON='""'
+if curl -fsSL "$LOGS_URL" -o /tmp/.onup_logs.md 2>/dev/null && [ -s /tmp/.onup_logs.md ]; then
+    Onup_LOGS_JSON=$(JSON_LOGS /tmp/.onup_logs.md)
+    echo "[onup] 已从远端加载日志: ($(wc -c < /tmp/.onup_logs.md) 字节)"
+    rm -f /tmp/.onup_logs.md
 else
     echo "[onup] 警告: 无法加载日志: $LOGS_URL" >&2
 fi
@@ -519,7 +519,7 @@ _add_json_item() {
     size=$(wc -c < "$file")
     sha=$(sha256sum "$file" | awk '{print $1}')
     item=$(printf '    {\n      "build_date": "%s",\n      "name": "%s",\n      "re_url": "%s",\n      "size": %s,\n      "sha256sum": "%s",\n      "logs": %s\n    }' \
-        "$Soup_DATE" "$(basename "$file")" "$Soup_URL" "$size" "$sha" "$Soup_LOGS_JSON")
+        "$Onup_DATE" "$(basename "$file")" "$Onup_URL" "$size" "$sha" "$Onup_LOGS_JSON")
 
     if [ -z "${_JSON_DATA[$profile]+x}" ]; then
         _JSON_KEYS+=("$profile")
@@ -572,8 +572,8 @@ if [ "$platform" = "x86_64" ]; then
     # ---- OTA JSON ----
     X86_DIR=$(ls -d bin/targets/x86/64* 2>/dev/null | head -1)
 
-    EFI_NEW="$X86_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-x86_64-squashfs-combined-uefi.img.gz"
-    BIOS_NEW="$X86_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-x86_64-squashfs-combined-bios.img.gz"
+    EFI_NEW="$X86_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-x86_64-squashfs-combined-uefi.img.gz"
+    BIOS_NEW="$X86_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-x86_64-squashfs-combined-bios.img.gz"
 
 	# 兼容官方/lede 不同版本号前缀：
 	#   openwrt-x86-64-generic-...          (snapshot)
@@ -588,7 +588,7 @@ if [ "$platform" = "x86_64" ]; then
 
     _add_json_item "x86_64" "$EFI_NEW"
     _add_json_item "x86_64" "$BIOS_NEW"
-    _emit_json "onup/${Soup_TAG}.json"
+    _emit_json "onup/${Onup_TAG}.json"
 
     # Backup download cache
     if [ "$isCN" = "CN" ] && [ "$1" = "rc2" ]; then
@@ -615,13 +615,13 @@ if [ "$platform" = "armv8" ]; then
     # ---- OTA JSON ----
     if [ "$1" = "rc2" ]; then
         ARMV8_DIR=$(ls -d bin/targets/armsr/armv8* 2>/dev/null | head -1)
-        NEW="$ARMV8_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-armsr-armv8-squashfs-combined-efi.img.gz"
+        NEW="$ARMV8_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-armsr-armv8-squashfs-combined-efi.img.gz"
         SRC="$ARMV8_DIR/openwrt-armsr-armv8-generic-squashfs-combined-efi.img.gz"
 
         _rename_fw "$SRC" "$NEW"
 
         _add_json_item "armsr,armv8" "$NEW"
-        _emit_json "onup/${Soup_TAG}.json"
+        _emit_json "onup/${Onup_TAG}.json"
     fi
     exit 0
 fi
@@ -645,11 +645,11 @@ if [ "$platform" = "bcm53xx" ]; then
         CHK_SRC=$(ls bin/targets/bcm53xx/generic/*-bcm53xx-generic-netgear_r8500-squashfs.chk 2>/dev/null | head -1)
         if [ -n "$CHK_SRC" ]; then
             CHK_DIR=$(dirname "$CHK_SRC")
-            NEW="$CHK_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-netgear_r8500-squashfs.chk"
+            NEW="$CHK_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-netgear_r8500-squashfs.chk"
             _rename_fw "$CHK_SRC" "$NEW"
 
             _add_json_item "netgear,r8500" "$NEW"
-            _emit_json "onup/${Soup_TAG}.json"
+            _emit_json "onup/${Onup_TAG}.json"
         fi
     fi
     exit 0
@@ -674,14 +674,14 @@ if [ "$1" = "rc2" ]; then
 
     case "$model" in
         nanopi-r4s)
-            NEW="$R_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-nanopi-r4s-squashfs-sysupgrade.img.gz"
+            NEW="$R_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-nanopi-r4s-squashfs-sysupgrade.img.gz"
             SRC="$R_DIR/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
             _rename_fw "$SRC" "$NEW"
             _add_json_item "friendlyarm,nanopi-r4s" "$NEW"
         ;;
         nanopi-r5s)
-            NEW_C="$R_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-nanopi-r5c-squashfs-sysupgrade.img.gz"
-            NEW_S="$R_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-nanopi-r5s-squashfs-sysupgrade.img.gz"
+            NEW_C="$R_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-nanopi-r5c-squashfs-sysupgrade.img.gz"
+            NEW_S="$R_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-nanopi-r5s-squashfs-sysupgrade.img.gz"
             SRC_C="$R_DIR/openwrt-rockchip-armv8-friendlyarm_nanopi-r5c-squashfs-sysupgrade.img.gz"
             SRC_S="$R_DIR/openwrt-rockchip-armv8-friendlyarm_nanopi-r5s-squashfs-sysupgrade.img.gz"
             _rename_fw "$SRC_C" "$NEW_C"
@@ -690,14 +690,14 @@ if [ "$1" = "rc2" ]; then
             _add_json_item "friendlyarm,nanopi-r5s" "$NEW_S"
         ;;
         nanopi-r76s)
-            NEW="$R_DIR/$Soup_PREFIX-openwrt-${Soup_TAG}${OP_VERSION}-nanopi-r76s-squashfs-sysupgrade.img.gz"
+            NEW="$R_DIR/$Onup_PREFIX-openwrt-${Onup_TAG}${OP_VERSION}-nanopi-r76s-squashfs-sysupgrade.img.gz"
             SRC="$R_DIR/openwrt-rockchip-armv8-friendlyarm_nanopi-r76s-squashfs-sysupgrade.img.gz"
             _rename_fw "$SRC" "$NEW"
             _add_json_item "friendlyarm,nanopi-r76s" "$NEW"
         ;;
     esac
 
-    _emit_json "onup/${Soup_TAG}.json"
+    _emit_json "onup/${Onup_TAG}.json"
 fi
 
 # Backup download cache
