@@ -848,9 +848,9 @@ git clone https://git.cooluc.com/sbwml/shortcut-fe package/new/shortcut-fe
 # IPv6 NAT
 #git clone https://github.com/sbwml/packages_new_nat6 package/new/nat6
 # natflow
-#git clone https://github.com/sbwml/package_new_natflow package/new/natflow
+git clone https://github.com/sbwml/package_new_natflow package/new/natflow
 
-git clone https://github.com/QiuSimons/openwrt-natflow package/new/natflow
+#git clone https://github.com/QiuSimons/openwrt-natflow package/new/natflow
 
 #19、sbwml大神的优
 
@@ -981,7 +981,7 @@ git clone https://github.com/timsaya/openwrt-bandix  package/new/bandix
 
 #FlowCone 
 git clone https://github.com/QiuSimons/FlowCone  package/new/FlowCone
-git clone https://github.com/QiuSimons/vmlinux-btf package/new/vmlinux-btf
+#git clone https://github.com/QiuSimons/vmlinux-btf package/new/vmlinux-btf
 
 ##########################################################################
 
