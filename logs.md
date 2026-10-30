@@ -2,6 +2,7 @@
 - 升级为25.12.6。
 - 移除ikoolproxy，新增新一代的admask。
 - 全新一代的controlplus。
+- 移除passwall和nikii，使用全新的homeproxy和honk。
 
 ### 20261015
 - 修复默认防火墙为REJECT，赶紧升级到此版，防止被攻击。
