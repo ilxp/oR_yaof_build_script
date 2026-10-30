@@ -97,7 +97,6 @@ cp -rf ./diydata/data/app/*  ./
 
 #克隆default-settings
 merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new apps/addition-trans-zh
-sed -i 's/ +iptables-nft//' ./package/new/addition-trans-zh/Makefile  #使用全新的flowcone
 #复制default-settings文件
 cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/files/zzz-default-settings
 
@@ -401,6 +400,9 @@ merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new chi
 merge_package v5 https://github.com/sbwml/openwrt_helloworld.git package/new sing-box
 #移动到VPN栏目
 sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json
+
+#honk
+git clone https://github.com/QiuSimons/luci-app-honk  package/diy/luci-app-honk
 
 #三）、istore应用商店
 rm -rf package/new/istore
