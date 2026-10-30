@@ -403,6 +403,7 @@ sed -i 's/services/vpn/g' package/diy/luci-app-homeproxy/root/usr/share/luci/men
 
 #honk
 git clone https://github.com/QiuSimons/luci-app-honk  package/diy/luci-app-honk
+sed -i 's/services/vpn/g' package/diy/luci-app-honk/luci-app-honk/root/usr/share/luci/menu.d/luci-app-honk.json
 
 #三）、istore应用商店
 rm -rf package/new/istore
