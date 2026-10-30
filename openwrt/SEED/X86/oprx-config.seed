@@ -412,8 +412,8 @@ CONFIG_PACKAGE_podman=y
 
 #在线升级
 CONFIG_PACKAGE_luci-app-gpsysupgrade=n
-CONFIG_PACKAGE_luci-app-soup=y
-CONFIG_PACKAGE_soup=y
+CONFIG_PACKAGE_luci-app-onup=y
+CONFIG_PACKAGE_onup=y
 
 #zsh终端
 CONFIG_PACKAGE_zsh=y
