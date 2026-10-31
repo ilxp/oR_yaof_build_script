@@ -791,10 +791,10 @@ sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgr
 sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/admin_status/index/*.htm
 sed -i 's/services/system/g' package/diy/openwrt-gpsysupgrade/luci-app-gpsysupgrade/luasrc/view/gpsysupgrade/*.htm
 
-#2）soup
-git clone -b main --single-branch https://github.com/ilxp/openwrt-soup.git  package/diy/openwrt-soup
+#2）onup
+git clone -b main --single-branch https://github.com/ilxp/onup-openwrt.git  package/diy/onup-openwrt
 #将版本号以及固件的相关信息写入默认配置文件。
-#cat >> package/diy/openwrt-soup/soup/files/etc/soup/default <<EOF
+#cat >> package/diy/onup-openwrt/onup/files/etc/onup/default <<EOF
 #Author=ilxp
 #Github=https://github.com/ilxp/oprx-release
 #TARGET_PROFILE=x86_64
@@ -817,11 +817,11 @@ git clone -b main --single-branch https://github.com/ilxp/openwrt-soup.git  pack
 #修改内容:被改内容包含/时可用#或者|,包含/或者#时，只用用|，含|换回/或#,有引用变量时要用双引号。
 #修改 json地址
 sed -i 's#API_Url=.*#API_Url=https://github.com/ilxp/oprx-release/releases/download/firmware/oR.json#g' \
-    package/diy/openwrt-soup/soup/files/etc/soup/default
-#sed -i 's|API_Url=.*|API_Url=https://github.com/ilxp/oprx-release/releases/download/firmware/oP.json|g' package/diy/openwrt-soup/soup/files/etc/soup/default
+    package/diy/onup-openwrt/onup/files/etc/onup/default
+#sed -i 's|API_Url=.*|API_Url=https://github.com/ilxp/oprx-release/releases/download/firmware/oP.json|g' package/diy/onup-openwrt/onup/files/etc/onup/default
 #1）固件前缀和标签
-sed -i 's/TARGET_FLAG=.*/TARGET_FLAG=oR/g' package/diy/openwrt-soup/soup/files/etc/soup/default
-sed -i 's/FW_Prefix=.*/FW_Prefix=OprX/g' package/diy/openwrt-soup/soup/files/etc/soup/default
+sed -i 's/TARGET_FLAG=.*/TARGET_FLAG=oR/g' package/diy/onup-openwrt/onup/files/etc/onup/default
+sed -i 's/FW_Prefix=.*/FW_Prefix=OprX/g' package/diy/onup-openwrt/onup/files/etc/onup/default
 #2）版本号：需要固定成：R24.1.1-20240101
 #build_date=$(date +%Y%m%d%H)  #日期+小时
 #short_date=$(TZ=UTC-8 date +'%y.%m.%d' | awk -F. '{print $1"."$2+0"."$3+0}') #24年1月1日：24.1.1
@@ -829,13 +829,13 @@ short_date=$(TZ=UTC-8 date +'%y.%-m.%-d') #24年1月1日：24.1.1
 build_date=$(TZ=UTC-8 date +'%Y%m%d%H')
 #OP_VERSION="${short_date}-${build_date}"
 OP_VERSION="${latest_release}-${build_date}"  #oR使用类似：25.12.5-2026.923
-sed -i "s|OP_VERSION=.*|OP_VERSION=$OP_VERSION|g" package/diy/openwrt-soup/soup/files/etc/soup/default  #可用/#|,使用双引号
+sed -i "s|OP_VERSION=.*|OP_VERSION=$OP_VERSION|g" package/diy/onup-openwrt/onup/files/etc/onup/default  #可用/#|,使用双引号
 #3）源码作者
-sed -i 's/OP_AUTHOR=.*/OP_AUTHOR=openwrt/g' package/diy/openwrt-soup/soup/files/etc/soup/default
+sed -i 's/OP_AUTHOR=.*/OP_AUTHOR=openwrt/g' package/diy/onup-openwrt/onup/files/etc/onup/default
 #4）项目
-sed -i 's/OP_REPO=.*/OP_REPO=openwrt/g' package/diy/openwrt-soup/soup/files/etc/soup/default
+sed -i 's/OP_REPO=.*/OP_REPO=openwrt/g' package/diy/onup-openwrt/onup/files/etc/onup/default
 #5）分支
-sed -i 's/OP_BRANCH=.*/OP_BRANCH=25.12/g' package/diy/openwrt-soup/soup/files/etc/soup/default
+sed -i 's/OP_BRANCH=.*/OP_BRANCH=25.12/g' package/diy/onup-openwrt/onup/files/etc/onup/default
 
 #17、更换 Nodejs 版本
 rm -rf feeds/packages/lang/node
