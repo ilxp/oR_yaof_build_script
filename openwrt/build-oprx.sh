@@ -587,7 +587,7 @@ if [ "$platform" = "x86_64" ]; then
     _rename_fw "$BIOS_SRC" "$BIOS_NEW"
 
     _add_json_item "x86_64" "$EFI_NEW"
-    _add_json_item "x86_64" "$BIOS_NEW"
+    # _add_json_item "x86_64" "$BIOS_NEW"
     _emit_json "onup/${Onup_TAG}.json"
 
     # Backup download cache
