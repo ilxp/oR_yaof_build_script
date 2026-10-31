@@ -96,7 +96,7 @@ cp -rf ./diydata/data/app/*  ./
 #初始化文件
 
 #克隆default-settings
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new addition-trans-zh
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new apps/addition-trans-zh
 #复制default-settings文件
 cp -f ./diydata/data/default-settings-oR-yaof package/new/addition-trans-zh/files/zzz-default-settings
 
@@ -926,14 +926,14 @@ sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/samba.confi
 sed -i 's/0666/0644/g;s/0777/0755/g' feeds/packages/net/samba4/files/smb.conf.template
 
 #22、USB 打印机与KMS 激活助手  #USB 打印机 会产生一个nas项目
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new openwrt_pkgs/luci-app-usb-printer
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new legacy/openwrt_pkgs/luci-app-usb-printer
 
 #23、KMS 激活助手
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  openwrt_pkgs/luci-app-vlmcsd
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  openwrt_pkgs/vlmcsd
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  legacy/openwrt_pkgs/luci-app-vlmcsd
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new  legacy/openwrt_pkgs/vlmcsd
 
 #24、 清理内存
-merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new luci-app-ramfree
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git package/new apps/luci-app-ramfree
 
 #25、 OLED 驱动程序
 git clone -b master --depth 1 https://github.com/NateLol/luci-app-oled.git package/new/luci-app-oled
