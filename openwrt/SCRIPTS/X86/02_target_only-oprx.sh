@@ -863,7 +863,7 @@ sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/g' feeds/packages/ut
 #20、autocore
 rm -rf package/system/autocore 
 ##git clone -b openwrt-25.12 --depth 1 https://github.com/sbwml/autocore-arm  package/system/autocore
-git clone https://github.com/sbwml/autocore-arm  package/system/autocore
+#git clone https://github.com/sbwml/autocore-arm  package/system/autocore
 #sed -i '/init/d' package/system/autocore/Makefile
 #sed -i '/autocore.json/a\\	$(INSTALL_BIN) ./files/x86/autocore $(1)/etc/init.d/' package/system/autocore/Makefile
 #sed -i '/autocore.json/a\\	$(INSTALL_DIR) $(1)/etc/init.d' package/system/autocore/Makefile
@@ -871,7 +871,7 @@ git clone https://github.com/sbwml/autocore-arm  package/system/autocore
 #sed -i 's/png/svg/g' package/system/autocore/files/generic/29_ports.js
 
 #直接采用QiuSimons修改好的sbwml的
-#merge_package master https://github.com/QiuSimons/OpenWrt-Add.git  package/system/autocore apps/autocore-arm
+merge_package master https://github.com/QiuSimons/OpenWrt-Add.git  package/system/autocore apps/autocore-arm
 
 #采用immortalwrt的
 # AutoCore
@@ -980,7 +980,7 @@ git clone https://github.com/timsaya/openwrt-bandix  package/new/bandix
 #wget -P target/linux/generic/hack-6.12/ https://github.com/fanchmwrt/fanchmwrt/raw/fanchmwrt-25.12.2/target/linux/generic/hack-6.12/950-fwx-nf-conn-struct-user-hook.patch
 
 #FlowCone 
-git clone https://github.com/QiuSimons/FlowCone  package/new/FlowCone
+merge_package master https://github.com/QiuSimons/FlowCone.git  package/new/FlowCone openwrt
 #git clone https://github.com/QiuSimons/vmlinux-btf package/new/vmlinux-btf
 
 ##########################################################################
