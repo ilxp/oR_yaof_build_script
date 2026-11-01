@@ -51,38 +51,75 @@ cp -rf ./diydata/PATCH/files ./files
 #第二种  来源https://github.com/Jejz168/OpenWrt
 #mkdir package/new
 function merge_package() {
-	# 参数1是分支名,参数2是库地址,参数3是所有文件下载到指定路径。
-	# 同一个仓库下载多个文件夹直接在后面跟文件名或路径，空格分开。
-	# 示例:
-	# merge_package 分支 仓库地址 下载到指定路径(已存在或者自定义) 目标文件（多个空格分开）
-	# 下载到不存在的目录时: rm -rf package/new; mkdir package/new
-	# merge_package master https://github.com/WYC-2020/openwrt-packages package/openwrt-packages luci-app-eqos luci-app-openclash luci-app-ddnsto ddnsto 
-	# merge_package master https://github.com/lisaac/luci-app-dockerman package/lean applications/luci-app-dockerman #结果是将luci-app-dockerman放在package/lean下
-	# merge_package main https://github.com/linkease/nas-packages-luci package/new luci/luci-app-ddnsto  #结果是package/new/luci-app-ddnsto
-	# merge_package master https://github.com/linkease/nas-packages package/new network/services/ddnsto  #结果是package/new/ddnsto 
-	# merge_package master https://github.com/coolsnowwolf/lede package/kernel package/kernel/mac80211  #将目标仓库的package/kernel/mac80211克隆到本地package/kernel下
-	#merge_package main https://github.com/Lienol/openwrt.git  ./tools tools/ucl tools/upx  #表示在根目录生成一个tools文件夹。本来就会有，所以报错。
-    #merge_package main https://github.com/Lienol/openwrt.git tools tools/ucl tools/upx  #表示目标目录tool下的ucl和upx移动到根目录已经存在的tools文件夹。
-	if [[ $# -lt 3 ]]; then
-		echo "Syntax error: [$#] [$*]" >&2
-		return 1
-	fi
-	trap 'rm -rf "$tmpdir"' EXIT
-	branch="$1" curl="$2" target_dir="$3" && shift 3
-	rootdir="$PWD"
-	localdir="$target_dir"
-	[ -d "$localdir" ] || mkdir -p "$localdir"
-	tmpdir="$(mktemp -d)" || exit 1
-        echo "开始下载：$(echo $curl | awk -F '/' '{print $(NF)}')"
-	git clone -b "$branch" --depth 1 --filter=blob:none --sparse "$curl" "$tmpdir"
-	cd "$tmpdir"
-	git sparse-checkout init --cone
-	git sparse-checkout set "$@"
-	# 使用循环逐个移动文件夹
-	for folder in "$@"; do
-		mv -f "$folder" "$rootdir/$localdir"
-	done
-	cd "$rootdir"
+    # 参数1：分支；参数2：仓库地址；参数3：本地目标目录；后续：要拉取的仓库内路径列表
+    # 示例：
+    # merge_package master https://github.com/coolsnowwolf/lede.git \
+    #     target/linux/generic target/linux/generic/backport-6.18
+    # 结果：把仓库里的 target/linux/generic/backport-6.18 移动到本地 target/linux/generic/backport-6.18
+
+    if [[ $# -lt 3 ]]; then
+        echo "Syntax error: [$#] [$*]" >&2
+        return 1
+    fi
+
+    local branch="$1"
+    local repo="$2"
+    local target_dir="$3"
+    shift 3
+
+    local rootdir="$PWD"
+    local localdir="$target_dir"
+    [ -d "$localdir" ] || mkdir -p "$localdir"
+
+    local tmpdir
+    tmpdir="$(mktemp -d)" || return 1
+
+    # 日志只显示 basename，避免出现
+    # target/linux/generic/target/linux/generic/backport-6.18
+    local show=""
+    local p
+    for p in "$@"; do
+        show="${show:+$show }$(basename "$p")"
+    done
+    echo "开始下载: $(basename "$repo") -> $target_dir/$show"
+
+    if ! git clone -b "$branch" --depth 1 --filter=blob:none --sparse "$repo" "$tmpdir"; then
+        rm -rf "$tmpdir"
+        return 1
+    fi
+
+    if ! cd "$tmpdir"; then
+        rm -rf "$tmpdir"
+        return 1
+    fi
+
+    if ! git sparse-checkout init --cone; then
+        cd "$rootdir" || true
+        rm -rf "$tmpdir"
+        return 1
+    fi
+
+    if ! git sparse-checkout set "$@"; then
+        cd "$rootdir" || true
+        rm -rf "$tmpdir"
+        return 1
+    fi
+
+    local folder dest
+    for folder in "$@"; do
+        dest="$rootdir/$localdir/$(basename "$folder")"
+        # 幂等：先删目标，避免 mv 把源目录塞进已存在的同名目录内部
+        rm -rf "$dest"
+        if ! mv -f "$folder" "$dest"; then
+            cd "$rootdir" || true
+            rm -rf "$tmpdir"
+            return 1
+        fi
+    done
+
+    cd "$rootdir" || return 1
+    rm -rf "$tmpdir"
+    return 0
 }
 
 #二、导入自己data目录数据配置 （注意结果是./diydata/openwrt/data）
