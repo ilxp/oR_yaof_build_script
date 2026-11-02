@@ -195,7 +195,8 @@ echo "net.netfilter.nf_conntrack_tcp_max_retrans=5" >>./package/kernel/linux/fil
 # OTHERS
 cp -rf ./diydata/PATCH/kernel/others/* ./target/linux/generic/pending-${KERNEL_VERSION}/
 # luci-app-attendedsysupgrade
-sed -i '/luci-app-attendedsysupgrade/d' feeds/luci/collections/luci-nginx/Makefile
+#sed -i '/luci-app-attendedsysupgrade/d' feeds/luci/collections/luci-nginx/Makefile  
+sed -i 's/+luci-app-attendedsysupgrade//g' feeds/luci/collections/luci-nginx/Makefile
 
 ### Fullcone-NAT 部分 ###
 # set nf_conntrack_expect_max for fullcone
