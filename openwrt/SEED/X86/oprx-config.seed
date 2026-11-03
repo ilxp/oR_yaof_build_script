@@ -336,8 +336,8 @@ CONFIG_PACKAGE_luci-app-wrtbwmon=n #采用bandix
 CONFIG_PACKAGE_luci-app-bandix=y
 
 # SFE
-#CONFIG_PACKAGE_kmod-fast-classifier=y
-#CONFIG_PACKAGE_kmod-shortcut-fe-cm=y
+CONFIG_PACKAGE_kmod-fast-classifier=y
+CONFIG_PACKAGE_kmod-shortcut-fe-cm=y
 
 #dns
 CONFIG_PACKAGE_luci-app-smartdns=n

@@ -212,6 +212,16 @@ pushd feeds/luci
 patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0004-luci-add-firewall-add-custom-nft-rule-support.patch
 popd
 
+### Shortcut-FE 部分 ###
+cp -rf ./diydata/PATCH/sfe-v2/package ./package/new/shortcut-fe
+# Patch Kernel 以支持 Shortcut-FE
+cp -rf ./diydata/PATCH/kernel/sfe/* ./target/linux/generic/hack-${KERNEL_VERSION}/
+cp -rf ../lede/target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch ./target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch
+# Patch LuCI 以增添 Shortcut-FE 开关
+pushd feeds/luci
+patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0002-luci-app-firewall-add-shortcut-fe-option.patch
+popd
+
 ### Other Kernel Hack 部分 ###
 # make olddefconfig
 wget -qO - https://github.com/openwrt/openwrt/commit/c21a3570.patch | patch -p1
