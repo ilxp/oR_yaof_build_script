@@ -487,8 +487,8 @@ uci commit dhcp
 #sed -i '/log-facility/d' /etc/dnsmasq.conf
 #echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
-#修改登录密码为password
-# $6$ SHA-512（明文 password）
+#修改登录密码为 password（SHA-512，比 MD5 安全）
+# MD5 原始值（已弃用）：$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.
 ROOT_HASH='$6$XzQm36OLij1.lc8g$BU2GvsleiqI0R3RaCzj4IVWZC2essUVRS2ad1j7DZU./g1rdw5qslYu2DCw66IG9AQaJRnzuZAkwpWXm88Dma1'
 # 匹配任何状态下的 root 密码（空 / * / ! / 已有 hash 都替换）
 sed -i "s|^root:[^:]*:|root:${ROOT_HASH}:|" /etc/shadow
