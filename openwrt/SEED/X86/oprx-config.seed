@@ -386,6 +386,8 @@ CONFIG_PACKAGE_luci-app-turboacc=n
 CONFIG_PACKAGE_luci-app-podman=y
 CONFIG_PACKAGE_podman=y
 
+CONFIG_PACKAGE_luci-app-argon-config=n
+
 #fanchmwrt模式
 #需要禁用的
 #CONFIG_PACKAGE_luci-app-netwizard=n #网络设置向导
