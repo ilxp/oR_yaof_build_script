@@ -488,9 +488,10 @@ uci commit dhcp
 #echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
 #修改登录密码为password
-#[ -f '/bin/bash' ] && sed -i 's|root:x:0:0:root:/root:/bin/ash|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
-sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
-sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+# $6$ SHA-512（明文 password）
+ROOT_HASH='$6$XzQm36OLij1.lc8g$BU2GvsleiqI0R3RaCzj4IVWZC2essUVRS2ad1j7DZU./g1rdw5qslYu2DCw66IG9AQaJRnzuZAkwpWXm88Dma1'
+# 匹配任何状态下的 root 密码（空 / * / ! / 已有 hash 都替换）
+sed -i "s|^root:[^:]*:|root:${ROOT_HASH}:|" /etc/shadow
 
 # 禁用ipv6前缀  已在前面dnsmasq配置
 #sed -i 's/^[^#].*option ula/#&/' /etc/config/network
