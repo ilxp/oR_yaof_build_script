@@ -307,6 +307,7 @@ find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/PKG_SOURCE_U
 rm -rf package/new/luci-theme-argon
 rm -rf feeds/luci/themes/luci-theme-argon
 git clone -b master https://github.com/jerrykuku/luci-theme-argon.git package/diy/luci-theme-argon
+rm -rf package/diy/luci-theme-argon/compat/luci-app-argon-config
 
 #2）修改 argon 为默认主题
 sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
