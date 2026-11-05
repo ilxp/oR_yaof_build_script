@@ -93,6 +93,7 @@ function merge_package() {
     rm -rf "$tmpdir"
     return 0
 }
+
 ##使用函数导入
 merge_package main https://github.com/ilxp/oR_yaof_build_script.git ./diydata openwrt/PATCH  #结果是./diydata/PATCH
 #并将../PATCH替换为./diydata/PATCH 即可。其余不改变。

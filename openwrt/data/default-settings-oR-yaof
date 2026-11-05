@@ -21,6 +21,9 @@ fi
 #uci set luci.main.mediaurlbase='/luci-static/fanchmwrt'
 #uci commit system
 
+#删除argon多余的配置：
+rm -f /usr/share/luci/menu.d/luci-app-argon-config.json
+
 # timezone
 uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
