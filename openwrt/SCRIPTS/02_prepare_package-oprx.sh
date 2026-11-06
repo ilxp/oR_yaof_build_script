@@ -214,7 +214,7 @@ patch -p1 <../.././diydata/PATCH/pkgs/firewall/luci/0004-luci-add-firewall-add-c
 popd
 
 ### Shortcut-FE 部分 ###
-cp -rf ./diydata/PATCH/sfe-v2/package ./package/new/shortcut-fe
+#cp -rf ./diydata/PATCH/sfe-v2/package ./package/new/shortcut-fe  #使用sbwml的sfe
 # Patch Kernel 以支持 Shortcut-FE
 cp -rf ./diydata/PATCH/kernel/sfe/* ./target/linux/generic/hack-${KERNEL_VERSION}/
 cp -rf ../lede/target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch ./target/linux/generic/pending-${KERNEL_VERSION}/613-netfilter_optional_tcp_window_check.patch
